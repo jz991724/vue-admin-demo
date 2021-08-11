@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import qs from 'qs';
 
 // 跨域认证信息 header 名
 const xsrfHeaderName = 'Authorization';
@@ -51,8 +52,13 @@ async function request(url, method, params, config) {
  * @param config
  * @returns {Promise<AxiosResponse<T>>}
  */
-function requestHelper(url, method, params, vueContext = undefined, spinName = 'spinning', config) {
+function requestHelper(url, method, params, vueContext = undefined, urlParams = undefined, spinName = 'spinning', config) {
     let requestObj = undefined;
+    if (urlParams) {
+        debugger
+        let paramsStr = qs.stringify(urlParams);
+        url = `${url}?${paramsStr}`;
+    }
     switch (method) {
         case METHOD.GET:
             requestObj = axios.get(url, { params, ...config });

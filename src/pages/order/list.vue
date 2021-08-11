@@ -14,18 +14,18 @@
                    @refresh="onRefresh"
                    :format-conditions="true"
                    @reset="onReset"
+                   :scroll="{x:600}"
                    :pagination="pagination">
-      <template slot="statusTitle">
-        状态
-        <a-icon style="margin: 0 4px" type="info-circle"/>
-      </template>
-      <template slot="send" slot-scope="{text}">
-        {{ text ? '是' : '否' }}
-      </template>
-      <template slot="status" slot-scope="{text}">
-        {{ OrderStatusEnum[text] }}
-      </template>
-      >
+<!--      <template slot="statusTitle">-->
+<!--        状态-->
+<!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
+<!--      </template>-->
+<!--      <template slot="send" slot-scope="{text}">-->
+<!--        {{ text ? '是' : '否' }}-->
+<!--      </template>-->
+<!--      <template slot="status" slot-scope="{text}">-->
+<!--        {{ OrderStatusEnum[text] }}-->
+<!--      </template>-->
     </advance-table>
   </div>
 </template>
@@ -49,18 +49,11 @@ export default class OrderList extends Vue {
 
   spinning = false;
 
-  // page = 1;
-  //
-  // pageSize = 10;
-  //
-  // total = 0;
-
   columns = [
     {
       title: '订单号',
       dataIndex: 'orderNumber',
       width: 100,
-      searchAble: true,
     },
     {
       title: '渠道',
@@ -71,7 +64,6 @@ export default class OrderList extends Vue {
       title: '乘客姓名',
       dataIndex: 'passengerName',
       width: 100,
-      searchAble: true,
     },
     {
       title: '用车日期',
@@ -116,6 +108,7 @@ export default class OrderList extends Vue {
       title: '驾驶员姓名',
       dataIndex: 'driverName',
       width: 110,
+      searchAble: true,
     },
     {
       title: '驾驶员电话',
@@ -140,7 +133,7 @@ export default class OrderList extends Vue {
     },
     {
       title: '车型',
-      dataIndex: 'motorcade',
+      dataIndex: 'carType',
       width: 80,
     },
     {
@@ -251,10 +244,15 @@ export default class OrderList extends Vue {
       orderField: undefined,
     };
     this.dataSource = [];
-    orderService.fetchOrderList(params)
-        .then((records) => {
+    debugger;
+    orderService.fetchOrderList(params, this.conditions)
+        .then(({
+                 items,
+                 totalCount,
+               }) => {
           debugger;
-          this.dataSource = records;
+          this.dataSource = items || [];
+          this.pagination.total = totalCount || 0;
         });
   }
 
