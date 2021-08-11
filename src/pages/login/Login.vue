@@ -96,15 +96,15 @@ export default {
       });
     },
     afterLogin(res, userInfo) {
-      debugger;
       const {
         status,
         data: {
-          token,
-          success,
+          result: {
+            token,
+            success,
+          },
         },
       } = res;
-      debugger;
       this.logging = false;
       if (status === 200 && success) {
         this.setUser(userInfo);

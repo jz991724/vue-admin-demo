@@ -77,14 +77,15 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
     }
     return new Promise((resolve, reject) => {
         requestObj.then(res => {
+            debugger
             let {
                 status,
-                data
+                data: { result }
             } = res;
             if (status === 200) {
-                return resolve(data);
+                return resolve(result);
             } else {
-                return reject(data);
+                return reject(result);
             }
         }, error => {
             return reject(error);

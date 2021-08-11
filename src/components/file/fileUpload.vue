@@ -75,6 +75,7 @@ export default class FileUpload extends Vue {
       withCredentials: true,
     })
         .then((res) => {
+          debugger;
           const {
             data: { result },
             status,
