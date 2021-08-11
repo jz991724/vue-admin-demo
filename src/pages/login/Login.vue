@@ -157,7 +157,7 @@ export default {
         }];
 
         loadRoutes(routesConfig);
-        this.$router.push('/dashboard/workplace');
+        this.$router.push('/demo');
         this.$message.success(`${Mock.mock('@TIMEFIX')?.CN}，欢迎回来`, 3);
 
         // // 获取路由配置
