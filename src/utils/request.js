@@ -9,6 +9,7 @@ axios.defaults.timeout = 5000;
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfHeaderName = xsrfHeaderName;
 axios.defaults.xsrfCookieName = xsrfHeaderName;
+axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 // 认证类型
 const AUTH_TYPE = {
@@ -76,7 +77,6 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
     }
     return new Promise((resolve, reject) => {
         requestObj.then(res => {
-            debugger
             let {
                 status,
                 data
@@ -95,6 +95,21 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
                 }
             });
     });
+}
+
+//文件下载
+function downloadFileHelper(url, fileName, data = {}, config = { responseType: 'blob' }, vueContext = undefined, spinName = 'spinning') {
+    requestHelper(url, METHOD.GET, undefined, vueContext, data, spinName, config)
+        .then(res => {
+            debugger;
+            const blob = new Blob([res.data]);
+            const rUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a'); // 创建a标签
+            link.href = rUrl;
+            link.download = fileName; // 重命名文件
+            link.click();
+            URL.revokeObjectURL(rUrl); // 释放内存
+        });
 }
 
 /**

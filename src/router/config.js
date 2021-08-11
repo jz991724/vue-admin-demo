@@ -43,9 +43,14 @@ const options = {
                     component: BlankView,
                     children: [
                         {
-                            path: 'list',
+                            path: 'dispatchOrderList',
+                            name: '订单派发',
+                            component: () => import('@/pages/order/dispatchOrderList'),
+                        },
+                        {
+                            path: 'orderList',
                             name: '订单列表',
-                            component: () => import('@/pages/order/list'),
+                            component: () => import('@/pages/order/orderList'),
                         },
                     ],
                 },
