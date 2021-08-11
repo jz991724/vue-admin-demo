@@ -5,13 +5,6 @@
 */
 <template>
   <div class="table">
-    <file-upload class="margin-left-xs"
-                 @success="uploadSuccess"
-                 @upLoading="(isLoading)=>spinning=isLoading">
-      <a-button :loading="spinning" :disabled="spinning">
-        浏览
-      </a-button>
-    </file-upload>
     <advance-table :columns="columns"
                    :data-source="dataSource"
                    title="订单列表"
@@ -22,16 +15,34 @@
                    :format-conditions="true"
                    @reset="onReset"
                    :scroll="{x:600}"
+                   :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange ,onSelect:onSelectRow }"
                    :pagination="pagination">
+      <div slot="extra" style="display: flex;justify-content: end;">
+        <file-upload class="margin-left-xs"
+                     @success="uploadSuccess"
+                     @upLoading="(isLoading)=>spinning=isLoading">
+          <a-button :loading="spinning" :disabled="spinning">
+            浏览
+          </a-button>
+        </file-upload>
+
+        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch">派发</a-button>
+      </div>
+
     </advance-table>
+
+    <!--订单派发确认modal-->
+    <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"></dispatch-orders-confirm-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins, Vue } from 'vue-property-decorator';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { orderService } from '@/services';
 import FileUpload from '@/components/file/fileUpload.vue';
+import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
+import VueMixins from '@/pages/mixins/vueMixins';
 
 // order状态enum
 export enum OrderStatusEnum {
@@ -41,12 +52,18 @@ export enum OrderStatusEnum {
 @Component({
   name: 'OrderList',
   components: {
+    DispatchOrdersConfirmModal,
     FileUpload,
     AdvanceTable,
   },
 })
-export default class OrderList extends Vue {
+export default class OrderList extends Mixins(VueMixins) {
   OrderStatusEnum = OrderStatusEnum;
+
+  selectedRowKeys = [];
+
+  // 所有选中将要被派单的order（各个页面）
+  dispatchOrderList = {};
 
   spinning = false;
 
@@ -238,6 +255,16 @@ export default class OrderList extends Vue {
   //   });
   // }
 
+  // 选中项发生变化时的回调
+  onSelectChange(selectedRowKeys) {
+    this.selectedRowKeys = selectedRowKeys;
+  }
+
+  // 用户手动选择/取消选择某列的回调
+  onSelectRow(record, selected, selectedRows) {
+    this.dispatchOrderList[this.pagination.current] = selectedRows;
+  }
+
   fetchData() {
     const {
       pagination: {
@@ -292,6 +319,18 @@ export default class OrderList extends Vue {
     this.conditions = conditions;
     // this.getGoodList();
     this.fetchData();
+  }
+
+  // 派单
+  onDispatch() {
+    let allDispatchOrderList = [];
+    Object.values(this.dispatchOrderList)
+        .forEach((orders: any = []) => {
+          allDispatchOrderList = [...allDispatchOrderList, ...orders];
+        });
+    console.log('所有要派的单:', allDispatchOrderList);
+
+    this.openModal('dispatchOrdersConfirmModal', allDispatchOrderList);
   }
 
   created() {
