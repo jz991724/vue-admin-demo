@@ -7,63 +7,60 @@
 </template>
 
 <script>
-import TagSelectOption from './TagSelectOption'
+import TagSelectOption from './TagSelectOption';
+
 export default {
   name: 'TagSelect',
   Option: TagSelectOption,
-  components: {TagSelectOption},
-  data () {
+  components: { TagSelectOption },
+  data() {
     return {
       showTrigger: false,
       collapsed: true,
       screenWidth: document.body.clientWidth,
-      checkAll: false
-    }
+      checkAll: false,
+    };
   },
   watch: {
-    screenWidth: function () {
-      this.showTrigger = this.needTrigger()
+    screenWidth() {
+      this.showTrigger = this.needTrigger();
     },
-    collapsed: function (val) {
-      this.$el.style.maxHeight = val ? '39px' : '78px'
-    }
+    collapsed(val) {
+      this.$el.style.maxHeight = val ? '39px' : '78px';
+    },
   },
-  mounted () {
-    let _this = this
+  mounted() {
+    const _this = this;
     // 此处延迟执行，是为解决mouted未完全完成情况下引发的trigger显示bug
     setTimeout(() => {
-      _this.showTrigger = _this.needTrigger()
-      _this.$refs.trigger.style.display = _this.showTrigger ? 'inline' : 'none'
-    }, 1)
-    window.onresize = () => {
-      return (() => {
-        window.screenWidth = document.body.clientWidth
-        _this.screenWidth = window.screenWidth
-      })()
-    }
+      _this.showTrigger = _this.needTrigger();
+      _this.$refs.trigger.style.display = _this.showTrigger ? 'inline' : 'none';
+    }, 1);
+    window.onresize = () => (() => {
+        window.screenWidth = document.body.clientWidth;
+        _this.screenWidth = window.screenWidth;
+      })();
   },
   methods: {
-    needTrigger () {
-      return this.$el.clientHeight < this.$el.scrollHeight || this.$el.scrollHeight > 39
+    needTrigger() {
+      return this.$el.clientHeight < this.$el.scrollHeight || this.$el.scrollHeight > 39;
     },
-    toggle () {
-      this.collapsed = !this.collapsed
+    toggle() {
+      this.collapsed = !this.collapsed;
     },
-    getAllTags () {
-      const tagList = this.$children.filter((item) => {
-        return item.isTagSelectOption
-      })
-      return tagList
+    getAllTags() {
+      const tagList = this.$children.filter((item) => item.isTagSelectOption);
+      return tagList;
     },
-    toggleCheck () {
-      this.checkAll = !this.checkAll
-      const tagList = this.getAllTags()
+    toggleCheck() {
+      this.checkAll = !this.checkAll;
+      const tagList = this.getAllTags();
       tagList.forEach((item) => {
-        item.checked = this.checkAll
-      })
-    }
-  }
-}
+        item.checked = this.checkAll;
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

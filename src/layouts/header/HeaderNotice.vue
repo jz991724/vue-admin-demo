@@ -42,27 +42,27 @@
 <script>
 export default {
   name: 'HeaderNotice',
-  data () {
+  data() {
     return {
       loading: false,
-      show: false
-    }
+      show: false,
+    };
   },
   computed: {
   },
   methods: {
-    fetchNotice () {
+    fetchNotice() {
       if (this.loading) {
-        this.loading = false
-        return
+        this.loading = false;
+        return;
       }
-      this.loadding = true
+      this.loadding = true;
       setTimeout(() => {
-        this.loadding = false
-      }, 1000)
-    }
-  }
-}
+        this.loadding = false;
+      }, 1000);
+    },
+  },
+};
 </script>
 
 <style lang="less">

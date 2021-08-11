@@ -48,74 +48,68 @@ export default {
     dataSource: Array,
     rowKey: {
       type: [String, Function],
-      default: 'key'
+      default: 'key',
     },
     pagination: {
       type: [Object, Boolean],
-      default: true
+      default: true,
     },
     selectedRows: Array,
     expandedRowKeys: Array,
-    expandedRowRender: Function
+    expandedRowRender: Function,
   },
-  data () {
+  data() {
     return {
-      needTotalList: []
-    }
+      needTotalList: [],
+    };
   },
   methods: {
-    updateSelect (selectedRowKeys, selectedRows) {
-      this.$emit('update:selectedRows', selectedRows)
-      this.$emit('selectedRowChange', selectedRowKeys, selectedRows)
+    updateSelect(selectedRowKeys, selectedRows) {
+      this.$emit('update:selectedRows', selectedRows);
+      this.$emit('selectedRowChange', selectedRowKeys, selectedRows);
     },
-    initTotalList (columns) {
-      const totalList = columns.filter(item => item.needTotal)
-        .map(item => {
-          return {
+    initTotalList(columns) {
+      const totalList = columns.filter((item) => item.needTotal)
+        .map((item) => ({
             ...item,
-            total: 0
-          }
-        })
-      return totalList
+            total: 0,
+          }));
+      return totalList;
     },
     onClear() {
-      this.updateSelect([], [])
-      this.$emit('clear')
+      this.updateSelect([], []);
+      this.$emit('clear');
     },
-    onChange(pagination, filters, sorter, {currentDataSource}) {
-      this.$emit('change', pagination, filters, sorter, {currentDataSource})
-    }
+    onChange(pagination, filters, sorter, { currentDataSource }) {
+      this.$emit('change', pagination, filters, sorter, { currentDataSource });
+    },
   },
-  created () {
-    this.needTotalList = this.initTotalList(this.columns)
+  created() {
+    this.needTotalList = this.initTotalList(this.columns);
   },
   watch: {
-    selectedRows (selectedRows) {
-      this.needTotalList = this.needTotalList.map(item => {
-        return {
+    selectedRows(selectedRows) {
+      this.needTotalList = this.needTotalList.map((item) => ({
           ...item,
           total: selectedRows.reduce((sum, val) => {
-            let v
-            try{
+            let v;
+            try {
               v = val[item.dataIndex] ? val[item.dataIndex] : eval(`val.${item.dataIndex}`);
-            }catch(_){
+            } catch (_) {
               v = val[item.dataIndex];
             }
             v = !isNaN(parseFloat(v)) ? parseFloat(v) : 0;
-            return sum + v
-          }, 0)
-        }
-      })
-    }
+            return sum + v;
+          }, 0),
+        }));
+    },
   },
   computed: {
     selectedRowKeys() {
-      return this.selectedRows.map(record => {
-        return (typeof this.rowKey === 'function') ? this.rowKey(record) : record[this.rowKey]
-      })
-    }
-  }
-}
+      return this.selectedRows.map((record) => ((typeof this.rowKey === 'function') ? this.rowKey(record) : record[this.rowKey]));
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">

@@ -27,95 +27,97 @@
 </template>
 
 <script>
-import AdminHeader from './header/AdminHeader'
-import PageFooter from './footer/PageFooter'
-import Drawer from '../components/tool/Drawer'
-import SideMenu from '../components/menu/SideMenu'
-import Setting from '../components/setting/Setting'
-import {mapState, mapMutations, mapGetters} from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex';
+import AdminHeader from './header/AdminHeader';
+import PageFooter from './footer/PageFooter';
+import Drawer from '../components/tool/Drawer';
+import SideMenu from '../components/menu/SideMenu';
+import Setting from '../components/setting/Setting';
 
 // const minHeight = window.innerHeight - 64 - 122
 
 export default {
   name: 'AdminLayout',
-  components: {Setting, SideMenu, Drawer, PageFooter, AdminHeader},
-  data () {
+  components: {
+ Setting, SideMenu, Drawer, PageFooter, AdminHeader,
+},
+  data() {
     return {
       minHeight: window.innerHeight - 64 - 122,
       collapsed: false,
       showSetting: false,
-      drawerOpen: false
-    }
+      drawerOpen: false,
+    };
   },
   provide() {
     return {
-      adminLayout: this
-    }
+      adminLayout: this,
+    };
   },
   watch: {
     $route(val) {
-      this.setActivated(val)
+      this.setActivated(val);
     },
     layout() {
-      this.setActivated(this.$route)
+      this.setActivated(this.$route);
     },
     isMobile(val) {
-      if(!val) {
-        this.drawerOpen = false
+      if (!val) {
+        this.drawerOpen = false;
       }
-    }
+    },
   },
   computed: {
     ...mapState('setting', ['isMobile', 'theme', 'layout', 'footerLinks', 'copyright', 'fixedHeader', 'fixedSideBar',
       'fixedTabs', 'hideSetting', 'multiPage']),
     ...mapGetters('setting', ['firstMenu', 'subMenu', 'menuData']),
     sideMenuWidth() {
-      return this.collapsed ? '80px' : '256px'
+      return this.collapsed ? '80px' : '256px';
     },
     headerStyle() {
-      let width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%'
-      let position = this.fixedHeader ? 'fixed' : 'static'
-      return `width: ${width}; position: ${position};`
+      const width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%';
+      const position = this.fixedHeader ? 'fixed' : 'static';
+      return `width: ${width}; position: ${position};`;
     },
     headMenuData() {
-      const {layout, menuData, firstMenu} = this
-      return layout === 'mix' ? firstMenu : menuData
+      const { layout, menuData, firstMenu } = this;
+      return layout === 'mix' ? firstMenu : menuData;
     },
     sideMenuData() {
-      const {layout, menuData, subMenu} = this
-      return layout === 'mix' ? subMenu : menuData
-    }
+      const { layout, menuData, subMenu } = this;
+      return layout === 'mix' ? subMenu : menuData;
+    },
   },
   methods: {
     ...mapMutations('setting', ['correctPageMinHeight', 'setActivatedFirst']),
-    toggleCollapse () {
-      this.collapsed = !this.collapsed
+    toggleCollapse() {
+      this.collapsed = !this.collapsed;
     },
-    onMenuSelect () {
-      this.toggleCollapse()
+    onMenuSelect() {
+      this.toggleCollapse();
     },
     setActivated(route) {
       if (this.layout === 'mix') {
-        let matched = route.matched
-        matched = matched.slice(0, matched.length - 1)
-        const {firstMenu} = this
-        for (let menu of firstMenu) {
-          if (matched.findIndex(item => item.path === menu.fullPath) !== -1) {
-            this.setActivatedFirst(menu.fullPath)
-            break
+        let { matched } = route;
+        matched = matched.slice(0, matched.length - 1);
+        const { firstMenu } = this;
+        for (const menu of firstMenu) {
+          if (matched.findIndex((item) => item.path === menu.fullPath) !== -1) {
+            this.setActivatedFirst(menu.fullPath);
+            break;
           }
         }
       }
-    }
+    },
   },
   created() {
-    this.correctPageMinHeight(this.minHeight - 24)
-    this.setActivated(this.$route)
+    this.correctPageMinHeight(this.minHeight - 24);
+    this.setActivated(this.$route);
   },
   beforeDestroy() {
-    this.correctPageMinHeight(-this.minHeight + 24)
-  }
-}
+    this.correctPageMinHeight(-this.minHeight + 24);
+  },
+};
 </script>
 
 <style lang="less" scoped>

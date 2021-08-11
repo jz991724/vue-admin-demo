@@ -27,8 +27,8 @@
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
-  import {getI18nKey} from '@/utils/routerUtil'
+  import { mapState, mapMutations } from 'vuex';
+  import { getI18nKey } from '@/utils/routerUtil';
 
   export default {
     name: 'TabsHead',
@@ -45,62 +45,62 @@
         US: {
           lock: 'click to lock the tabs head',
           unlock: 'click to unlock',
-        }
-      }
+        },
+      },
     },
     props: {
       pageList: Array,
       active: String,
-      fixed: Boolean
+      fixed: Boolean,
     },
     data() {
       return {
         affixed: false,
-      }
+      };
     },
-    inject:['adminLayout'],
+    inject: ['adminLayout'],
     created() {
-      this.affixed = this.fixedTabs
+      this.affixed = this.fixedTabs;
     },
     computed: {
       ...mapState('setting', ['layout', 'pageWidth', 'fixedHeader', 'fixedTabs', 'customTitles']),
       lockTitle() {
-        return this.$t(this.fixedTabs ? 'unlock' : 'lock')
-      }
+        return this.$t(this.fixedTabs ? 'unlock' : 'lock');
+      },
     },
     methods: {
       ...mapMutations('setting', ['setFixedTabs']),
       onLockClick() {
-        this.setFixedTabs(!this.fixedTabs)
+        this.setFixedTabs(!this.fixedTabs);
         if (this.fixedTabs) {
           setTimeout(() => {
-            this.affixed = true
-          }, 200)
+            this.affixed = true;
+          }, 200);
         } else {
-          this.affixed = false
+          this.affixed = false;
         }
       },
       onTabClick(key) {
         if (this.active !== key) {
-          this.$emit('change', key)
+          this.$emit('change', key);
         }
       },
       onClose(key) {
-        this.$emit('close', key)
+        this.$emit('close', key);
       },
       onRefresh(page) {
-        this.$emit('refresh', page.path, page)
+        this.$emit('refresh', page.path, page);
       },
       onContextmenu(pageKey, e) {
-        this.$emit('contextmenu', pageKey, e)
+        this.$emit('contextmenu', pageKey, e);
       },
       pageName(page) {
-        const pagePath = page.fullPath.split('?')[0]
-        const custom = this.customTitles.find(item => item.path === pagePath)
-        return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath))
-      }
-    }
-  }
+        const pagePath = page.fullPath.split('?')[0];
+        const custom = this.customTitles.find((item) => item.path === pagePath);
+        return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath));
+      },
+    },
+  };
 </script>
 
 <style scoped lang="less">

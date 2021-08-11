@@ -6,16 +6,16 @@
 </template>
 
 <script>
-import PageFooter from '@/layouts/footer/PageFooter'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex';
+import PageFooter from '@/layouts/footer/PageFooter';
 
 export default {
   name: 'CommonLayout',
-  components: {PageFooter},
+  components: { PageFooter },
   computed: {
-    ...mapState('setting', ['footerLinks', 'copyright'])
-  }
-}
+    ...mapState('setting', ['footerLinks', 'copyright']),
+  },
+};
 </script>
 
 <style scoped lang="less">

@@ -6,13 +6,13 @@ const ADMIN = {
     mode: {
       DARK: 'dark',
       LIGHT: 'light',
-      NIGHT: 'night'
-    }
+      NIGHT: 'night',
+    },
   },
   layout: {
     SIDE: 'side',
-    HEAD: 'head'
-  }
-}
+    HEAD: 'head',
+  },
+};
 
-module.exports = ADMIN
+module.exports = ADMIN;

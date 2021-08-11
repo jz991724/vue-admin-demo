@@ -15,8 +15,8 @@
 <script>
 export default {
   name: 'MiniProgress',
-  props: ['target', 'color', 'percent', 'height']
-}
+  props: ['target', 'color', 'percent', 'height'],
+};
 </script>
 
 <style lang="less"  scoped>

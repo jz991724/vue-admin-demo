@@ -16,24 +16,24 @@
 <script>
 export default {
   name: 'HeaderSearch',
-  data () {
+  data() {
     return {
       dataSource: ['选项一', '选项二'],
-      searchMode: false
-    }
+      searchMode: false,
+    };
   },
   methods: {
-    enterSearchMode () {
-      this.searchMode = true
-      this.$emit('active', true)
-      setTimeout(() => this.$refs.input.focus(), 300)
+    enterSearchMode() {
+      this.searchMode = true;
+      this.$emit('active', true);
+      setTimeout(() => this.$refs.input.focus(), 300);
     },
-    leaveSearchMode () {
-      this.searchMode = false
-      setTimeout(() => this.$emit('active', false), 300)
-    }
-  }
-}
+    leaveSearchMode() {
+      this.searchMode = false;
+      setTimeout(() => this.$emit('active', false), 300);
+    },
+  },
+};
 </script>
 
 <style lang="less">

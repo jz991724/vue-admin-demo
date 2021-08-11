@@ -1,8 +1,8 @@
-import Mock from 'mockjs'
+import Mock from 'mockjs';
 
 Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/routes`, 'get', () => {
-  let result = {}
-  result.code = 0
+  const result = {};
+  result.code = 0;
   result.data = [{
     router: 'root',
     children: ['demo',
@@ -13,15 +13,15 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/routes`, 'get', () => {
           name: 'demo1',
           authority: {
             permission: 'demo',
-            role: 'admin'
-          }
+            role: 'admin',
+          },
         }],
       },
       {
         router: 'parent2',
         children: [{
           router: 'demo',
-          name: 'demo2'
+          name: 'demo2',
         }],
       },
       {
@@ -35,10 +35,10 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/routes`, 'get', () => {
         name: '验权页面',
         authority: {
           permission: 'form',
-          role: 'manager'
-        }
-      }
-    ]
-  }]
-  return result
-})
+          role: 'manager',
+        },
+      },
+    ],
+  }];
+  return result;
+});

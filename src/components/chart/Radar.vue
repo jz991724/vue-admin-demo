@@ -11,32 +11,44 @@
 </template>
 
 <script>
-const DataSet = require('@antv/data-set')
+const DataSet = require('@antv/data-set');
 
 const sourceData = [
-  {item: '引用', a: 70, b: 30, c: 40},
-  {item: '口碑', a: 60, b: 70, c: 40},
-  {item: '产量', a: 50, b: 60, c: 40},
-  {item: '贡献', a: 40, b: 50, c: 40},
-  {item: '热度', a: 60, b: 70, c: 40},
-  {item: '引用', a: 70, b: 50, c: 40}
-]
+  {
+ item: '引用', a: 70, b: 30, c: 40,
+},
+  {
+ item: '口碑', a: 60, b: 70, c: 40,
+},
+  {
+ item: '产量', a: 50, b: 60, c: 40,
+},
+  {
+ item: '贡献', a: 40, b: 50, c: 40,
+},
+  {
+ item: '热度', a: 60, b: 70, c: 40,
+},
+  {
+ item: '引用', a: 70, b: 50, c: 40,
+},
+];
 
-const dv = new DataSet.View().source(sourceData)
+const dv = new DataSet.View().source(sourceData);
 dv.transform({
   type: 'fold',
   fields: ['a', 'b', 'c'],
   key: 'user',
-  value: 'score'
-})
+  value: 'score',
+});
 
 const scale = [{
   dataKey: 'score',
   min: 0,
-  max: 80
-}]
+  max: 80,
+}];
 
-const data = dv.rows
+const data = dv.rows;
 
 const axis1Opts = {
   dataKey: 'item',
@@ -44,11 +56,11 @@ const axis1Opts = {
   tickLine: null,
   grid: {
     lineStyle: {
-      lineDash: null
+      lineDash: null,
     },
-    hideFirstLine: false
-  }
-}
+    hideFirstLine: false,
+  },
+};
 const axis2Opts = {
   dataKey: 'score',
   line: null,
@@ -56,23 +68,23 @@ const axis2Opts = {
   grid: {
     type: 'polygon',
     lineStyle: {
-      lineDash: null
-    }
-  }
-}
+      lineDash: null,
+    },
+  },
+};
 
 export default {
   name: 'Radar',
-  data () {
+  data() {
     return {
       sourceData,
       data,
       axis1Opts,
       axis2Opts,
-      scale
-    }
-  }
-}
+      scale,
+    };
+  },
+};
 </script>
 
 <style scoped>

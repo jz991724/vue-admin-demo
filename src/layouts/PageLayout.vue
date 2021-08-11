@@ -20,99 +20,98 @@
 </template>
 
 <script>
-import PageHeader from '@/components/page/header/PageHeader'
-import {mapState, mapMutations} from 'vuex'
-import {getI18nKey} from '@/utils/routerUtil'
+import { mapState, mapMutations } from 'vuex';
+import PageHeader from '@/components/page/header/PageHeader';
+import { getI18nKey } from '@/utils/routerUtil';
 
 export default {
   name: 'PageLayout',
-  components: {PageHeader},
+  components: { PageHeader },
   props: ['desc', 'logo', 'title', 'avatar', 'linkList', 'extraImage'],
-  data () {
+  data() {
     return {
       page: {},
       pageHeaderHeight: 0,
-    }
+    };
   },
   watch: {
     $route() {
-      this.page = this.$route.meta.page
-    }
+      this.page = this.$route.meta.page;
+    },
   },
   updated() {
     if (!this._inactive) {
-      this.updatePageHeight()
+      this.updatePageHeight();
     }
   },
   activated() {
-    this.updatePageHeight()
+    this.updatePageHeight();
   },
   deactivated() {
-    this.updatePageHeight(0)
+    this.updatePageHeight(0);
   },
   mounted() {
-    this.updatePageHeight()
+    this.updatePageHeight();
   },
   created() {
-    this.page = this.$route.meta.page
+    this.page = this.$route.meta.page;
   },
   beforeDestroy() {
-    this.updatePageHeight(0)
+    this.updatePageHeight(0);
   },
   computed: {
     ...mapState('setting', ['layout', 'multiPage', 'pageMinHeight', 'pageWidth', 'customTitles']),
     pageTitle() {
-      let pageTitle = this.page && this.page.title
-      return this.customTitle || (pageTitle && this.$t(pageTitle)) || this.title || this.routeName
+      const pageTitle = this.page && this.page.title;
+      return this.customTitle || (pageTitle && this.$t(pageTitle)) || this.title || this.routeName;
     },
     routeName() {
-      const route = this.$route
-      return this.$t(getI18nKey(route.matched[route.matched.length - 1].path))
+      const route = this.$route;
+      return this.$t(getI18nKey(route.matched[route.matched.length - 1].path));
     },
     breadcrumb() {
-      let page = this.page
-      let breadcrumb = page && page.breadcrumb
+      const { page } = this;
+      const breadcrumb = page && page.breadcrumb;
       if (breadcrumb) {
-        let i18nBreadcrumb = []
-        breadcrumb.forEach(item => {
-          i18nBreadcrumb.push(this.$t(item))
-        })
-        return i18nBreadcrumb
-      } else {
-        return this.getRouteBreadcrumb()
+        const i18nBreadcrumb = [];
+        breadcrumb.forEach((item) => {
+          i18nBreadcrumb.push(this.$t(item));
+        });
+        return i18nBreadcrumb;
       }
+        return this.getRouteBreadcrumb();
     },
     marginCorrect() {
-      return this.multiPage ? 24 : 0
-    }
+      return this.multiPage ? 24 : 0;
+    },
   },
   methods: {
     ...mapMutations('setting', ['correctPageMinHeight']),
     getRouteBreadcrumb() {
-      let routes = this.$route.matched
-      const path = this.$route.path
-      let breadcrumb = []
-      routes.filter(item => path.includes(item.path))
-        .forEach(route => {
-        const path = route.path.length === 0 ? '/home' : route.path
-        breadcrumb.push(this.$t(getI18nKey(path)))
-      })
-      let pageTitle = this.page && this.page.title
+      const routes = this.$route.matched;
+      const { path } = this.$route;
+      const breadcrumb = [];
+      routes.filter((item) => path.includes(item.path))
+        .forEach((route) => {
+        const path = route.path.length === 0 ? '/home' : route.path;
+        breadcrumb.push(this.$t(getI18nKey(path)));
+      });
+      const pageTitle = this.page && this.page.title;
       if (this.customTitle || pageTitle) {
-        breadcrumb[breadcrumb.length - 1] = this.customTitle || pageTitle
+        breadcrumb[breadcrumb.length - 1] = this.customTitle || pageTitle;
       }
-      return breadcrumb
+      return breadcrumb;
     },
     /**
      * 用于计算页面内容最小高度
      * @param newHeight
      */
     updatePageHeight(newHeight = this.$refs.pageHeader.$el.offsetHeight + this.marginCorrect) {
-      this.correctPageMinHeight(this.pageHeaderHeight - newHeight)
-      this.pageHeaderHeight = newHeight
-    }
-  }
-}
+      this.correctPageMinHeight(this.pageHeaderHeight - newHeight);
+      this.pageHeaderHeight = newHeight;
+    },
+  },
+};
 </script>
 
 <style lang="less">

@@ -11,135 +11,132 @@ const Group = {
     defaultValues: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
     },
     multiple: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       values: [],
-      options: []
-    }
+      options: [],
+    };
   },
   computed: {
-    colors () {
-      let colors = []
-      this.options.forEach(item => {
+    colors() {
+      const colors = [];
+      this.options.forEach((item) => {
         if (item.sChecked) {
-          colors.push(item.color)
+          colors.push(item.color);
         }
-      })
-      return colors
-    }
+      });
+      return colors;
+    },
   },
-  provide () {
+  provide() {
     return {
-      groupContext: this
-    }
+      groupContext: this,
+    };
   },
   watch: {
     values(value) {
-      this.$emit('change', value, this.colors)
-    }
+      this.$emit('change', value, this.colors);
+    },
   },
   methods: {
-    handleChange (option) {
+    handleChange(option) {
       if (!option.checked) {
         if (this.values.indexOf(option.value) > -1) {
-          this.values = this.values.filter(item => item != option.value)
+          this.values = this.values.filter((item) => item != option.value);
         }
-      } else {
-        if (!this.multiple) {
-          this.values = [option.value]
-          this.options.forEach(item => {
+      } else if (!this.multiple) {
+          this.values = [option.value];
+          this.options.forEach((item) => {
             if (item.value != option.value) {
-              item.sChecked = false
+              item.sChecked = false;
             }
-          })
+          });
         } else {
-          this.values.push(option.value)
+          this.values.push(option.value);
         }
-      }
-    }
+    },
   },
-  render (h) {
-    const clear = h('div', {attrs: {style: 'clear: both'}})
+  render(h) {
+    const clear = h('div', { attrs: { style: 'clear: both' } });
     return h(
       'div',
       {},
-      [this.$slots.default, clear]
-    )
-  }
-}
+      [this.$slots.default, clear],
+    );
+  },
+};
 
 export default {
   name: 'ColorCheckbox',
-  Group: Group,
+  Group,
   props: {
     color: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: [String, Number],
-      required: true
+      required: true,
     },
     checked: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
-      sChecked: this.initChecked()
-    }
+      sChecked: this.initChecked(),
+    };
   },
   computed: {
   },
   inject: ['groupContext'],
   watch: {
-    'sChecked': function () {
+    sChecked() {
       const value = {
         value: this.value,
         color: this.color,
-        checked: this.sChecked
-      }
-      this.$emit('change', value)
-      const groupContext = this.groupContext
+        checked: this.sChecked,
+      };
+      this.$emit('change', value);
+      const { groupContext } = this;
       if (groupContext) {
-        groupContext.handleChange(value)
+        groupContext.handleChange(value);
       }
-    }
+    },
   },
-  created () {
-    const groupContext = this.groupContext
+  created() {
+    const { groupContext } = this;
     if (groupContext) {
-      groupContext.options.push(this)
+      groupContext.options.push(this);
     }
   },
   methods: {
-    toggle () {
+    toggle() {
       if (this.groupContext.multiple || !this.sChecked) {
-        this.sChecked = !this.sChecked
+        this.sChecked = !this.sChecked;
       }
     },
     initChecked() {
-      let groupContext = this.groupContext
+      const { groupContext } = this;
       if (!groupContext) {
-        return this.checked
-      }else if (groupContext.multiple) {
-        return groupContext.defaultValues.indexOf(this.value) > -1
-      } else {
-        return groupContext.defaultValues[0] == this.value
+        return this.checked;
+      } if (groupContext.multiple) {
+        return groupContext.defaultValues.indexOf(this.value) > -1;
       }
-    }
-  }
-}
+        return groupContext.defaultValues[0] == this.value;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

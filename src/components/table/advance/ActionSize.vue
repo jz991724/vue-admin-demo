@@ -26,15 +26,15 @@
     inject: ['table'],
     data() {
       return {
-        selectedKeys: ['middle']
-      }
+        selectedKeys: ['middle'],
+      };
     },
     methods: {
-      onClick({key}) {
-        this.$emit('input', key)
-      }
-    }
-  }
+      onClick({ key }) {
+        this.$emit('input', key);
+      },
+    },
+  };
 </script>
 
 <style scoped lang="less">

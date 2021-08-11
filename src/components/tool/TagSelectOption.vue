@@ -11,16 +11,16 @@ export default {
     size: {
       type: String,
       required: false,
-      default: 'default'
-    }
+      default: 'default',
+    },
   },
-  data () {
+  data() {
     return {
       checked: false,
-      isTagSelectOption: true
-    }
-  }
-}
+      isTagSelectOption: true,
+    };
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -12,8 +12,8 @@
 <script>
 export default {
   name: 'FormRow',
-  props: ['label']
-}
+  props: ['label'],
+};
 </script>
 
 <style lang="less" scoped>

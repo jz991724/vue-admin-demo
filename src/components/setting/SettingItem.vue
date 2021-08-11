@@ -8,8 +8,8 @@
 <script>
 export default {
   name: 'SettingItem',
-  props: ['title']
-}
+  props: ['title'],
+};
 </script>
 
 <style lang="less" scoped>

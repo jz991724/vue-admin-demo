@@ -1,2 +1,3 @@
-import AdvanceTable from './AdvanceTable'
-export default AdvanceTable
+import AdvanceTable from './AdvanceTable';
+
+export default AdvanceTable;

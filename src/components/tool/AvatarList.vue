@@ -6,43 +6,44 @@
 </template>
 
 <script>
-import AAvatar from 'ant-design-vue/es/avatar/Avatar'
-import ATooltip from 'ant-design-vue/es/tooltip/Tooltip'
+import AAvatar from 'ant-design-vue/es/avatar/Avatar';
+import ATooltip from 'ant-design-vue/es/tooltip/Tooltip';
+
 const Item = {
   name: 'AvatarListItem',
   props: {
     size: {
       type: String,
       required: false,
-      default: 'small'
+      default: 'small',
     },
     src: {
       type: String,
-      required: true
+      required: true,
     },
     tips: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   methods: {
-    renderAvatar (h, size, src) {
-      return h(AAvatar, {props: {size: size, src: src}}, [])
-    }
+    renderAvatar(h, size, src) {
+      return h(AAvatar, { props: { size, src } }, []);
+    },
   },
-  render (h) {
-    const avatar = this.renderAvatar(h, this.$props.size, this.$props.src)
+  render(h) {
+    const avatar = this.renderAvatar(h, this.$props.size, this.$props.src);
     return h(
       'li',
-      {class: 'avatar-item'},
-      [this.$props.tips ? h(ATooltip, {props: {title: this.$props.tips}}, [avatar]) : avatar]
-    )
-  }
-}
+      { class: 'avatar-item' },
+      [this.$props.tips ? h(ATooltip, { props: { title: this.$props.tips } }, [avatar]) : avatar],
+    );
+  },
+};
 export default {
   name: 'AvatarList',
-  Item: Item
-}
+  Item,
+};
 </script>
 
 <style lang="less" scoped>
