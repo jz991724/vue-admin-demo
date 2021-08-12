@@ -14,7 +14,7 @@
                    @refresh="onRefresh"
                    :format-conditions="true"
                    @reset="onReset"
-                   :scroll="{x:600}"
+                   :scroll="scroll"
                    :pagination="pagination">
       <template slot="statusTitle">
         状态
@@ -55,6 +55,11 @@ export default class OrderList extends Vue {
     [OrderStatusEnum.待接单]: 'cyan',
     [OrderStatusEnum.进行中]: 'orange',
     [OrderStatusEnum.已结束]: '',
+  };
+
+  scroll = {
+    x: 100,
+    y: document.body.clientHeight - 350,
   };
 
   spinning = false;

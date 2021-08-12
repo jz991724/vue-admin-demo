@@ -1,20 +1,24 @@
 <template>
   <div class="form">
-    <form :autoFormCreate="(form) => this.form = form">
-      <a-table :columns="columns"
-               :dataSource="dataSource"
-               :pagination="false">
-        <template v-for="(col, i) in columns.map(({key})=>key)" :slot="col" slot-scope="text, record">
-          <a-input :key="col"
-                   v-if="record.editable"
-                   style="margin: -5px 0"
-                   :value="text"
-                   :placeholder="columns[i].title"
-                   @change="e => handleChange(e.target.value, record.key, col)"/>
-          <template v-else>{{ text }}</template>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <template v-if="record.editable">
+    <a-card size="small" :bordered="false" :body-style="{padding:0}">
+      <a-button slot="extra" type="primary" style="margin-bottom: 10px;" @click="handleSubmit">提交</a-button>
+
+      <form :autoFormCreate="(form) => this.form = form">
+        <a-table :columns="columns"
+                 :dataSource="dataSource"
+                 :scroll="scroll"
+                 :pagination="false">
+          <template v-for="(col, i) in columns.map(({key})=>key)" :slot="col" slot-scope="text, record">
+            <a-input :key="col"
+                     v-if="record.editable"
+                     style="margin: -5px 0"
+                     :value="text"
+                     :placeholder="columns[i].title"
+                     @change="e => handleChange(e.target.value, record.key, col)"/>
+            <template v-else>{{ text }}</template>
+          </template>
+          <template slot="operation" slot-scope="text, record">
+            <template v-if="record.editable">
           <span v-if="record.isNew">
             <a @click="saveRow(record.key)">添加</a>
             <a-divider type="vertical"/>
@@ -22,25 +26,27 @@
               <a>删除</a>
             </a-popconfirm>
           </span>
-            <span v-else>
+              <span v-else>
             <a @click="saveRow(record.key)">保存</a>
             <a-divider type="vertical"/>
             <a @click="cancel(record.key)">取消</a>
           </span>
-          </template>
-          <span v-else>
+            </template>
+            <span v-else>
           <a @click="toggle(record.key)">编辑</a>
           <a-divider type="vertical"/>
           <a-popconfirm title="删除确认" @confirm="remove(record.key)">
             <a>删除</a>
           </a-popconfirm>
         </span>
-        </template>
-      </a-table>
-      <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newMember">
-        新增
-      </a-button>
-    </form>
+          </template>
+        </a-table>
+        <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus"
+                  @click="newMember">
+          新增
+        </a-button>
+      </form>
+    </a-card>
   </div>
 </template>
 
@@ -50,6 +56,11 @@ import VueMixins from '../mixins/vueMixins';
 
 @Component({ name: 'StaffForm' })
 export default class StaffForm extends Mixins(VueMixins) {
+  scroll = {
+    x: 100,
+    y: document.body.clientHeight - 350,
+  };
+
   columns = [
     {
       title: '姓名',
@@ -105,6 +116,14 @@ export default class StaffForm extends Mixins(VueMixins) {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    this.$confirm({
+      title: '您确定要提交?',
+      // content: 'When clicked the OK button, this dialog will be closed after 1 second',
+      onOk() {
+        debugger;
+      },
+    });
   }
 
   newMember() {
