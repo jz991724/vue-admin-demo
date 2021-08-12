@@ -14,7 +14,7 @@
                    @refresh="onRefresh"
                    :format-conditions="true"
                    @reset="onReset"
-                   :scroll="{x:600}"
+                   :scroll="scroll"
                    :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange ,onSelect:onSelectRow }"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
@@ -59,6 +59,11 @@ export enum OrderStatusEnum {
 })
 export default class OrderList extends Mixins(VueMixins) {
   OrderStatusEnum = OrderStatusEnum;
+
+  scroll = {
+    x: 600,
+    y: document.body.clientHeight - 350,
+  };
 
   selectedRowKeys = [];
 

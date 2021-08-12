@@ -23,7 +23,7 @@ export default {
     enquireScreen((isMobile) => this.setDevice(isMobile));
   },
   mounted() {
-   this.setWeekModeTheme(this.weekMode);
+    this.setWeekModeTheme(this.weekMode);
   },
   watch: {
     weekMode(val) {
@@ -38,11 +38,13 @@ export default {
     },
     'theme.mode': function (val) {
       const closeMessage = this.$message.loading(`您选择了主题模式 ${val}, 正在切换...`);
-      themeUtil.changeThemeColor(this.theme.color, val).then(closeMessage);
+      themeUtil.changeThemeColor(this.theme.color, val)
+          .then(closeMessage);
     },
     'theme.color': function (val) {
       const closeMessage = this.$message.loading(`您选择了主题色 ${val}, 正在切换...`);
-      themeUtil.changeThemeColor(val, this.theme.mode).then(closeMessage);
+      themeUtil.changeThemeColor(val, this.theme.mode)
+          .then(closeMessage);
     },
     layout() {
       window.dispatchEvent(new Event('resize'));
@@ -64,13 +66,16 @@ export default {
       this.$i18n.locale = lang;
       switch (lang) {
         case 'CN':
+          // eslint-disable-next-line global-require
           this.locale = require('ant-design-vue/es/locale-provider/zh_CN').default;
           break;
         case 'HK':
+          // eslint-disable-next-line global-require
           this.locale = require('ant-design-vue/es/locale-provider/zh_TW').default;
           break;
         case 'US':
         default:
+          // eslint-disable-next-line global-require
           this.locale = require('ant-design-vue/es/locale-provider/en_US').default;
           break;
       }
@@ -88,6 +93,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #id{
-  }
+#id {
+}
+</style>
+<style lang="less">
+#popContainer {
+  background: #f0f2f5;
+}
 </style>

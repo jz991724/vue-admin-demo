@@ -3,6 +3,7 @@ src/assets
 src/vendors
 src/utils
 src/router
+src/layouts
 public
 dist
 node_modules
