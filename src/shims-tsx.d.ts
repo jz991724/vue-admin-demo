@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
         $api: any;
         $bus: any;
         $echarts: any;
+        $notification: any;
     }
 }
 

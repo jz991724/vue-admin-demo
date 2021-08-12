@@ -76,7 +76,7 @@ export default class FileUpload extends Vue {
     })
         .then((importFileData = []) => {
           if (importFileData.length < 1) {
-            (this.$notification as any).warning({
+            this.$notification.warning({
               duration: 8,
               placement: 'bottomRight',
               message: '提示',
@@ -87,7 +87,7 @@ export default class FileUpload extends Vue {
           this.emitUploadSuccess(importFileData);
         }, (error) => {
           console.error('上传文件报错:', error);
-          (this.$notification as any).error({
+          this.$notification.error({
             duration: 8,
             placement: 'bottomRight',
             message: '提示',
