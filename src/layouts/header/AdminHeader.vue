@@ -21,7 +21,9 @@
         <!--          <header-notice class="header-item"/>-->
         <!--          <header-avatar class="header-item"/>-->
         <div>
-          <a-button icon="poweroff" type="danger" size="small" @click="logout">退出登录</a-button>
+          <a-tooltip title="退出登录">
+            <a-button icon="poweroff" type="danger" shape="circle" @click="logout"></a-button>
+          </a-tooltip>
         </div>
 
         <!--        <a-dropdown class="lang header-item">-->

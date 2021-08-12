@@ -74,11 +74,26 @@ export default class FileUpload extends Vue {
     requestHelper('/api/OrderInfo/Import', METHOD.POST, formData, this, undefined, 'uploading', {
       withCredentials: true,
     })
-        .then((importFileData) => {
-          debugger;
+        .then((importFileData = []) => {
+          if (importFileData.length < 1) {
+            this.$notification.warning({
+              duration: 8,
+              placement: 'bottomRight',
+              message: '提示',
+              description:
+                  '您导入的文件数据可能为空，或者文件格式不满足导入要求！',
+            });
+          }
           this.emitUploadSuccess(importFileData);
         }, (error) => {
           console.error('上传文件报错:', error);
+          this.$notification.error({
+            duration: 8,
+            placement: 'bottomRight',
+            message: '提示',
+            description:
+                '您导入的文件格式可能不满足导入要求，请确认后重试！',
+          });
           this.emitUploadError(error);
         });
   }

@@ -72,8 +72,8 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
             break;
     }
 
-    if (vueContext?.spinName !== undefined) {
-        vueContext.spinName = true;
+    if (vueContext && spinName && vueContext[spinName] !== undefined) {
+        vueContext[spinName] = true;
     }
     return new Promise((resolve, reject) => {
         requestObj.then(res => {
@@ -91,8 +91,8 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
             return reject(error);
         })
             .finally(() => {
-                if (vueContext?.spinName !== undefined) {
-                    vueContext.spinName = false;
+                if (vueContext && spinName && vueContext[spinName] !== undefined) {
+                    vueContext[spinName] = false;
                 }
             });
     });
