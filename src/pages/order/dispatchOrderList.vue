@@ -26,7 +26,9 @@
           </a-button>
         </file-upload>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch">派发</a-button>
+        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch" :disabled="Object.values(dispatchOrderList).length<1">
+          派单
+        </a-button>
       </div>
 
     </advance-table>
@@ -298,7 +300,6 @@ export default class OrderList extends Mixins(VueMixins) {
 
   // 上传成功
   uploadSuccess(importFileData) {
-    debugger;
     this.dataSource = importFileData || [];
   }
 

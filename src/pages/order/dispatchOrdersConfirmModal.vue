@@ -4,7 +4,7 @@
 * @创建时间: 2021-08-11 13:40:06
 */
 <template>
-  <a-modal v-model="visible" title="派发确认" @ok="handleOk">
+  <a-modal v-model="visible" title="派单确认" @ok="handleOk">
     <pre>{{ allDispatchOrderList }}</pre>
   </a-modal>
 </template>
