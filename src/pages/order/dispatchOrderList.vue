@@ -61,7 +61,7 @@ export default class OrderList extends Mixins(VueMixins) {
   OrderStatusEnum = OrderStatusEnum;
 
   scroll = {
-    x: 600,
+    x: 100,
     y: document.body.clientHeight - 350,
   };
 
@@ -243,13 +243,13 @@ export default class OrderList extends Mixins(VueMixins) {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
       // this.getGoodList();
-      this.fetchData();
+      // this.fetchData();
     },
     onShowSizeChange: (current, size) => {
       this.pagination.current = 1;
       this.pagination.pageSize = size;
       // this.getGoodList();
-      this.fetchData();
+      // this.fetchData();
     },
   };
 
@@ -297,33 +297,28 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   // 上传成功
-  uploadSuccess([{
-    tempFilePath,
-    ...allSheets
-  }]) {
+  uploadSuccess(importFileData) {
     debugger;
-    // this.calcFilePath = tempFilePath;
-    // this.importData = allSheets;
+    this.dataSource = importFileData || [];
   }
 
   onSearch(conditions, searchOptions) {
     console.log(searchOptions);
     this.pagination.current = 1;
     this.conditions = conditions;
-    // this.getGoodList();
-    this.fetchData();
+    // this.fetchData();
   }
 
   onRefresh(conditions) {
     this.conditions = conditions;
     // this.getGoodList();
-    this.fetchData();
+    // this.fetchData();
   }
 
   onReset(conditions) {
     this.conditions = conditions;
     // this.getGoodList();
-    this.fetchData();
+    // this.fetchData();
   }
 
   // 派单
@@ -342,7 +337,7 @@ export default class OrderList extends Mixins(VueMixins) {
     // this.getGoodList();
     // this.getColumns();
     debugger;
-    this.fetchData();
+    // this.fetchData();
   }
 }
 </script>

@@ -16,16 +16,16 @@
                    @reset="onReset"
                    :scroll="{x:600}"
                    :pagination="pagination">
-<!--      <template slot="statusTitle">-->
-<!--        状态-->
-<!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
-<!--      </template>-->
-<!--      <template slot="send" slot-scope="{text}">-->
-<!--        {{ text ? '是' : '否' }}-->
-<!--      </template>-->
-<!--      <template slot="status" slot-scope="{text}">-->
-<!--        {{ OrderStatusEnum[text] }}-->
-<!--      </template>-->
+      <template slot="statusTitle">
+        状态
+        <a-icon style="margin: 0 4px" type="info-circle"/>
+      </template>
+      <!--      <template slot="send" slot-scope="{text}">-->
+      <!--        {{ text ? '是' : '否' }}-->
+      <!--      </template>-->
+      <template slot="status" slot-scope="{text}">
+        <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>
+      </template>
     </advance-table>
   </div>
 </template>
@@ -37,7 +37,10 @@ import { orderService } from '@/services';
 
 // order状态enum
 export enum OrderStatusEnum {
-
+  待派单,
+  待接单,
+  进行中,
+  已结束
 }
 
 @Component({
@@ -46,6 +49,13 @@ export enum OrderStatusEnum {
 })
 export default class OrderList extends Vue {
   OrderStatusEnum = OrderStatusEnum;
+
+  tagColors = {
+    [OrderStatusEnum.待派单]: 'purple',
+    [OrderStatusEnum.待接单]: 'cyan',
+    [OrderStatusEnum.进行中]: 'orange',
+    [OrderStatusEnum.已结束]: '',
+  };
 
   spinning = false;
 
@@ -152,6 +162,34 @@ export default class OrderList extends Vue {
       width: 120,
     },
     {
+      searchAble: true,
+      dataIndex: 'status',
+      dataType: 'select',
+      slots: { title: 'statusTitle' },
+      scopedSlots: { customRender: 'status' },
+      width: 100,
+      search: {
+        selectOptions: [
+          {
+            title: '待派单',
+            value: OrderStatusEnum.待派单,
+          },
+          {
+            title: '待接单',
+            value: OrderStatusEnum.待接单,
+          },
+          {
+            title: '进行中',
+            value: OrderStatusEnum.进行中,
+          },
+          {
+            title: '已结束',
+            value: OrderStatusEnum.已结束,
+          },
+        ],
+      },
+    },
+    {
       title: '备注',
       dataIndex: 'remark',
       width: 100,
@@ -162,33 +200,6 @@ export default class OrderList extends Vue {
       width: 80,
     },
 
-    // {
-    //   searchAble: true,
-    //   dataIndex: 'status',
-    //   dataType: 'select',
-    //   slots: { title: 'statusTitle' },
-    //   scopedSlots: { customRender: 'status' },
-    //   search: {
-    //     selectOptions: [
-    //       {
-    //         title: '已下单',
-    //         value: 1,
-    //       },
-    //       {
-    //         title: '已付款',
-    //         value: 2,
-    //       },
-    //       {
-    //         title: '已审核',
-    //         value: 3,
-    //       },
-    //       {
-    //         title: '已发货',
-    //         value: 4,
-    //       },
-    //     ],
-    //   },
-    // },
     // {
     //   title: '发货',
     //   searchAble: true,
@@ -244,51 +255,16 @@ export default class OrderList extends Vue {
       orderField: undefined,
     };
     this.dataSource = [];
-    debugger;
     orderService.fetchOrderList(params, this.conditions)
         .then(({
                  items,
                  totalCount,
                }) => {
-          debugger;
           this.dataSource = items || [];
           this.pagination.total = totalCount || 0;
+          console.log('orderList数据：', this.dataSource);
         });
   }
-
-  // getGoodList() {
-  //   this.loading = true;
-  //   const {
-  //     page,
-  //     pageSize,
-  //     conditions,
-  //   } = this;
-  //   ds.goodsList({
-  //     page,
-  //     pageSize,
-  //     ...conditions,
-  //   })
-  //       .then((result) => {
-  //         const {
-  //           list,
-  //           page,
-  //           pageSize,
-  //           total,
-  //         } = result.data.data;
-  //         this.dataSource = list;
-  //         this.page = page;
-  //         this.total = total;
-  //         this.pageSize = pageSize;
-  //         this.loading = false;
-  //       });
-  // }
-  //
-  // getColumns() {
-  //   ds.goodsColumns()
-  //       .then((res) => {
-  //         this.columns = res.data;
-  //       });
-  // }
 
   onSearch(conditions, searchOptions) {
     console.log(searchOptions);

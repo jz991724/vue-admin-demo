@@ -74,18 +74,9 @@ export default class FileUpload extends Vue {
     requestHelper('/api/OrderInfo/Import', METHOD.POST, formData, this, undefined, 'uploading', {
       withCredentials: true,
     })
-        .then((res) => {
+        .then((importFileData) => {
           debugger;
-          const {
-            data: { result },
-            status,
-          } = res;
-          // this.fileList = [];
-          if (status === 200) {
-            this.emitUploadSuccess(result);
-          } else {
-            this.emitUploadError(null);
-          }
+          this.emitUploadSuccess(importFileData);
         }, (error) => {
           console.error('上传文件报错:', error);
           this.emitUploadError(error);
@@ -94,13 +85,13 @@ export default class FileUpload extends Vue {
 
   // 上传成功
   @Emit('success')
-  emitUploadSuccess(...params) {
+  emitUploadSuccess(params) {
     return params;
   }
 
   // 上传错误/失败
   @Emit('error')
-  emitUploadError(...params) {
+  emitUploadError(params) {
     return params;
   }
 
