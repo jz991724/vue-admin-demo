@@ -1,10 +1,10 @@
 <template>
   <div class="form">
     <form :autoFormCreate="(form) => this.form = form">
-      <a-table :columns="dataColumns"
+      <a-table :columns="columns"
                :dataSource="dataSource"
                :pagination="false">
-        <template v-for="(col, i) in ['name', 'number', 'department']" :slot="col" slot-scope="text, record">
+        <template v-for="(col, i) in columns.map(({key})=>key)" :slot="col" slot-scope="text, record">
           <a-input :key="col"
                    v-if="record.editable"
                    style="margin: -5px 0"
@@ -16,151 +16,143 @@
         <template slot="operation" slot-scope="text, record">
           <template v-if="record.editable">
           <span v-if="record.isNew">
-            <a @click="saveRow(record.key)">{{ $t('add') }}</a>
+            <a @click="saveRow(record.key)">添加</a>
             <a-divider type="vertical"/>
-            <a-popconfirm :title="$t('deleteConfirm')" @confirm="remove(record.key)">
-              <a>{{ $t('delete') }}</a>
+            <a-popconfirm title="删除确认" @confirm="remove(record.key)">
+              <a>删除</a>
             </a-popconfirm>
           </span>
             <span v-else>
-            <a @click="saveRow(record.key)">{{ $t('save') }}</a>
+            <a @click="saveRow(record.key)">保存</a>
             <a-divider type="vertical"/>
-            <a @click="cancle(record.key)">{{ $t('cancel') }}</a>
+            <a @click="cancel(record.key)">取消</a>
           </span>
           </template>
           <span v-else>
-          <a @click="toggle(record.key)">{{ $t('edit') }}</a>
+          <a @click="toggle(record.key)">编辑</a>
           <a-divider type="vertical"/>
-          <a-popconfirm :title="$t('deleteConfirm')" @confirm="remove(record.key)">
-            <a>{{ $t('delete') }}</a>
+          <a-popconfirm title="删除确认" @confirm="remove(record.key)">
+            <a>删除</a>
           </a-popconfirm>
         </span>
         </template>
       </a-table>
       <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newMember">
-        {{ $t('newMember') }}
+        新增
       </a-button>
     </form>
   </div>
 </template>
 
-<script>
-const columns = [
-  {
-    title: '成员姓名',
-    dataIndex: 'name',
-    key: 'name',
-    width: '20%',
-    scopedSlots: { customRender: 'name' },
-  },
-  {
-    title: '工号',
-    dataIndex: 'number',
-    key: 'number',
-    width: '20%',
-    scopedSlots: { customRender: 'number' },
-  },
-  {
-    title: '所属部门',
-    dataIndex: 'department',
-    key: 'department',
-    width: '40%',
-    scopedSlots: { customRender: 'department' },
-  },
-  {
-    title: '操作',
-    key: 'operation',
-    scopedSlots: { customRender: 'operation' },
-  },
-];
+<script lang="ts">
+import { Component, Mixins } from 'vue-property-decorator';
+import VueMixins from '../mixins/vueMixins';
 
-const dataSource = [
-  {
-    key: 1,
-    name: '小明',
-    number: '001',
-    editable: false,
-    department: '行政部',
-  },
-  {
-    key: 2,
-    name: '李莉',
-    number: '002',
-    editable: false,
-    department: 'IT部',
-  },
-  {
-    key: 3,
-    name: '王小帅',
-    number: '003',
-    editable: false,
-    department: '财务部',
-  },
-];
+@Component({ name: 'StaffForm' })
+export default class StaffForm extends Mixins(VueMixins) {
+  columns = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+      width: '20%',
+      scopedSlots: { customRender: 'name' },
+    },
+    {
+      title: '电话号码',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+      width: '20%',
+      scopedSlots: { customRender: 'phoneNumber' },
+    },
+    {
+      title: '车牌号',
+      dataIndex: 'cardNumber',
+      key: 'cardNumber',
+      width: '40%',
+      scopedSlots: { customRender: 'cardNumber' },
+    },
+    {
+      title: '操作',
+      key: 'operation',
+      scopedSlots: { customRender: 'operation' },
+    },
+  ];
 
-export default {
-  name: 'UserForm',
-  // eslint-disable-next-line global-require
-  // i18n: require('./i18n-user'),
-  data() {
-    return {
-      columns,
-      dataSource,
-    };
-  },
-  computed: {
-    dataColumns() {
-      return this.columns.map((column) => {
-        column.title = this.$t(`table.${column.key}`);
-        return column;
-      });
+  dataSource = [
+    {
+      key: 1,
+      name: '小明',
+      phoneNumber: '18788455787',
+      editable: false,
+      cardNumber: '云A12345',
     },
-  },
-  methods: {
-    handleSubmit(e) {
-      e.preventDefault();
+    {
+      key: 2,
+      name: '李莉',
+      phoneNumber: '18785456787',
+      editable: false,
+      cardNumber: '云A12445',
     },
-    newMember() {
-      this.dataSource.push({
-        key: this.dataSource.length + 1,
-        name: '',
-        number: '',
-        department: '',
-        editable: true,
-        isNew: true,
-      });
+    {
+      key: 3,
+      name: '王小帅',
+      phoneNumber: '18788456787',
+      editable: false,
+      cardNumber: '云F12345',
     },
-    remove(key) {
-      const newData = this.dataSource.filter((item) => item.key !== key);
+  ];
+
+  handleSubmit(e) {
+    e.preventDefault();
+  }
+
+  newMember() {
+    this.dataSource.push({
+      key: this.dataSource.length + 1,
+      name: '',
+      phoneNumber: '',
+      cardNumber: '',
+      editable: true,
+      isNew: true,
+    });
+  }
+
+  remove(key) {
+    const newData = this.dataSource.filter((item) => item.key !== key);
+    this.dataSource = newData;
+  }
+
+  saveRow(key) {
+    const [target] = this.dataSource.filter((item) => item.key === key);
+    target.editable = false;
+    target.isNew = false;
+  }
+
+  toggle(key) {
+    const target = this.dataSource.filter((item) => item.key === key)[0];
+    target.editable = !target.editable;
+  }
+
+  getRowByKey(key, newData) {
+    const data = this.dataSource;
+    return (newData || data).filter((item) => item.key === key)[0];
+  }
+
+  cancel(key) {
+    const target = this.dataSource.filter((item) => item.key === key)[0];
+    target.editable = false;
+  }
+
+  handleChange(value, key, column) {
+    const newData = [...this.dataSource];
+    const target = newData.filter((item) => key === item.key)[0];
+    if (target) {
+      target[column] = value;
       this.dataSource = newData;
-    },
-    saveRow(key) {
-      const target = this.dataSource.filter((item) => item.key === key)[0];
-      target.editable = false;
-      target.isNew = false;
-    },
-    toggle(key) {
-      const target = this.dataSource.filter((item) => item.key === key)[0];
-      target.editable = !target.editable;
-    },
-    getRowByKey(key, newData) {
-      const data = this.dataSource;
-      return (newData || data).filter((item) => item.key === key)[0];
-    },
-    cancle(key) {
-      const target = this.dataSource.filter((item) => item.key === key)[0];
-      target.editable = false;
-    },
-    handleChange(value, key, column) {
-      const newData = [...this.dataSource];
-      const target = newData.filter((item) => key === item.key)[0];
-      if (target) {
-        target[column] = value;
-        this.dataSource = newData;
-      }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">
