@@ -54,6 +54,26 @@ const options = {
                         },
                     ],
                 },
+                {
+                    path: 'staff',
+                    name: '人员',
+                    meta: {
+                        icon: 'staff',
+                    },
+                    component: BlankView,
+                    children: [
+                        {
+                            path: 'staffForm',
+                            name: '人员表单',
+                            component: () => import('@/pages/staff/staffForm'),
+                        },
+                        {
+                            path: 'staffList',
+                            name: '人员列表',
+                            component: () => import('@/pages/staff/staffList'),
+                        },
+                    ],
+                },
                 //     {
                 //         path: 'parent1',
                 //         name: '父级路由1',
