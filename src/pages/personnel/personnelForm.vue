@@ -1,8 +1,6 @@
 <template>
   <div class="form">
     <a-card size="small" :bordered="false" :body-style="{padding:0}">
-      <a-button slot="extra" type="primary" style="margin-bottom: 10px;" @click="handleSubmit">提交</a-button>
-
       <form :autoFormCreate="(form) => this.form = form">
         <a-table :columns="columns"
                  :dataSource="dataSource"
@@ -79,10 +77,10 @@ export default class StaffForm extends Mixins(VueMixins) {
     },
     {
       title: '车牌号',
-      dataIndex: 'cardNumber',
-      key: 'cardNumber',
+      dataIndex: 'licenseNumber',
+      key: 'licenseNumber',
       width: '40%',
-      scopedSlots: { customRender: 'cardNumber' },
+      scopedSlots: { customRender: 'licenseNumber' },
     },
     {
       title: '操作',
@@ -91,96 +89,71 @@ export default class StaffForm extends Mixins(VueMixins) {
     },
   ];
 
-  dataSource = [
-    {
-      key: 1,
-      name: '小明',
-      phoneNumber: '18788455787',
-      editable: false,
-      cardNumber: '云A12345',
-    },
-    {
-      key: 2,
-      name: '李莉',
-      phoneNumber: '18785456787',
-      editable: false,
-      cardNumber: '云A12445',
-    },
-    {
-      key: 3,
-      name: '王小帅',
-      phoneNumber: '18788456787',
-      editable: false,
-      cardNumber: '云F12345',
-    },
-  ];
-
-  handleSubmit(e) {
-    e.preventDefault();
-    this.$confirm({
-      title: '您确定要提交?',
-      // content: 'When clicked the OK button, this dialog will be closed after 1 second',
-      onOk() {
-        debugger;
-      },
-    });
-  }
+  dataSource = [];
 
   newMember() {
-    this.dataSource.push({
+    const templateRecord = {
       key: this.dataSource.length + 1,
-      name: '',
-      phoneNumber: '',
-      cardNumber: '',
       editable: true,
       isNew: true,
-    });
+    };
+    this.columns.filter(({ key }) => key !== 'operation')
+        .map((key) => key)
+        .forEach(({ key }) => {
+          templateRecord[key] = '';
+        });
+    this.dataSource.push(templateRecord);
   }
 
   fetchData() {
     personnelService.fetchPersonnelList()
         .then((records) => {
-          this.dataSource = records || [];
+          this.dataSource = (records || []).map((record) => ({
+            ...record,
+            editable: false,
+            isNew: false,
+            key: record.id,
+          }));
         });
   }
 
-  // 删除记录
-  deleteRecord(deleteKeys = []) {
-    personnelService.deletePersonnel(deleteKeys)
-        .then((res) => {
-          debugger;
-          deleteKeys.forEach((key) => {
-            this.remove(key);
-          });
-        });
-  }
-
-  // 更新记录
-  updateRecord(record) {
-    personnelService.deletePersonnel(record)
-        .then((res) => {
-          debugger;
-        });
-  }
-
-  // 添加记录
-  addRecord(record) {
-    personnelService.addPersonnel(record)
-        .then((res) => {
-          debugger;
-          this.saveRow(record.key);
-        });
-  }
-
+  // 移除
   remove(key) {
-    const newData = this.dataSource.filter((item) => item.key !== key);
-    this.dataSource = newData;
+    personnelService.deletePersonnel([key])
+        .then((count) => {
+          if (count === 1) {
+            const newData = this.dataSource.filter((item) => item.key !== key);
+            this.dataSource = newData;
+          }
+        });
   }
 
-  saveRow(key) {
-    const [target] = this.dataSource.filter((item) => item.key === key);
-    target.editable = false;
-    target.isNew = false;
+  // 保存
+  saveRow(targetKey) {
+    const target: any = this.dataSource.find((item) => item.key === targetKey);
+    const {
+      editable,
+      isNew,
+      key,
+      ...record
+    } = target;
+    if (record.id) {
+      personnelService.updatePersonnel(record)
+          .then((count) => {
+            if (count === 1) {
+              target.editable = false;
+              target.isNew = false;
+            }
+          });
+    } else { // 添加
+      personnelService.addPersonnel(record)
+          .then((count) => {
+            if (count === 1) {
+              target.editable = false;
+              target.isNew = false;
+            }
+          });
+    }
   }
 
   toggle(key) {
@@ -205,6 +178,10 @@ export default class StaffForm extends Mixins(VueMixins) {
       target[column] = value;
       this.dataSource = newData;
     }
+  }
+
+  mounted() {
+    this.fetchData();
   }
 }
 </script>
