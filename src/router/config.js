@@ -58,7 +58,7 @@ const options = {
                     path: 'personnel',
                     name: '人员',
                     meta: {
-                        icon: 'staff',
+                        icon: 'team',
                     },
                     component: BlankView,
                     children: [
