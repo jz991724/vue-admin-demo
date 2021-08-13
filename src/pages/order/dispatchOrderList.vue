@@ -35,7 +35,8 @@
     </advance-table>
 
     <!--订单派发确认modal-->
-    <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"></dispatch-orders-confirm-modal>
+    <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
+                                   @success="onDispatchOrderListSuccess"></dispatch-orders-confirm-modal>
   </div>
 </template>
 
@@ -325,6 +326,11 @@ export default class OrderList extends Mixins(VueMixins) {
     console.log('所有要派的单:', allDispatchOrderList);
 
     this.openModal('dispatchOrdersConfirmModal', allDispatchOrderList);
+  }
+
+  // 派单成功
+  onDispatchOrderListSuccess(dispatchOrderIds = []) {
+    this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
   }
 
   created() {
