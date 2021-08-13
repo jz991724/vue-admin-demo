@@ -67,11 +67,11 @@ const options = {
                             name: '人员表单',
                             component: () => import('@/pages/personnel/personnelForm'),
                         },
-                        {
-                            path: 'personnelList',
-                            name: '人员列表',
-                            component: () => import('@/pages/personnel/personnelList'),
-                        },
+                        // {
+                        //     path: 'personnelList',
+                        //     name: '人员列表',
+                        //     component: () => import('@/pages/personnel/personnelList'),
+                        // },
                     ],
                 },
                 //     {
