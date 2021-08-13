@@ -26,14 +26,13 @@ import { personnelService, orderService } from '@/services';
 export default class DispatchOrdersConfirmModal extends Vue {
   visible = false;
 
-  personnelId = undefined;
+  personnelId = null;
 
   allDispatchOrderList = [];
 
   options = [];
 
   openModal(params = undefined) {
-    debugger;
     this.allDispatchOrderList = params || [];
     this.visible = true;
     this.fetchData();
@@ -66,15 +65,13 @@ export default class DispatchOrdersConfirmModal extends Vue {
   }
 
   // 派单
-  handleDispatchOrder(personnelId = this.personnelId) {
-    const orderId = this.allDispatchOrderList.map((id) => id);
-    debugger;
+  handleDispatchOrder(personnelId = this.personnelId, orderId = this.allDispatchOrderList.map(({ id }) => id)) {
     if (personnelId && orderId?.length > 0) {
       debugger;
-      orderService.dispatchOrder({
+      orderService.dispatchOrder([{
         personnelId,
         orderId,
-      })
+      }])
           .then((res) => {
             debugger;
             this.visible = false;
