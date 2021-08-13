@@ -26,7 +26,8 @@
           </a-button>
         </file-upload>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch" :disabled="Object.values(dispatchOrderList).length<1">
+        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch"
+                  :disabled="Object.values(dispatchOrderList).length<1">
           派单
         </a-button>
       </div>
@@ -46,11 +47,6 @@ import FileUpload from '@/components/file/fileUpload.vue';
 import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 
-// order状态enum
-export enum OrderStatusEnum {
-
-}
-
 @Component({
   name: 'OrderList',
   components: {
@@ -60,8 +56,6 @@ export enum OrderStatusEnum {
   },
 })
 export default class OrderList extends Mixins(VueMixins) {
-  OrderStatusEnum = OrderStatusEnum;
-
   scroll = {
     x: 100,
     y: document.body.clientHeight - 350,
@@ -286,7 +280,6 @@ export default class OrderList extends Mixins(VueMixins) {
       orderField: undefined,
     };
     this.dataSource = [];
-    debugger;
     orderService.fetchOrderList(params, this.conditions)
         .then(({
                  items,

@@ -9,6 +9,8 @@ declare module 'vue/types/vue' {
         $bus: any;
         $echarts: any;
         $notification: any;
+        $confirm: any;
+        $message: any;
     }
 }
 

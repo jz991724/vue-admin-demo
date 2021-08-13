@@ -55,7 +55,7 @@ const options = {
                     ],
                 },
                 {
-                    path: 'staff',
+                    path: 'personnel',
                     name: '人员',
                     meta: {
                         icon: 'staff',
@@ -63,14 +63,14 @@ const options = {
                     component: BlankView,
                     children: [
                         {
-                            path: 'staffForm',
+                            path: 'personnelForm',
                             name: '人员表单',
-                            component: () => import('@/pages/staff/staffForm'),
+                            component: () => import('@/pages/personnel/personnelForm'),
                         },
                         {
-                            path: 'staffList',
+                            path: 'personnelList',
                             name: '人员列表',
-                            component: () => import('@/pages/staff/staffList'),
+                            component: () => import('@/pages/personnel/personnelList'),
                         },
                     ],
                 },

@@ -44,10 +44,10 @@ export enum OrderStatusEnum {
 }
 
 @Component({
-  name: 'OrderList',
+  name: 'PersonnelList',
   components: { AdvanceTable },
 })
-export default class OrderList extends Vue {
+export default class PersonnelList extends Vue {
   OrderStatusEnum = OrderStatusEnum;
 
   tagColors = {
