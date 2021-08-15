@@ -277,13 +277,22 @@ export default class OrderList extends Mixins(VueMixins) {
   onImportDataConfirm(importType) {
     switch (importType) {
       case 'push':
-        this.dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
+        this.importFileData.forEach((record) => {
+          if (this.dataSource.includes(({ id }) => id === record.id)) {
+            this.dataSource = [...this.dataSource, record];
+          }
+        });
         break;
       case 'unshift':
         this.dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
+        this.importFileData.forEach((record) => {
+          if (this.dataSource.includes(({ id }) => id === record.id)) {
+            this.dataSource = [record, ...this.dataSource];
+          }
+        });
         break;
       default:
-        this.dataSource = [...new Set([...this.importFileData])];
+        this.dataSource = [...this.importFileData];
     }
 
     this.$message.success('文件导入成功');
