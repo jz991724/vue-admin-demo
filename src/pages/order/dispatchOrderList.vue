@@ -15,7 +15,7 @@
                    :format-conditions="true"
                    @reset="onReset"
                    :scroll="scroll"
-                   :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange ,onSelect:onSelectRow }"
+                   :row-selection="{ selectedRowKeys: dispatchOrderList.map(({id})=>id), onChange: onSelectChange  }"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
         <file-upload class="margin-left-xs"
@@ -27,7 +27,7 @@
         </file-upload>
 
         <a-button type="primary" style="margin-left: 10px;" @click="onDispatch"
-                  :disabled="Object.values(dispatchOrderList).length<1">
+                  :disabled="dispatchOrderList.length<1">
           派单
         </a-button>
       </div>
@@ -62,10 +62,10 @@ export default class OrderList extends Mixins(VueMixins) {
     y: document.body.clientHeight - 350,
   };
 
-  selectedRowKeys = [];
+  // selectedRowKeys = [];
 
   // 所有选中将要被派单的order（各个页面）
-  dispatchOrderList = {};
+  dispatchOrderList = [];
 
   spinning = false;
 
@@ -123,24 +123,23 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'destinationAddress',
       width: 200,
     },
-
-    {
-      title: '驾驶员姓名',
-      dataIndex: 'driverName',
-      width: 110,
-      searchAble: true,
-    },
-    {
-      title: '驾驶员电话',
-      dataIndex: 'driverPhone',
-      width: 120,
-    },
-    {
-      title: '车牌',
-      dataIndex: 'licenseNumber',
-      width: 110,
-      searchAble: true,
-    },
+    // {
+    //   title: '驾驶员姓名',
+    //   dataIndex: 'driverName',
+    //   width: 110,
+    //   searchAble: true,
+    // },
+    // {
+    //   title: '驾驶员电话',
+    //   dataIndex: 'driverPhone',
+    //   width: 120,
+    // },
+    // {
+    //   title: '车牌',
+    //   dataIndex: 'licenseNumber',
+    //   width: 110,
+    //   searchAble: true,
+    // },
     {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
@@ -258,14 +257,15 @@ export default class OrderList extends Mixins(VueMixins) {
   // }
 
   // 选中项发生变化时的回调
-  onSelectChange(selectedRowKeys) {
-    this.selectedRowKeys = selectedRowKeys;
+  onSelectChange(selectedRowKeys, selectedRows) {
+    debugger;
+    this.dispatchOrderList = selectedRows;
   }
 
   // 用户手动选择/取消选择某列的回调
-  onSelectRow(record, selected, selectedRows) {
-    this.dispatchOrderList[this.pagination.current] = selectedRows;
-  }
+  // onSelectRow(record, selected, selectedRows) {
+  //   this.dispatchOrderList[this.pagination.current] = selectedRows;
+  // }
 
   fetchData() {
     const {
@@ -301,43 +301,27 @@ export default class OrderList extends Mixins(VueMixins) {
     console.log(searchOptions);
     this.pagination.current = 1;
     this.conditions = conditions;
-    // this.fetchData();
   }
 
   onRefresh(conditions) {
     this.conditions = conditions;
-    // this.getGoodList();
-    // this.fetchData();
   }
 
   onReset(conditions) {
     this.conditions = conditions;
-    // this.getGoodList();
-    // this.fetchData();
   }
 
   // 派单
   onDispatch() {
-    let allDispatchOrderList = [];
-    Object.values(this.dispatchOrderList)
-        .forEach((orders: any = []) => {
-          allDispatchOrderList = [...allDispatchOrderList, ...orders];
-        });
-    console.log('所有要派的单:', allDispatchOrderList);
+    console.log('所有要派的单:', this.dispatchOrderList);
 
-    this.openModal('dispatchOrdersConfirmModal', allDispatchOrderList);
+    this.openModal('dispatchOrdersConfirmModal', this.dispatchOrderList);
   }
 
   // 派单成功
   onDispatchOrderListSuccess(dispatchOrderIds = []) {
     this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
-  }
-
-  created() {
-    // this.getGoodList();
-    // this.getColumns();
-    debugger;
-    // this.fetchData();
+    this.dispatchOrderList = [];
   }
 }
 </script>

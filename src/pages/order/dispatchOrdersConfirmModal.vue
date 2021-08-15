@@ -4,7 +4,7 @@
 * @创建时间: 2021-08-11 13:40:06
 */
 <template>
-  <a-modal v-model="visible" title="派单确认" @ok="handleDispatchOrder()">
+  <a-modal v-model="visible" title="派单确认" @ok="handleDispatchOrder()" :width="950">
     <a-card size="small">
       <template slot="title">
         <a-select show-search
@@ -158,6 +158,7 @@ export default class DispatchOrdersConfirmModal extends Vue {
   }
 
   fetchData() {
+    this.options = [];
     personnelService.fetchPersonnelList()
         .then((personnelList = []) => {
           this.options = personnelList.map(({
@@ -169,6 +170,10 @@ export default class DispatchOrdersConfirmModal extends Vue {
             value: id,
             key: id,
           }));
+
+          // 默认选中第一项
+          const [{ key }] = this.options;
+          this.personnelId = key;
         });
   }
 
@@ -183,6 +188,7 @@ export default class DispatchOrdersConfirmModal extends Vue {
             debugger;
             this.visible = false;
             this.handleOk(orderId);
+            this.$message.success('派单成功！');
           });
     } else {
       this.$message.warning('请选择驾驶员和乘客信息');
