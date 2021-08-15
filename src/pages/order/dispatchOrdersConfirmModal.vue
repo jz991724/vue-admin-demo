@@ -4,7 +4,7 @@
 * @创建时间: 2021-08-11 13:40:06
 */
 <template>
-  <a-modal v-model="visible" title="派单确认" @ok="handleDispatchOrder()" :width="950">
+  <a-modal v-model="visible" :destroyOnClose="true" title="派单确认" @ok="handleDispatchOrder()" :width="950">
     <a-card size="small">
       <template slot="title">
         <a-select show-search

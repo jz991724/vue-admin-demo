@@ -37,6 +37,10 @@
     <!--订单派发确认modal-->
     <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
                                    @success="onDispatchOrderListSuccess"></dispatch-orders-confirm-modal>
+
+    <!--文件导入数据成功确认modal-->
+    <import-data-confirm-modal ref="importDataConfirmModal"
+                               @confirm="onImportDataConfirm"></import-data-confirm-modal>
   </div>
 </template>
 
@@ -49,10 +53,12 @@ import { orderService } from '@/services';
 import FileUpload from '@/components/file/fileUpload.vue';
 import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
+import ImportDataConfirmModal from '@/pages/order/importDataConfirmModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    ImportDataConfirmModal,
     DispatchOrdersConfirmModal,
     FileUpload,
     AdvanceTable,
@@ -253,6 +259,9 @@ export default class OrderList extends Mixins(VueMixins) {
     },
   };
 
+  // 导入的文件数据
+  importFileData = [];
+
   // exportOrderByExcel(fileName = '导出数据.xlsx', params = undefined, url = '/calc/getResultFile') {
   //   return new Promise((resolve, reject) => {
   //     ajaxHelperInstance.downloadFile(url, fileName, params)
@@ -262,8 +271,22 @@ export default class OrderList extends Mixins(VueMixins) {
 
   // 选中项发生变化时的回调
   onSelectChange(selectedRowKeys, selectedRows) {
-    debugger;
     this.dispatchOrderList = selectedRows;
+  }
+
+  onImportDataConfirm(importType) {
+    switch (importType) {
+      case 'push':
+        this.dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
+        break;
+      case 'unshift':
+        this.dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
+        break;
+      default:
+        this.dataSource = [...new Set([...this.importFileData])];
+    }
+
+    this.$message.success('文件导入成功');
   }
 
   // 用户手动选择/取消选择某列的回调
@@ -290,7 +313,6 @@ export default class OrderList extends Mixins(VueMixins) {
                  items,
                  totalCount,
                }) => {
-          debugger;
           this.dataSource = items || [];
           this.pagination.total = totalCount || 0;
         });
@@ -298,7 +320,8 @@ export default class OrderList extends Mixins(VueMixins) {
 
   // 上传成功
   uploadSuccess(importFileData) {
-    this.dataSource = importFileData || [];
+    this.importFileData = importFileData;
+    this.openModal('importDataConfirmModal');
   }
 
   onSearch(conditions, searchOptions) {
@@ -331,7 +354,7 @@ export default class OrderList extends Mixins(VueMixins) {
   get getTableDataSource() {
     const { conditions } = this;
     const conditionsKeys = Object.keys(conditions);
-    const test = this.dataSource.filter((item) => {
+    return this.dataSource.filter((item) => {
       let isTrue = true;
       conditionsKeys.forEach((key) => {
         isTrue = item[key] === conditions[key];
@@ -344,8 +367,6 @@ export default class OrderList extends Mixins(VueMixins) {
 
       return isTrue;
     });
-    debugger;
-    return test;
   }
 }
 </script>

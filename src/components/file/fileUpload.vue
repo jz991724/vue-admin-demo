@@ -83,8 +83,9 @@ export default class FileUpload extends Vue {
               description:
                   '您导入的文件数据可能为空，或者文件格式不满足导入要求！',
             });
+          } else {
+            this.emitUploadSuccess(importFileData);
           }
-          this.emitUploadSuccess(importFileData);
         }, (error) => {
           console.error('上传文件报错:', error);
           this.$notification.error({
