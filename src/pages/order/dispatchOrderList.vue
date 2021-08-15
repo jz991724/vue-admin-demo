@@ -6,7 +6,7 @@
 <template>
   <div class="table">
     <advance-table :columns="columns"
-                   :data-source="dataSource"
+                   :data-source="getTableDataSource"
                    title="订单列表"
                    :loading="spinning"
                    rowKey="id"
@@ -41,7 +41,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Vue } from 'vue-property-decorator';
+import {
+  Component, Mixins, Vue, Watch,
+} from 'vue-property-decorator';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { orderService } from '@/services';
 import FileUpload from '@/components/file/fileUpload.vue';
@@ -81,6 +83,7 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'channel',
     },
     {
+      searchAble: true,
       title: '乘客姓名',
       dataIndex: 'passengerName',
       width: 100,
@@ -166,6 +169,7 @@ export default class OrderList extends Mixins(VueMixins) {
       width: 120,
     },
     {
+      searchAble: true,
       title: '乘客电话',
       dataIndex: 'passengerPhone',
       width: 120,
@@ -322,6 +326,26 @@ export default class OrderList extends Mixins(VueMixins) {
   onDispatchOrderListSuccess(dispatchOrderIds = []) {
     this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
     this.dispatchOrderList = [];
+  }
+
+  get getTableDataSource() {
+    const { conditions } = this;
+    const conditionsKeys = Object.keys(conditions);
+    const test = this.dataSource.filter((item) => {
+      let isTrue = true;
+      conditionsKeys.forEach((key) => {
+        isTrue = item[key] === conditions[key];
+        if (!isTrue) {
+          return false;
+        }
+
+        return isTrue;
+      });
+
+      return isTrue;
+    });
+    debugger;
+    return test;
   }
 }
 </script>

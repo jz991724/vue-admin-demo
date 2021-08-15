@@ -118,7 +118,6 @@ export default class OrderList extends Vue {
       dataIndex: 'destinationAddress',
       width: 200,
     },
-
     {
       title: '驾驶员姓名',
       dataIndex: 'driverName',
