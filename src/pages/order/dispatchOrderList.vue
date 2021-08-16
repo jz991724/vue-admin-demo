@@ -278,7 +278,8 @@ export default class OrderList extends Mixins(VueMixins) {
     switch (importType) {
       case 'push':
         this.importFileData.forEach((record) => {
-          if (this.dataSource.includes(({ id }) => id === record.id)) {
+          // 去重添加
+          if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
             this.dataSource = [...this.dataSource, record];
           }
         });
@@ -286,13 +287,15 @@ export default class OrderList extends Mixins(VueMixins) {
       case 'unshift':
         this.dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
         this.importFileData.forEach((record) => {
-          if (this.dataSource.includes(({ id }) => id === record.id)) {
+          // 去重添加
+          if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
             this.dataSource = [record, ...this.dataSource];
           }
         });
         break;
       default:
         this.dataSource = [...this.importFileData];
+        break;
     }
 
     this.$message.success('文件导入成功');

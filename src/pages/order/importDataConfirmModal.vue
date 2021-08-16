@@ -9,9 +9,11 @@
       <a-radio value="cover">
         覆盖原有数据
       </a-radio>
+      <br/>
       <a-radio value="push">
         向原有数据的尾部添加数据
       </a-radio>
+      <br/>
       <a-radio value="unshift">
         向原有数据的头部添加数据
       </a-radio>
