@@ -275,7 +275,6 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   onImportDataConfirm(importType) {
-    debugger;
     switch (importType) {
       case 'push':
         this.dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
