@@ -275,23 +275,25 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   onImportDataConfirm(importType) {
+    debugger;
     switch (importType) {
       case 'push':
-        this.importFileData.forEach((record) => {
-          // 去重添加
-          if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
-            this.dataSource = [...this.dataSource, record];
-          }
-        });
+        this.dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
+        // this.importFileData.forEach((record) => {
+        //   // 去重添加
+        //   if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
+        //     this.dataSource = [...this.dataSource, record];
+        //   }
+        // });
         break;
       case 'unshift':
         this.dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
-        this.importFileData.forEach((record) => {
-          // 去重添加
-          if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
-            this.dataSource = [record, ...this.dataSource];
-          }
-        });
+        // this.importFileData.forEach((record) => {
+        //   // 去重添加
+        //   if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
+        //     this.dataSource = [record, ...this.dataSource];
+        //   }
+        // });
         break;
       default:
         this.dataSource = [...this.importFileData];
