@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <div class="content"><slot></slot></div>
-    <page-footer :link-list="footerLinks" :copyright="copyright"></page-footer>
+<!--    <page-footer :link-list="footerLinks" :copyright="copyright"></page-footer>-->
   </div>
 </template>
 
