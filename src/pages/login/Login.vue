@@ -5,7 +5,7 @@
         <img alt="logo" class="logo" src="@/assets/img/logo.png"/>
         <span class="title">{{ systemName }}</span>
       </div>
-      <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+      <div class="desc">专车管理平台</div>
     </div>
     <div class="login">
       <a-form @submit="onSubmit" :form="form">
@@ -40,11 +40,15 @@
         </a-tabs>
         <div>
           <a-checkbox :checked="true">自动登录</a-checkbox>
-          <a style="float: right">忘记密码</a>
+          <router-link style="float: right" to="/dashboard/workplace">忘记密码</router-link>
         </div>
         <a-form-item>
-          <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit"
-                    type="primary">登录
+          <a-button :loading="logging"
+                    style="width: 100%;margin-top: 24px"
+                    size="large"
+                    htmlType="submit"
+                    type="primary">
+            登录
           </a-button>
         </a-form-item>
         <div>
