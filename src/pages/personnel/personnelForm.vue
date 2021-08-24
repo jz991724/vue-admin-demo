@@ -1,10 +1,12 @@
 <template>
   <div class="form">
     <a-card size="small" :bordered="false" :body-style="{padding:0}">
+      <h3 slot="title" style="font-size: 18px;font-weight: 700;">驾驶员信息列表</h3>
       <form :autoFormCreate="(form) => this.form = form">
         <a-table :columns="columns"
                  :dataSource="dataSource"
                  :scroll="scroll"
+                 rowKey="key"
                  :pagination="false">
           <template v-for="(col, i) in columns.map(({key})=>key)" :slot="col" slot-scope="text, record">
             <a-input :key="col"

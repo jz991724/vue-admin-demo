@@ -21,9 +21,10 @@
         <!--          <header-notice class="header-item"/>-->
         <!--          <header-avatar class="header-item"/>-->
         <div>
-          <a-tooltip title="退出登录">
-            <a-button icon="poweroff" type="danger" shape="circle" @click="logout"></a-button>
-          </a-tooltip>
+          <a-popconfirm placement="left" title="确定退出账号？" ok-text="确定" cancel-text="取消" @confirm="logout()">
+            <a-icon slot="icon" type="question-circle-o" style="color: red"/>
+            <a-button icon="poweroff" title="退出登录" type="danger" shape="circle"></a-button>
+          </a-popconfirm>
         </div>
 
         <!--        <a-dropdown class="lang header-item">-->

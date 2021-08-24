@@ -16,16 +16,16 @@
                    @reset="onReset"
                    :scroll="{x:600}"
                    :pagination="pagination">
-      <template slot="statusTitle">
-        状态
-        <a-icon style="margin: 0 4px" type="info-circle"/>
-      </template>
-      <!--      <template slot="send" slot-scope="{text}">-->
-      <!--        {{ text ? '是' : '否' }}-->
-      <!--      </template>-->
-      <template slot="status" slot-scope="{text}">
-        <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>
-      </template>
+<!--      <template slot="statusTitle">-->
+<!--        状态-->
+<!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
+<!--      </template>-->
+<!--      &lt;!&ndash;      <template slot="send" slot-scope="{text}">&ndash;&gt;-->
+<!--      &lt;!&ndash;        {{ text ? '是' : '否' }}&ndash;&gt;-->
+<!--      &lt;!&ndash;      </template>&ndash;&gt;-->
+<!--      <template slot="status" slot-scope="{text}">-->
+<!--        <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>-->
+<!--      </template>-->
     </advance-table>
   </div>
 </template>
@@ -48,15 +48,6 @@ export enum OrderStatusEnum {
   components: { AdvanceTable },
 })
 export default class PersonnelList extends Vue {
-  OrderStatusEnum = OrderStatusEnum;
-
-  tagColors = {
-    [OrderStatusEnum.待派单]: 'purple',
-    [OrderStatusEnum.待接单]: 'cyan',
-    [OrderStatusEnum.进行中]: 'orange',
-    [OrderStatusEnum.已结束]: '',
-  };
-
   spinning = false;
 
   columns = [

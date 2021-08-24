@@ -15,6 +15,8 @@
                   :filter-option="filterOption"
                   v-model="personnelId">
         </a-select>
+
+        <span style="margin-left: 10px;">已选中 {{ allDispatchOrderList.length }} 条记录</span>
       </template>
 
       <a-table :columns="columns"
@@ -132,6 +134,7 @@ export default class DispatchOrdersConfirmModal extends Vue {
       title: '操作',
       key: 'operation',
       width: 50,
+      fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
   ];
@@ -166,7 +169,7 @@ export default class DispatchOrdersConfirmModal extends Vue {
                                               name,
                                               licenseNumber,
                                             }) => ({
-            label: `${name}-${licenseNumber}`,
+            label: `${name} - ${licenseNumber}`,
             value: id,
             key: id,
           }));

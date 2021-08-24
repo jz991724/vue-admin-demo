@@ -56,7 +56,6 @@ async function request(url, method, params, config) {
 function requestHelper(url, method, params, vueContext = undefined, urlParams = undefined, spinName = 'spinning', config) {
     let requestObj = undefined;
     if (urlParams) {
-        debugger
         let paramsStr = qs.stringify(urlParams);
         url = `${url}?${paramsStr}`;
     }

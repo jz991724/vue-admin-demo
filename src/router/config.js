@@ -64,7 +64,7 @@ const options = {
                     children: [
                         {
                             path: 'personnelForm',
-                            name: '人员表单',
+                            name: '驾驶员',
                             component: () => import('@/pages/personnel/personnelForm'),
                         },
                         // {

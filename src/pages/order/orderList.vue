@@ -293,7 +293,6 @@ export default class OrderList extends Vue {
   created() {
     // this.getGoodList();
     // this.getColumns();
-    debugger;
     this.fetchData();
   }
 }
