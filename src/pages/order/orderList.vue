@@ -20,9 +20,7 @@
         状态
         <a-icon style="margin: 0 4px" type="info-circle"/>
       </template>
-      <!--      <template slot="send" slot-scope="{text}">-->
-      <!--        {{ text ? '是' : '否' }}-->
-      <!--      </template>-->
+
       <template slot="status" slot-scope="{text}">
         <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>
       </template>
@@ -345,25 +343,20 @@ export default class OrderList extends Mixins(VueMixins) {
     console.log(searchOptions);
     this.pagination.current = 1;
     this.conditions = conditions;
-    // this.getGoodList();
     this.fetchData();
   }
 
   onRefresh(conditions) {
     this.conditions = conditions;
-    // this.getGoodList();
     this.fetchData();
   }
 
   onReset(conditions) {
     this.conditions = conditions;
-    // this.getGoodList();
     this.fetchData();
   }
 
   created() {
-    // this.getGoodList();
-    // this.getColumns();
     this.fetchData();
   }
 }

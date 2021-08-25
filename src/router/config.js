@@ -63,9 +63,14 @@ const options = {
                     component: BlankView,
                     children: [
                         {
-                            path: 'personnelForm',
+                            path: 'personnelList',
                             name: '驾驶员',
-                            component: () => import('@/pages/personnel/personnelForm'),
+                            component: () => import('@/pages/personnel/personnelList'),
+                        },
+                        {
+                            path: 'addPersonnel',
+                            name: '添加驾驶员',
+                            component: () => import('@/pages/personnel/addPersonnelForm'),
                         },
                         // {
                         //     path: 'personnelList',

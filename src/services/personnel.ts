@@ -1,5 +1,19 @@
 import { requestHelper, METHOD } from '@/utils/request';
 
+export enum PersonnelStatusEnum {
+    在职,
+    离职
+}
+
+export enum PersonnelTypeEnum {
+    外聘
+}
+
+export enum SexEnum {
+    男,
+    女
+}
+
 const Personnel = {
     fetchPersonnelPageList(params = undefined, urlParams = undefined) { // 获取人员列表（分页）
         return requestHelper('/api/Personnel/GetPageList', METHOD.POST, params, this, urlParams);
