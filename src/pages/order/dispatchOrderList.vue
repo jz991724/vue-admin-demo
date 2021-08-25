@@ -22,7 +22,7 @@
                      @success="uploadSuccess"
                      @upLoading="(isLoading)=>spinning=isLoading">
           <a-button :loading="spinning" :disabled="spinning">
-            浏览
+            导入
           </a-button>
         </file-upload>
 

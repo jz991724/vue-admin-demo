@@ -27,12 +27,11 @@
               </a-input>
             </a-form-item>
             <a-form-item>
-              <a-input
-                  size="large"
-                  placeholder="请输入密码"
-                  autocomplete="autocomplete"
-                  type="password"
-                  v-decorator="['password', {rules: [{ required: true, message: '请输入密码', whitespace: true}]}]">
+              <a-input size="large"
+                       placeholder="请输入密码"
+                       autocomplete="autocomplete"
+                       type="password"
+                       v-decorator="['password', {rules: [{ required: true, message: '请输入密码', whitespace: true}]}]">
                 <a-icon slot="prefix" type="lock"/>
               </a-input>
             </a-form-item>
