@@ -121,7 +121,7 @@ export default {
         }]);
         setAuthorization({
           token,
-          expireAt: new Date(new Date().getTime() + 30 * 60 * 1000),
+          expireAt: new Date(new Date().getTime() + 30 * 60 * 1000 * 10), // token有效期设置
         });
 
         // 配置路由

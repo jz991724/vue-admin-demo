@@ -6,7 +6,7 @@
 <template>
   <div class="table">
     <advance-table :columns="columns"
-                   :data-source="getTableDataSource"
+                   :data-source="dataSource"
                    title="订单列表"
                    :loading="spinning"
                    rowKey="id"
@@ -54,6 +54,7 @@ import FileUpload from '@/components/file/fileUpload.vue';
 import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ImportDataConfirmModal from '@/pages/order/importDataConfirmModal.vue';
+import { OrderStatusEnum } from '@/services/order';
 
 @Component({
   name: 'OrderList',
@@ -235,7 +236,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   dataSource = [];
 
-  conditions = {};
+  conditions = { status: OrderStatusEnum.待派单 };
 
   pagination = {
     current: 1,
@@ -275,31 +276,30 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   onImportDataConfirm(importType) {
+    let temp_dataSource = [];
     switch (importType) {
       case 'push':
-        this.dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
-        // this.importFileData.forEach((record) => {
-        //   // 去重添加
-        //   if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
-        //     this.dataSource = [...this.dataSource, record];
-        //   }
-        // });
+        temp_dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
         break;
       case 'unshift':
-        this.dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
-        // this.importFileData.forEach((record) => {
-        //   // 去重添加
-        //   if (!this.dataSource.includes((newRecord) => JSON.stringify(newRecord) === JSON.stringify(record))) {
-        //     this.dataSource = [record, ...this.dataSource];
-        //   }
-        // });
+        temp_dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
         break;
       default:
-        this.dataSource = [...this.importFileData];
+        temp_dataSource = [...this.importFileData];
         break;
     }
-
-    this.$message.success('文件导入成功');
+    // 数据导入
+    orderService.addOrders(temp_dataSource)
+        .then((importRecordCount) => {
+          debugger;
+          importRecordCount = Number(importRecordCount) || 0;
+          if (importRecordCount === temp_dataSource.length) {
+            this.$message.success(`成功导入 ${importRecordCount} 条数据！`);
+          } else {
+            this.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(temp_dataSource.length - importRecordCount)} 条！`);
+          }
+          this.refreshDataSource();
+        });
   }
 
   // 用户手动选择/取消选择某列的回调
@@ -326,9 +326,16 @@ export default class OrderList extends Mixins(VueMixins) {
                  items,
                  totalCount,
                }) => {
+          debugger;
           this.dataSource = items || [];
           this.pagination.total = totalCount || 0;
         });
+  }
+
+  refreshDataSource() {
+    this.pagination.current = 0;
+    this.pagination.total = 0;
+    this.fetchData();
   }
 
   // 上传成功
@@ -339,23 +346,26 @@ export default class OrderList extends Mixins(VueMixins) {
 
   onSearch(conditions, searchOptions) {
     console.log(searchOptions);
-    this.pagination.current = 1;
-    this.conditions = conditions;
+    this.conditions = { ...this.conditions, ...conditions };
+    debugger;
+    this.refreshDataSource();
   }
 
   onRefresh(conditions) {
-    this.conditions = conditions;
+    this.conditions = { ...this.conditions, ...conditions };
+    this.refreshDataSource();
   }
 
   onReset(conditions) {
-    this.conditions = conditions;
+    this.conditions = { ...this.conditions, ...conditions };
+    this.refreshDataSource();
   }
 
   // 派单
   onDispatch() {
     console.log('所有要派的单:', this.dispatchOrderList);
 
-    this.openModal('dispatchOrdersConfirmModal', this.dispatchOrderList);
+    this.openModal('dispatchOrdersConfirmModal', { orders: this.dispatchOrderList });
   }
 
   // 派单成功
@@ -364,10 +374,10 @@ export default class OrderList extends Mixins(VueMixins) {
     this.dispatchOrderList = [];
   }
 
-  get getTableDataSource() {
+  getTableDataSource() {
     const { conditions } = this;
     const conditionsKeys = Object.keys(conditions);
-    return this.dataSource.filter((item) => {
+    this.dataSource = this.dataSource.filter((item) => {
       let isTrue = true;
       conditionsKeys.forEach((key) => {
         isTrue = item[key] === conditions[key];
@@ -380,6 +390,10 @@ export default class OrderList extends Mixins(VueMixins) {
 
       return isTrue;
     });
+  }
+
+  created() {
+    this.fetchData();
   }
 }
 </script>

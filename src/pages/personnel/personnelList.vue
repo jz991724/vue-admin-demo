@@ -16,16 +16,16 @@
                    @reset="onReset"
                    :scroll="{x:600}"
                    :pagination="pagination">
-<!--      <template slot="statusTitle">-->
-<!--        状态-->
-<!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
-<!--      </template>-->
-<!--      &lt;!&ndash;      <template slot="send" slot-scope="{text}">&ndash;&gt;-->
-<!--      &lt;!&ndash;        {{ text ? '是' : '否' }}&ndash;&gt;-->
-<!--      &lt;!&ndash;      </template>&ndash;&gt;-->
-<!--      <template slot="status" slot-scope="{text}">-->
-<!--        <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>-->
-<!--      </template>-->
+      <!--      <template slot="statusTitle">-->
+      <!--        状态-->
+      <!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
+      <!--      </template>-->
+      <!--      &lt;!&ndash;      <template slot="send" slot-scope="{text}">&ndash;&gt;-->
+      <!--      &lt;!&ndash;        {{ text ? '是' : '否' }}&ndash;&gt;-->
+      <!--      &lt;!&ndash;      </template>&ndash;&gt;-->
+      <!--      <template slot="status" slot-scope="{text}">-->
+      <!--        <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>-->
+      <!--      </template>-->
     </advance-table>
   </div>
 </template>
@@ -34,14 +34,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { orderService } from '@/services';
-
-// order状态enum
-export enum OrderStatusEnum {
-  待派单,
-  待接单,
-  进行中,
-  已结束
-}
+import { OrderStatusEnum } from '@/services/order';
 
 @Component({
   name: 'PersonnelList',

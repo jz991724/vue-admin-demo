@@ -26,28 +26,46 @@
       <template slot="status" slot-scope="{text}">
         <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>
       </template>
+
+      <template slot="operation" slot-scope="{record}">
+        <a @click="onConfirmDispatch([record])"
+           :disabled="![OrderStatusEnum.待派单].includes(record.status)">派单</a>
+        <a-divider type="vertical"/>
+        <a-popconfirm title="确定取消" @confirm="onCancelDispatch(record)">
+          <a :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>
+        </a-popconfirm>
+        <a-divider type="vertical"/>
+        <a @click="onUpdateDispatch(record)"
+           :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">编辑</a>
+        <a-divider type="vertical"/>
+        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
+          <a :disabled="[OrderStatusEnum.进行中].includes(record.status)">删除</a>
+        </a-popconfirm>
+      </template>
     </advance-table>
+
+    <!--订单派发确认modal-->
+    <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
+                                   @success="onDispatchSuccess"></dispatch-orders-confirm-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { orderService } from '@/services';
-
-// order状态enum
-export enum OrderStatusEnum {
-  待派单,
-  待接单,
-  进行中,
-  已结束
-}
+import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
+import VueMixins from '@/pages/mixins/vueMixins';
+import { OrderStatusEnum } from '@/services/order';
 
 @Component({
   name: 'OrderList',
-  components: { AdvanceTable },
+  components: {
+    DispatchOrdersConfirmModal,
+    AdvanceTable,
+  },
 })
-export default class OrderList extends Vue {
+export default class OrderList extends Mixins(VueMixins) {
   OrderStatusEnum = OrderStatusEnum;
 
   tagColors = {
@@ -203,6 +221,12 @@ export default class OrderList extends Vue {
       dataIndex: 'motorcade',
       width: 80,
     },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      width: 230,
+      scopedSlots: { customRender: 'operation' },
+    },
 
     // {
     //   title: '发货',
@@ -244,6 +268,53 @@ export default class OrderList extends Vue {
       this.fetchData();
     },
   };
+
+  // 派单
+  onConfirmDispatch(orders = []) {
+    console.log('所有要派的单:', orders);
+    this.openModal('dispatchOrdersConfirmModal', { orders });
+  }
+
+  // 取消派单
+  onCancelDispatch({ id }) {
+    if (id) {
+      orderService.updateOrderStatus({
+        ids: [id],
+        status: OrderStatusEnum.待派单,
+      })
+          .then((res) => {
+            debugger;
+            this.fetchData();
+          });
+    }
+  }
+
+  // 派单信息更新
+  onUpdateDispatch(order) {
+    console.log('所有要派的单:', order);
+    const {
+      personnelId,
+    } = order;
+    this.openModal('dispatchOrdersConfirmModal', {
+      orders: [order],
+      personnelId,
+    });
+  }
+
+  // 派单信息删除
+  onDeleteDispatch({ id }) {
+    if (id) {
+      orderService.deleteOrder([id])
+          .then((res) => {
+            this.fetchData();
+          });
+    }
+  }
+
+  // 订单派发成功
+  onDispatchSuccess() {
+    this.fetchData();
+  }
 
   fetchData() {
     const {

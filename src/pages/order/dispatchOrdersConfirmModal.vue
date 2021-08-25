@@ -52,6 +52,9 @@ export default class DispatchOrdersConfirmModal extends Vue {
 
   personnelId = null;
 
+  // 是否是编辑状态
+  isEdit = false;
+
   allDispatchOrderList = [];
 
   options = [];
@@ -139,8 +142,13 @@ export default class DispatchOrdersConfirmModal extends Vue {
     },
   ];
 
-  openModal(params = undefined) {
-    this.allDispatchOrderList = params || [];
+  openModal({
+              orders,
+              personnelId,
+            }) {
+    this.allDispatchOrderList = orders || [];
+    this.personnelId = personnelId;
+    this.isEdit = !!personnelId;
     this.visible = true;
     this.fetchData();
   }
@@ -174,24 +182,53 @@ export default class DispatchOrdersConfirmModal extends Vue {
             key: id,
           }));
 
-          // 默认选中第一项
-          const [{ key }] = this.options;
-          this.personnelId = key;
+          if (!this.personnelId) {
+            // 默认选中第一项
+            const [{ key }] = this.options;
+            this.personnelId = key;
+          }
         });
   }
 
   // 派单
-  handleDispatchOrder(personnelId = this.personnelId, orderId = this.allDispatchOrderList.map(({ id }) => id)) {
-    if (personnelId && orderId?.length > 0) {
+  handleDispatchOrder(personnelId = this.personnelId, orders = this.allDispatchOrderList) {
+    const orderIds = orders.map(({ id }) => id);
+    if (personnelId && orderIds?.length > 0) {
+      // // 如果是编辑状态下
+      // if (this.isEdit) {
+      //   orderService.dispatchOrder([{
+      //     personnelId,
+      //     orderId: orderIds,
+      //   }])
+      //       .then((res) => {
+      //         this.visible = false;
+      //         this.handleOk(orderIds);
+      //         this.$message.success('派单信息更新完成！');
+      //       });
+      // } else {
+      //   debugger;
+      //   orderService.importOrders(orders)
+      //       .then((addCount) => {
+      //         orderService.dispatchOrder([{
+      //           personnelId,
+      //           orderId: orderIds,
+      //         }])
+      //             .then((res) => {
+      //               this.visible = false;
+      //               this.handleOk(orderIds);
+      //               this.$message.success('派单完成！');
+      //             });
+      //       });
+      // }
+
       orderService.dispatchOrder([{
         personnelId,
-        orderId,
+        orderId: orderIds,
       }])
           .then((res) => {
-            debugger;
             this.visible = false;
-            this.handleOk(orderId);
-            this.$message.success('派单成功！');
+            this.handleOk(orderIds);
+            this.$message.success((this.isEdit ? '派单信息更新完成！' : '派单完成！'));
           });
     } else {
       this.$message.warning('请选择驾驶员和乘客信息');
