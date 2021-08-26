@@ -11,6 +11,8 @@ declare module 'vue/types/vue' {
         $notification: any;
         $confirm: any;
         $message: any;
+        $router: any;
+        $refs: any;
     }
 }
 

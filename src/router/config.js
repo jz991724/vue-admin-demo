@@ -67,11 +67,6 @@ const options = {
                             name: '驾驶员',
                             component: () => import('@/pages/personnel/personnelList'),
                         },
-                        {
-                            path: 'addPersonnel',
-                            name: '添加驾驶员',
-                            component: () => import('@/pages/personnel/addPersonnelForm'),
-                        },
                         // {
                         //     path: 'personnelList',
                         //     name: '人员列表',

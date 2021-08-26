@@ -46,6 +46,9 @@
       <!--        </a-popconfirm>-->
       <!--      </template>-->
     </advance-table>
+
+    <!--驾驶员添加modal-->
+    <personnel-form-modal ref="personnelFormModal" @submitSuccess="onSubmitSuccess"></personnel-form-modal>
   </div>
 </template>
 
@@ -55,10 +58,14 @@ import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { personnelService } from '@/services';
 import VueMixins from '@/pages/mixins/vueMixins';
 import { PersonnelStatusEnum, PersonnelTypeEnum, SexEnum } from '@/services/personnel';
+import PersonnelFormModal from '@/pages/personnel/personnelFormModal.vue';
 
 @Component({
   name: 'PersonnelList',
-  components: { AdvanceTable },
+  components: {
+    PersonnelFormModal,
+    AdvanceTable,
+  },
 })
 export default class PersonnelList extends Mixins(VueMixins) {
   SexEnum = SexEnum;
@@ -260,14 +267,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
 
   // 人员信息添加
   onAddPersonnel(personnel) {
-    // const {
-    //   personnelId,
-    // } = order;
-    // this.openModal('dispatchOrdersConfirmModal', {
-    //   orders: [order],
-    //   personnelId,
-    // });
-    this.$router.push('/personnel/addPersonnel');
+    this.openModal('personnelFormModal');
   }
 
   // 人员信息更新
@@ -339,6 +339,11 @@ export default class PersonnelList extends Mixins(VueMixins) {
 
   onReset(conditions) {
     this.conditions = conditions;
+    this.fetchData();
+  }
+
+  // 人员添加成功
+  onSubmitSuccess() {
     this.fetchData();
   }
 
