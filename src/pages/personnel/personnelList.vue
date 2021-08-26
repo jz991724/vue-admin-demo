@@ -241,11 +241,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
 
   // 人员信息添加
   onAddPersonnel(personnel) {
+    debugger;
     this.openModal('personnelFormModal');
   }
 
   // 人员信息更新
   onUpdatePersonnel(personnel) {
+    debugger;
     this.openModal('personnelFormModal', personnel);
   }
 

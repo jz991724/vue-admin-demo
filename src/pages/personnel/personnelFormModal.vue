@@ -7,6 +7,7 @@
   <a-modal :title="title"
            :visible="visible"
            v-bind="defaultOptions"
+           :afterClose="afterClose"
            @ok="handleOk"
            @cancel="handleCancel">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
@@ -74,7 +75,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   isEdit = false;
 
-  form = {
+  form: any = {
     name: undefined,
     licenseNumber: undefined,
     sex: 0,
@@ -96,23 +97,35 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       required: true,
       message: '请输入车牌号',
       trigger: 'blur',
+    }, {
+      pattern: /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/,
+      message: '请输入正确的车牌号',
+      trigger: 'change',
     }],
-    joinDate: [{
+    phoneNumber: [{
       required: true,
-      message: '请选择加入公司的日期',
+      message: '请输入电话号码',
+      trigger: 'blur',
+    }, {
+      pattern: /^1[3|4|5|7|8][0-9]\d{8}$/,
+      message: '请输入正确的电话号码',
       trigger: 'change',
     }],
   };
 
   // 打开modal
-  openModal(info) {
-    if (info) {
-      this.isEdit = true;
-      this.title = '驾驶员编辑';
-      this.form = { ...info };
-    }
-    debugger;
+  openModal(info = undefined) {
     this.open();
+    this.$nextTick(() => {
+      if (info) {
+        this.isEdit = true;
+        this.title = '驾驶员编辑';
+        this.form = { ...info };
+      } else {
+        this.isEdit = false;
+        this.title = '驾驶员添加';
+      }
+    });
   }
 
   // 提交
@@ -133,12 +146,11 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
                 this.$message.success('驾驶员信息提交成功！');
                 this.emitSubmitSuccess(res);
                 this.close();
+              }, (error) => {
+                this.$message.error('驾驶员信息提交失败！');
+                this.emitSubmitFail();
               });
         }
-      } else {
-        this.$message.error('驾驶员信息提交失败！');
-        this.emitSubmitFail();
-        this.close();
       }
     });
   }
@@ -147,6 +159,10 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   resetForm() {
     const { ruleForm }: any = this.$refs;
     ruleForm.resetFields();
+  }
+
+  afterClose() {
+    this.resetForm();
   }
 
   @Emit('submitSuccess')
