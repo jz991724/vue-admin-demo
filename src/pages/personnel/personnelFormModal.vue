@@ -72,6 +72,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   wrapperCol = { span: 14 };
 
+  isEdit = false;
+
   form = {
     name: undefined,
     licenseNumber: undefined,
@@ -103,28 +105,36 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   };
 
   // 打开modal
-  // openModal(params) {
-  //   const { ydbm } = params;
-  //   if (ydbm) {
-  //     this.open();
-  //
-  //     this.$nextTick(() => {
-  //       this.fetchData(ydbm);
-  //     });
-  //   }
-  // }
+  openModal(info) {
+    if (info) {
+      this.isEdit = true;
+      this.title = '驾驶员编辑';
+      this.form = { ...info };
+    }
+    debugger;
+    this.open();
+  }
 
   // 提交
   onSubmit() {
     const { ruleForm }: any = this.$refs;
     ruleForm.validate((valid) => {
       if (valid) {
-        personnelService.addPersonnel(this.form)
-            .then((res) => {
-              this.$message.success('驾驶员信息提交成功！');
-              this.emitSubmitSuccess(res);
-              this.close();
-            });
+        if (this.isEdit) {
+          personnelService.updatePersonnel(this.form)
+              .then((res) => {
+                this.$message.success('驾驶员信息更新成功！');
+                this.emitSubmitSuccess(res);
+                this.close();
+              });
+        } else {
+          personnelService.addPersonnel(this.form)
+              .then((res) => {
+                this.$message.success('驾驶员信息提交成功！');
+                this.emitSubmitSuccess(res);
+                this.close();
+              });
+        }
       } else {
         this.$message.error('驾驶员信息提交失败！');
         this.emitSubmitFail();

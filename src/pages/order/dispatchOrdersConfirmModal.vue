@@ -73,7 +73,8 @@ export default class DispatchOrdersConfirmModal extends Vue {
     {
       title: '乘客姓名',
       dataIndex: 'passengerName',
-      width: 100,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '用车日期',
@@ -102,21 +103,25 @@ export default class DispatchOrdersConfirmModal extends Vue {
       title: '上车地点',
       dataIndex: 'startAddress',
       width: 200,
+      ellipsis: true,
     },
     {
       title: '下车地点',
       dataIndex: 'destinationAddress',
       width: 200,
+      ellipsis: true,
     },
     {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
-      width: 100,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '客户名称',
       dataIndex: 'customerName',
-      width: 120,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '采购应付金',

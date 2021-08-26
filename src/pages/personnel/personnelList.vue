@@ -30,21 +30,13 @@
         <a-tag :color="tagColors[text]">{{ PersonnelStatusEnum[text].toString() }}</a-tag>
       </template>
 
-      <!--      <template slot="operation" slot-scope="{record}">-->
-      <!--        <a @click="onConfirmDispatch([record])"-->
-      <!--           :disabled="![OrderStatusEnum.待派单].includes(record.status)">派单</a>-->
-      <!--        <a-divider type="vertical"/>-->
-      <!--        <a-popconfirm title="确定取消" @confirm="onCancelDispatch(record)">-->
-      <!--          <a :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>-->
-      <!--        </a-popconfirm>-->
-      <!--        <a-divider type="vertical"/>-->
-      <!--        <a @click="onUpdateDispatch(record)"-->
-      <!--           :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">编辑</a>-->
-      <!--        <a-divider type="vertical"/>-->
-      <!--        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">-->
-      <!--          <a :disabled="[OrderStatusEnum.进行中].includes(record.status)">删除</a>-->
-      <!--        </a-popconfirm>-->
-      <!--      </template>-->
+      <template slot="operation" slot-scope="{record}">
+        <a @click="onUpdatePersonnel(record)">编辑</a>
+        <a-divider type="vertical"/>
+        <a-popconfirm title="确定删除" @confirm="onDeletePersonnel(record)">
+          <a>删除</a>
+        </a-popconfirm>
+      </template>
     </advance-table>
 
     <!--驾驶员添加modal-->
@@ -82,24 +74,20 @@ export default class PersonnelList extends Mixins(VueMixins) {
     {
       title: '姓名',
       dataIndex: 'name',
-      width: 100,
       searchAble: true,
     },
     {
       title: '性别',
-      width: 100,
       dataIndex: 'sex',
       scopedSlots: { customRender: 'sex' },
     },
     {
       title: '电话号码',
       dataIndex: 'phoneNumber',
-      width: 100,
     },
     {
       title: '车牌号',
       dataIndex: 'licenseNumber',
-      width: 100,
       searchAble: true,
     },
     // {
@@ -189,7 +177,6 @@ export default class PersonnelList extends Mixins(VueMixins) {
       // dataType: 'select',
       // slots: { title: 'statusTitle' },
       scopedSlots: { customRender: 'status' },
-      width: 100,
       // search: {
       //   selectOptions: [
       //     {
@@ -217,6 +204,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
     //     },
     //   },
     // },
+
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      width: 200,
+      scopedSlots: { customRender: 'operation' },
+    },
   ];
 
   dataSource = [];
@@ -245,41 +239,14 @@ export default class PersonnelList extends Mixins(VueMixins) {
     },
   };
 
-  // 派单
-  // onConfirmDispatch(orders = []) {
-  //   console.log('所有要派的单:', orders);
-  //   this.openModal('dispatchOrdersConfirmModal', { orders });
-  // }
-
-  // 取消派单
-  // onCancelDispatch({ id }) {
-  //   if (id) {
-  //     orderService.updateOrderStatus({
-  //       ids: [id],
-  //       status: OrderStatusEnum.待派单,
-  //     })
-  //         .then((res) => {
-  //           debugger;
-  //           this.fetchData();
-  //         });
-  //   }
-  // }
-
   // 人员信息添加
   onAddPersonnel(personnel) {
     this.openModal('personnelFormModal');
   }
 
   // 人员信息更新
-  onUpdatePersonnel(order) {
-    console.log('所有要派的单:', order);
-    const {
-      personnelId,
-    } = order;
-    this.openModal('dispatchOrdersConfirmModal', {
-      orders: [order],
-      personnelId,
-    });
+  onUpdatePersonnel(personnel) {
+    this.openModal('personnelFormModal', personnel);
   }
 
   // 人员信息删除
@@ -323,7 +290,6 @@ export default class PersonnelList extends Mixins(VueMixins) {
   }
 
   onSearch(conditions, searchOptions) {
-    debugger;
     console.log(searchOptions);
 
     this.pagination.current = 1;

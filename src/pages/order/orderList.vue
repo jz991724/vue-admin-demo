@@ -94,7 +94,8 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '乘客姓名',
       dataIndex: 'passengerName',
-      width: 100,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '用车日期',
@@ -128,11 +129,13 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '上车地点',
       dataIndex: 'startAddress',
       width: 200,
+      ellipsis: true,
     },
     {
       title: '下车地点',
       dataIndex: 'destinationAddress',
       width: 200,
+      ellipsis: true,
     },
     {
       title: '驾驶员姓名',
@@ -159,7 +162,8 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '客户名称',
       dataIndex: 'customerName',
-      width: 120,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '车型',
@@ -175,6 +179,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '预订人',
       dataIndex: 'reservationPeople',
       width: 120,
+      ellipsis: true,
     },
     {
       title: '乘客电话',
@@ -212,7 +217,8 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '备注',
       dataIndex: 'remark',
-      width: 100,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: '车队',

@@ -36,9 +36,9 @@ export default class ModalMixins extends Vue {
         footer: null,
     };
 
-    openModal() {
-        this.open();
-    }
+    // openModal() {
+    //     this.open();
+    // }
 
     open() {
         this.visible = true;
