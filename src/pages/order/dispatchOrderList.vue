@@ -39,8 +39,8 @@
                                    @success="onDispatchOrderListSuccess"></dispatch-orders-confirm-modal>
 
     <!--文件导入数据成功确认modal-->
-    <import-data-confirm-modal ref="importDataConfirmModal"
-                               @confirm="onImportDataConfirm"></import-data-confirm-modal>
+    <!--    <import-data-confirm-modal ref="importDataConfirmModal"-->
+    <!--                               @confirm="onImportDataConfirm"></import-data-confirm-modal>-->
   </div>
 </template>
 
@@ -184,34 +184,34 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'passengerPhone',
       width: 120,
     },
-    {
-      searchAble: true,
-      dataIndex: 'status',
-      dataType: 'select',
-      slots: { title: 'statusTitle' },
-      scopedSlots: { customRender: 'status' },
-      width: 100,
-      search: {
-        selectOptions: [
-          {
-            title: '待派单',
-            value: OrderStatusEnum.待派单,
-          },
-          {
-            title: '待接单',
-            value: OrderStatusEnum.待接单,
-          },
-          {
-            title: '进行中',
-            value: OrderStatusEnum.进行中,
-          },
-          {
-            title: '已结束',
-            value: OrderStatusEnum.已结束,
-          },
-        ],
-      },
-    },
+    // {
+    // searchAble: true,
+    // dataIndex: 'status',
+    // dataType: 'select',
+    // slots: { title: 'statusTitle' },
+    // scopedSlots: { customRender: 'status' },
+    // width: 100,
+    // search: {
+    //   selectOptions: [
+    //     {
+    //       title: '待派单',
+    //       value: OrderStatusEnum.待派单,
+    //     },
+    //     {
+    //       title: '待接单',
+    //       value: OrderStatusEnum.待接单,
+    //     },
+    //     {
+    //       title: '进行中',
+    //       value: OrderStatusEnum.进行中,
+    //     },
+    //     {
+    //       title: '已结束',
+    //       value: OrderStatusEnum.已结束,
+    //     },
+    //   ],
+    // },
+    // },
     {
       title: '备注',
       dataIndex: 'remark',
@@ -320,8 +320,9 @@ export default class OrderList extends Mixins(VueMixins) {
         temp_dataSource = [...this.importFileData];
         break;
     }
+    debugger;
     // 数据导入
-    orderService.addOrders(temp_dataSource)
+    orderService.importOrders(temp_dataSource)
         .then((importRecordCount) => {
           debugger;
           importRecordCount = Number(importRecordCount) || 0;
@@ -373,13 +374,35 @@ export default class OrderList extends Mixins(VueMixins) {
   // 上传成功
   uploadSuccess(importFileData) {
     this.importFileData = importFileData;
-    this.openModal('importDataConfirmModal');
+    // this.openModal('importDataConfirmModal');
+    const self = this;
+    this.$confirm({
+      title: '提示',
+      content: '是否确定导入新数据？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        // 数据导入
+        orderService.importOrders(importFileData)
+            .then((importRecordCount) => {
+              debugger;
+              importRecordCount = Number(importRecordCount) || 0;
+              if (importRecordCount === importFileData.length) {
+                self.$message.success(`成功导入 ${importRecordCount} 条数据！`);
+              } else {
+                self.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(importFileData.length - importRecordCount)} 条！`);
+              }
+              this.refreshDataSource();
+            }, (error) => {
+              console.error('数据导入错误：', error);
+              self.$message.error('数据导入失败！');
+            });
+      },
+    });
   }
 
   onSearch(conditions, searchOptions) {
-    console.log(searchOptions);
     this.conditions = { ...this.conditions, ...conditions };
-    debugger;
     this.refreshDataSource();
   }
 
@@ -402,26 +425,9 @@ export default class OrderList extends Mixins(VueMixins) {
 
   // 派单成功
   onDispatchOrderListSuccess(dispatchOrderIds = []) {
-    this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
+    // this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
+    this.refreshDataSource();
     this.dispatchOrderList = [];
-  }
-
-  getTableDataSource() {
-    const { conditions } = this;
-    const conditionsKeys = Object.keys(conditions);
-    this.dataSource = this.dataSource.filter((item) => {
-      let isTrue = true;
-      conditionsKeys.forEach((key) => {
-        isTrue = item[key] === conditions[key];
-        if (!isTrue) {
-          return false;
-        }
-
-        return isTrue;
-      });
-
-      return isTrue;
-    });
   }
 
   created() {
