@@ -11,6 +11,18 @@
            @ok="handleOk"
            @cancel="handleCancel">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
+      <c-upload
+          :show-icon="uploadConfig.showIcon"
+          name="file"
+          :accept="uploadConfig.accept"
+          :text="uploadConfig.text"
+          :showUploadList="uploadConfig.showUploadList"
+          :multiple="uploadConfig.multiple"
+          :data="uploadParams"
+          :action="uploadConfig.url"
+          :fileList="uploadConfig.fileList"
+          @change="handleChange"
+          class="margin-left-xs"></c-upload>
       <a-form-model
           ref="ruleForm"
           :model="form"
@@ -62,8 +74,12 @@ import VueMixins from '@/pages/mixins/vueMixins';
 import { SexEnum } from '@/services/personnel';
 import ModalMixins from '@/pages/mixins/modalMixins';
 import { personnelService } from '@/services';
+import CUpload from '@/components/file/cUpload.vue';
 
-@Component({ name: 'AddPersonnelForm' })
+@Component({
+  name: 'AddPersonnelForm',
+  components: { CUpload },
+})
 export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   title = '驾驶员添加';
 
@@ -111,6 +127,18 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       message: '请输入正确的电话号码',
       trigger: 'change',
     }],
+  };
+
+  uploadConfig = {
+    // url: `${AppConsts.apiBaseUrl}calc/upload`,
+    url: '/api/FileUpload/UploadFile',
+    showIcon: false,
+    showUploadList: false,
+    multiple: true,
+    text: '导入',
+    downloadAllLink: '',
+    accept: '.xls,.xlsx',
+    fileList: [],
   };
 
   // 打开modal
