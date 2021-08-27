@@ -26,25 +26,62 @@
       </template>
 
       <template slot="operation" slot-scope="{record}">
+        <!--派单-->
         <a @click="onConfirmDispatch([record])"
            :disabled="![OrderStatusEnum.待派单].includes(record.status)">派单</a>
+
+        <!--取消派单-->
         <a-divider type="vertical"/>
         <a-popconfirm title="确定取消" @confirm="onCancelDispatch(record)">
           <a :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>
         </a-popconfirm>
+
+        <!--更改派单-->
         <a-divider type="vertical"/>
         <a @click="onUpdateDispatch(record)"
-           :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">编辑</a>
-        <a-divider type="vertical"/>
-        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
-          <a :disabled="[OrderStatusEnum.进行中].includes(record.status)">删除</a>
-        </a-popconfirm>
+           :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">更改派单</a>
+
+        <!--编辑-->
+        <!--        <template v-if="[OrderStatusEnum.待派单].includes(record.status)">-->
+        <!--          <a-divider type="vertical"/>-->
+        <!--          <a @click="onUpdateOrder(record)">编辑</a>-->
+        <!--        </template>-->
+
+        <!--删除-->
+        <!--        <a-divider type="vertical"/>-->
+        <!--        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">-->
+        <!--          <a :disabled="[OrderStatusEnum.进行中].includes(record.status)">删除</a>-->
+        <!--        </a-popconfirm>-->
+
+        <template v-if="[OrderStatusEnum.待派单].includes(record.status)||![OrderStatusEnum.进行中].includes(record.status)">
+          <a-divider type="vertical"/>
+          <a-dropdown>
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+              更多
+              <a-icon type="down"/>
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item v-if="[OrderStatusEnum.待派单].includes(record.status)">
+                <a @click="onUpdateOrder(record)">编辑</a>
+              </a-menu-item>
+
+              <a-menu-item v-if="![OrderStatusEnum.进行中].includes(record.status)">
+                <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
+                  <a>删除</a>
+                </a-popconfirm>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </template>
       </template>
     </advance-table>
 
     <!--订单派发确认modal-->
     <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
                                    @success="onDispatchSuccess"></dispatch-orders-confirm-modal>
+
+    <!--订单的编辑及添加modal-->
+    <order-form-modal ref="orderFormModal"></order-form-modal>
   </div>
 </template>
 
@@ -55,10 +92,12 @@ import { orderService } from '@/services';
 import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import { OrderStatusEnum } from '@/services/order';
+import OrderFormModal from '@/pages/order/orderFormModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    OrderFormModal,
     DispatchOrdersConfirmModal,
     AdvanceTable,
   },
@@ -228,7 +267,8 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 230,
+      width: 280,
+      fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
 
@@ -318,6 +358,11 @@ export default class OrderList extends Mixins(VueMixins) {
   // 订单派发成功
   onDispatchSuccess() {
     this.fetchData();
+  }
+
+  // 编辑订单信息
+  onUpdateOrder(order) {
+    this.openModal('orderFormModal', order);
   }
 
   fetchData() {

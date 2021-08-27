@@ -32,6 +32,20 @@
         </a-button>
       </div>
 
+      <template slot="operation" slot-scope="{record}">
+        <!--派单-->
+        <a @click="onConfirmDispatch([record])">派单</a>
+
+        <!--编辑-->
+        <a-divider type="vertical"/>
+        <a @click="onUpdateOrder(record)">编辑</a>
+
+        <!--删除-->
+        <a-divider type="vertical"/>
+        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
+          <a>删除</a>
+        </a-popconfirm>
+      </template>
     </advance-table>
 
     <!--订单派发确认modal-->
@@ -41,6 +55,9 @@
     <!--文件导入数据成功确认modal-->
     <!--    <import-data-confirm-modal ref="importDataConfirmModal"-->
     <!--                               @confirm="onImportDataConfirm"></import-data-confirm-modal>-->
+
+    <!--订单的编辑及添加modal-->
+    <order-form-modal ref="orderFormModal"></order-form-modal>
   </div>
 </template>
 
@@ -55,10 +72,12 @@ import VueMixins from '@/pages/mixins/vueMixins';
 import ImportDataConfirmModal from '@/pages/order/importDataConfirmModal.vue';
 import { OrderStatusEnum } from '@/services/order';
 import FileUpload from '@/components/file/fileUpload.vue';
+import OrderFormModal from '@/pages/order/orderFormModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    OrderFormModal,
     FileUpload,
     ImportDataConfirmModal,
     DispatchOrdersConfirmModal,
@@ -222,6 +241,13 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '车队',
       dataIndex: 'motorcade',
       width: 80,
+    },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      width: 280,
+      fixed: 'right',
+      scopedSlots: { customRender: 'operation' },
     },
 
     // {
@@ -414,6 +440,27 @@ export default class OrderList extends Mixins(VueMixins) {
   onReset(conditions) {
     this.conditions = { ...this.conditions, ...conditions };
     this.refreshDataSource();
+  }
+
+  // 派单
+  onConfirmDispatch(orders = []) {
+    console.log('所有要派的单:', orders);
+    this.openModal('dispatchOrdersConfirmModal', { orders });
+  }
+
+  // 编辑订单信息
+  onUpdateOrder(order) {
+    this.openModal('orderFormModal', order);
+  }
+
+  // 派单信息删除
+  onDeleteDispatch({ id }) {
+    if (id) {
+      orderService.deleteOrder([id])
+          .then((res) => {
+            this.fetchData();
+          });
+    }
   }
 
   // 派单
