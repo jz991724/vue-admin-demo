@@ -380,6 +380,7 @@ export default class OrderList extends Mixins(VueMixins) {
       orderField: undefined,
     };
     this.dataSource = [];
+    debugger;
     orderService.fetchOrderList(params, this.conditions)
         .then(({
                  items,
@@ -409,7 +410,7 @@ export default class OrderList extends Mixins(VueMixins) {
       cancelText: '取消',
       onOk() {
         // 数据导入
-        orderService.importOrders(importFileData)
+        orderService.addOrders(importFileData)
             .then((importRecordCount) => {
               debugger;
               importRecordCount = Number(importRecordCount) || 0;
@@ -418,7 +419,7 @@ export default class OrderList extends Mixins(VueMixins) {
               } else {
                 self.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(importFileData.length - importRecordCount)} 条！`);
               }
-              this.refreshDataSource();
+              self.refreshDataSource();
             }, (error) => {
               console.error('数据导入错误：', error);
               self.$message.error('数据导入失败！');
