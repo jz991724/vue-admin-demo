@@ -300,7 +300,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   dataSource = [];
 
-  conditions = {};
+  conditions = { status: OrderStatusEnum.待派单 };
 
   pagination = {
     current: 1,
