@@ -1,8 +1,8 @@
 <template>
   <div class="chart-trend">
-    {{term}}
-    <span>{{rate}}%</span>
-    <span :class="['chart-trend-icon', trend]" style=""><a-icon :type="'caret-' + trend" /></span>
+    {{ term }}
+    <span>{{ rate }}%</span>
+    <span :class="['chart-trend-icon', trend]" style=""><a-icon :type="'caret-' + trend"/></span>
   </div>
 </template>
 
@@ -63,17 +63,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .chart-trend{
-    display: inline-block;
-    font-size: 14px;
-    .chart-trend-icon{
-      font-size: 12px;
-      &.up{
-        color: @red-6;
-      }
-      &.down{
-        color: @green-6;
-      }
+.chart-trend {
+  display: inline-block;
+  font-size: 14px;
+
+  .chart-trend-icon {
+    font-size: 12px;
+
+    &.up {
+      color: @red-6;
+    }
+
+    &.down {
+      color: @green-6;
     }
   }
+}
 </style>

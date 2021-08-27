@@ -26,6 +26,31 @@ const options = {
             component: TabsView,
             redirect: '/login',
             children: [
+                {
+                    path: 'dashboard',
+                    name: '分析',
+                    meta: {
+                        icon: 'dashboard'
+                    },
+                    component: BlankView,
+                    children: [
+                        // {
+                        //     path: 'workplace',
+                        //     name: '工作台',
+                        //     meta: {
+                        //         page: {
+                        //             closable: false
+                        //         }
+                        //     },
+                        //     component: () => import('@/pages/dashboard/workplace'),
+                        // },
+                        {
+                            path: 'analysis',
+                            name: '分析页',
+                            component: () => import('@/pages/dashboard/analysis'),
+                        }
+                    ]
+                },
                 // {
                 //     path: 'demo',
                 //     name: '演示页',
@@ -38,7 +63,7 @@ const options = {
                     path: 'order',
                     name: '订单',
                     meta: {
-                        icon: 'dashboard',
+                        icon: 'form',
                     },
                     component: BlankView,
                     children: [
