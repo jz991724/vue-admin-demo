@@ -57,7 +57,7 @@
     <!--                               @confirm="onImportDataConfirm"></import-data-confirm-modal>-->
 
     <!--订单的编辑及添加modal-->
-    <order-form-modal ref="orderFormModal"></order-form-modal>
+    <order-form-modal ref="orderFormModal" @submitSuccess="refreshDataSource()"></order-form-modal>
   </div>
 </template>
 
@@ -294,7 +294,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   dataSource = [];
 
-  conditions = { status: OrderStatusEnum.待派单 };
+  conditions = {};
 
   pagination = {
     current: 1,
@@ -307,14 +307,12 @@ export default class OrderList extends Mixins(VueMixins) {
     onChange: (page, pageSize) => {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
-      // this.getGoodList();
-      // this.fetchData();
+      this.fetchData();
     },
     onShowSizeChange: (current, size) => {
       this.pagination.current = 1;
       this.pagination.pageSize = size;
-      // this.getGoodList();
-      // this.fetchData();
+      this.fetchData();
     },
   };
 
@@ -333,33 +331,33 @@ export default class OrderList extends Mixins(VueMixins) {
     this.dispatchOrderList = selectedRows;
   }
 
-  onImportDataConfirm(importType) {
-    let temp_dataSource = [];
-    switch (importType) {
-      case 'push':
-        temp_dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
-        break;
-      case 'unshift':
-        temp_dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
-        break;
-      default:
-        temp_dataSource = [...this.importFileData];
-        break;
-    }
-    debugger;
-    // 数据导入
-    orderService.importOrders(temp_dataSource)
-        .then((importRecordCount) => {
-          debugger;
-          importRecordCount = Number(importRecordCount) || 0;
-          if (importRecordCount === temp_dataSource.length) {
-            this.$message.success(`成功导入 ${importRecordCount} 条数据！`);
-          } else {
-            this.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(temp_dataSource.length - importRecordCount)} 条！`);
-          }
-          this.refreshDataSource();
-        });
-  }
+  // onImportDataConfirm(importType) {
+  //   let temp_dataSource = [];
+  //   switch (importType) {
+  //     case 'push':
+  //       temp_dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
+  //       break;
+  //     case 'unshift':
+  //       temp_dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
+  //       break;
+  //     default:
+  //       temp_dataSource = [...this.importFileData];
+  //       break;
+  //   }
+  //   debugger;
+  //   // 数据导入
+  //   orderService.importOrders(temp_dataSource)
+  //       .then((importRecordCount) => {
+  //         debugger;
+  //         importRecordCount = Number(importRecordCount) || 0;
+  //         if (importRecordCount === temp_dataSource.length) {
+  //           this.$message.success(`成功导入 ${importRecordCount} 条数据！`);
+  //         } else {
+  //           this.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(temp_dataSource.length - importRecordCount)} 条！`);
+  //         }
+  //         this.refreshDataSource();
+  //       });
+  // }
 
   // 用户手动选择/取消选择某列的回调
   // onSelectRow(record, selected, selectedRows) {
@@ -380,7 +378,6 @@ export default class OrderList extends Mixins(VueMixins) {
       orderField: undefined,
     };
     this.dataSource = [];
-    debugger;
     orderService.fetchOrderList(params, this.conditions)
         .then(({
                  items,
@@ -393,7 +390,9 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   refreshDataSource() {
-    this.pagination.current = 0;
+    debugger;
+    this.dispatchOrderList = [];
+    this.pagination.current = 1;
     this.pagination.total = 0;
     this.fetchData();
   }
@@ -475,7 +474,6 @@ export default class OrderList extends Mixins(VueMixins) {
   onDispatchOrderListSuccess(dispatchOrderIds = []) {
     // this.dataSource = this.dataSource.filter(({ id }) => !dispatchOrderIds.includes(id));
     this.refreshDataSource();
-    this.dispatchOrderList = [];
   }
 
   created() {

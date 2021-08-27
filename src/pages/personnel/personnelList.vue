@@ -228,26 +228,22 @@ export default class PersonnelList extends Mixins(VueMixins) {
     onChange: (page, pageSize) => {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
-      // this.getGoodList();
       this.fetchData();
     },
     onShowSizeChange: (current, size) => {
       this.pagination.current = 1;
       this.pagination.pageSize = size;
-      // this.getGoodList();
       this.fetchData();
     },
   };
 
   // 人员信息添加
   onAddPersonnel(personnel) {
-    debugger;
     this.openModal('personnelFormModal');
   }
 
   // 人员信息更新
   onUpdatePersonnel(personnel) {
-    debugger;
     this.openModal('personnelFormModal', personnel);
   }
 
@@ -292,15 +288,12 @@ export default class PersonnelList extends Mixins(VueMixins) {
   }
 
   onSearch(conditions, searchOptions) {
-    console.log(searchOptions);
-
     this.pagination.current = 1;
     this.conditions = conditions;
     this.fetchData();
   }
 
   onRefresh(conditions) {
-    debugger;
     this.conditions = conditions;
     this.fetchData();
   }

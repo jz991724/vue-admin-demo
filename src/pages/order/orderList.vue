@@ -81,7 +81,7 @@
                                    @success="onDispatchSuccess"></dispatch-orders-confirm-modal>
 
     <!--订单的编辑及添加modal-->
-    <order-form-modal ref="orderFormModal"></order-form-modal>
+    <order-form-modal ref="orderFormModal" @submitSuccess="fetchData()"></order-form-modal>
   </div>
 </template>
 
@@ -302,13 +302,11 @@ export default class OrderList extends Mixins(VueMixins) {
     onChange: (page, pageSize) => {
       this.pagination.current = page;
       this.pagination.pageSize = pageSize;
-      // this.getGoodList();
       this.fetchData();
     },
     onShowSizeChange: (current, size) => {
       this.pagination.current = 1;
       this.pagination.pageSize = size;
-      // this.getGoodList();
       this.fetchData();
     },
   };
@@ -327,7 +325,6 @@ export default class OrderList extends Mixins(VueMixins) {
         status: OrderStatusEnum.待派单,
       })
           .then((res) => {
-            debugger;
             this.fetchData();
           });
     }
@@ -357,7 +354,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   // 订单派发成功
   onDispatchSuccess() {
-    this.fetchData();
+    this.refreshDataSource();
   }
 
   // 编辑订单信息
@@ -390,21 +387,25 @@ export default class OrderList extends Mixins(VueMixins) {
         });
   }
 
-  onSearch(conditions, searchOptions) {
-    console.log(searchOptions);
+  refreshDataSource() {
     this.pagination.current = 1;
-    this.conditions = conditions;
+    this.pagination.total = 0;
     this.fetchData();
+  }
+
+  onSearch(conditions, searchOptions) {
+    this.conditions = conditions;
+    this.refreshDataSource();
   }
 
   onRefresh(conditions) {
     this.conditions = conditions;
-    this.fetchData();
+    this.refreshDataSource();
   }
 
   onReset(conditions) {
     this.conditions = conditions;
-    this.fetchData();
+    this.refreshDataSource();
   }
 
   created() {
