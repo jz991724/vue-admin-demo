@@ -21,6 +21,12 @@
         <a-icon style="margin: 0 4px" type="info-circle"/>
       </template>
 
+      <div slot="extra" style="display: flex;justify-content: end;">
+        <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
+          新增
+        </a-button>
+      </div>
+
       <template slot="status" slot-scope="{text}">
         <a-tag :color="tagColors[text]">{{ OrderStatusEnum[text].toString() }}</a-tag>
       </template>
@@ -355,6 +361,11 @@ export default class OrderList extends Mixins(VueMixins) {
   // 订单派发成功
   onDispatchSuccess() {
     this.refreshDataSource();
+  }
+
+  // 新增订单信息
+  onAddOrder() {
+    this.openModal('orderFormModal');
   }
 
   // 编辑订单信息

@@ -30,6 +30,12 @@
                   :disabled="dispatchOrderList.length<1">
           派单
         </a-button>
+
+        <div slot="extra" style="display: flex;justify-content: end;">
+          <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
+            新增
+          </a-button>
+        </div>
       </div>
 
       <template slot="operation" slot-scope="{record}">
@@ -446,6 +452,11 @@ export default class OrderList extends Mixins(VueMixins) {
   onConfirmDispatch(orders = []) {
     console.log('所有要派的单:', orders);
     this.openModal('dispatchOrdersConfirmModal', { orders });
+  }
+
+  // 新增订单信息
+  onAddOrder() {
+    this.openModal('orderFormModal');
   }
 
   // 编辑订单信息
