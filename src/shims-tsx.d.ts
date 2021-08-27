@@ -13,6 +13,7 @@ declare module 'vue/types/vue' {
         $message: any;
         $router: any;
         $refs: any;
+        $style: any;
     }
 }
 

@@ -11,25 +11,13 @@
            @ok="handleOk"
            @cancel="handleCancel">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
-      <c-upload
-          :show-icon="uploadConfig.showIcon"
-          name="file"
-          :accept="uploadConfig.accept"
-          :text="uploadConfig.text"
-          :showUploadList="uploadConfig.showUploadList"
-          :multiple="uploadConfig.multiple"
-          :data="uploadParams"
-          :action="uploadConfig.url"
-          :fileList="uploadConfig.fileList"
-          @change="handleChange"
-          class="margin-left-xs"></c-upload>
       <a-form-model
           ref="ruleForm"
           :model="form"
           :rules="rules"
           :label-col="labelCol"
           :wrapper-col="wrapperCol">
-        <a-form-model-item ref="name" label="姓名" prop="name">
+        <a-form-model-item label="姓名" prop="name">
           <a-input v-model="form.name"/>
         </a-form-model-item>
         <a-form-model-item label="电话号码" prop="phoneNumber">
@@ -55,6 +43,15 @@
         <a-form-model-item label="车牌号" prop="licenseNumber">
           <a-input v-model="form.licenseNumber"/>
         </a-form-model-item>
+        <a-form-model-item label="身份证照片" prop="sfzImage">
+          <image-upload v-model="form.sfzImage" :max-count="2"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="驾照照片" prop="jzImage">
+          <image-upload v-model="form.jzImage" :max-count="2"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="行车证照片" prop="xczImage">
+          <image-upload v-model="form.xczImage" :max-count="2"></image-upload>
+        </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">
             提交
@@ -69,16 +66,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Emit } from 'vue-property-decorator';
+import {
+  Component, Mixins, Emit, Watch,
+} from 'vue-property-decorator';
 import VueMixins from '@/pages/mixins/vueMixins';
 import { SexEnum } from '@/services/personnel';
 import ModalMixins from '@/pages/mixins/modalMixins';
 import { personnelService } from '@/services';
 import CUpload from '@/components/file/cUpload.vue';
+import FileUpload from '@/components/file/ImageUpload.vue';
+import ImageUpload from '@/components/file/ImageUpload.vue';
 
 @Component({
   name: 'AddPersonnelForm',
-  components: { CUpload },
+  components: {
+    ImageUpload,
+    FileUpload,
+    CUpload,
+  },
 })
 export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   title = '驾驶员添加';
@@ -92,6 +97,9 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   isEdit = false;
 
   form: any = {
+    sfzImage: [],
+    jzImage: [],
+    xczImage: [],
     name: undefined,
     licenseNumber: undefined,
     sex: 0,
@@ -102,6 +110,18 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   };
 
   rules = {
+    sfzImage: [{
+      required: true,
+      message: '请上传身份证照片',
+    }],
+    jzImage: [{
+      required: true,
+      message: '请上传驾照照片',
+    }],
+    xczImage: [{
+      required: true,
+      message: '请上传行车证照片',
+    }],
     name: [
       {
         required: true,
@@ -127,18 +147,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       message: '请输入正确的电话号码',
       trigger: 'change',
     }],
-  };
-
-  uploadConfig = {
-    // url: `${AppConsts.apiBaseUrl}calc/upload`,
-    url: '/api/FileUpload/UploadFile',
-    showIcon: false,
-    showUploadList: false,
-    multiple: true,
-    text: '导入',
-    downloadAllLink: '',
-    accept: '.xls,.xlsx',
-    fileList: [],
   };
 
   // 打开modal
@@ -207,4 +215,21 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
 <style scoped>
 
+</style>
+
+<style scoped>
+/* tile uploaded pictures */
+.upload-list-inline >>> .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
+
+.upload-list-inline >>> .ant-upload-animate-enter {
+  animation-name: uploadAnimateInlineIn;
+}
+
+.upload-list-inline >>> .ant-upload-animate-leave {
+  animation-name: uploadAnimateInlineOut;
+}
 </style>

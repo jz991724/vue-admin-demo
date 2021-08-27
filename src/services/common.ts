@@ -1,8 +1,9 @@
 import { requestHelper, METHOD } from '@/utils/request';
 
 const common = {
-    dispatchOrder(params) { // 派单
-        return requestHelper('/api/OrderInfo/AssignOrder', METHOD.POST, params, this);
+    uploadFile(params) { // 文件上传
+        debugger;
+        return requestHelper('/api/FileUpload/UploadFile', METHOD.POST, params, this);
     },
 };
 

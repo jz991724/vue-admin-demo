@@ -50,18 +50,18 @@ import {
 } from 'vue-property-decorator';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { orderService } from '@/services';
-import FileUpload from '@/components/file/fileUpload.vue';
 import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ImportDataConfirmModal from '@/pages/order/importDataConfirmModal.vue';
 import { OrderStatusEnum } from '@/services/order';
+import FileUpload from '@/components/file/fileUpload.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    FileUpload,
     ImportDataConfirmModal,
     DispatchOrdersConfirmModal,
-    FileUpload,
     AdvanceTable,
   },
 })

@@ -9,10 +9,7 @@
   </div>
 </template>
 <script lang="ts">
-// import '@riophae/vue-treeselect/dist/vue-treeselect.css';
-import {
-  Component, Vue, Inject, Prop, Watch,
-} from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import axios from 'axios';
 import VueMixins from '@/pages/mixins/vueMixins';
 
@@ -27,14 +24,12 @@ export default class CUpload extends VueMixins {
   @Prop({
     type: Boolean,
     default: true,
-  })
-  showIcon: boolean;
+  }) showIcon: boolean;
 
   @Prop({
     type: String,
     default: '',
-  })
-  text: string;
+  }) text: string;
 
   /**
    * 是否启用分片上传,默认不启用
@@ -64,23 +59,22 @@ export default class CUpload extends VueMixins {
           });
     }
     formData.append(filename, file);
-    axios
-        .post(action, formData, {
-          withCredentials,
-          headers,
-          onUploadProgress: ({
-                               total,
-                               loaded,
-                             }) => {
-            onProgress(
-                {
-                  percent: Math.round((loaded / total) * 100)
-                      .toFixed(2),
-                },
-                file,
-            );
-          },
-        })
+    axios.post(action, formData, {
+      withCredentials,
+      headers,
+      onUploadProgress: ({
+                           total,
+                           loaded,
+                         }) => {
+        onProgress(
+            {
+              percent: Math.round((loaded / total) * 100)
+                  .toFixed(2),
+            },
+            file,
+        );
+      },
+    })
         .then(({ data: response }) => {
           onSuccess(response, file);
         })
