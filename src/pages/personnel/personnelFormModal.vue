@@ -20,16 +20,6 @@
         <a-form-model-item label="姓名" prop="name">
           <a-input v-model="form.name"/>
         </a-form-model-item>
-        <a-form-model-item label="电话号码" prop="phoneNumber">
-          <a-input v-model="form.phoneNumber"/>
-        </a-form-model-item>
-        <a-form-model-item label="入司时间" prop="joinDate">
-          <a-date-picker v-model="form.joinDate"
-                         show-time
-                         type="date"
-                         placeholder="请选择入司时间"
-                         style="width: 100%;"/>
-        </a-form-model-item>
         <a-form-model-item label="性别" prop="sex">
           <a-radio-group v-model="form.sex">
             <a-radio :value="SexEnum.男">
@@ -40,17 +30,58 @@
             </a-radio>
           </a-radio-group>
         </a-form-model-item>
+        <a-form-model-item label="电话号码" prop="phoneNumber">
+          <a-input v-model="form.phoneNumber"/>
+        </a-form-model-item>
+        <a-form-model-item label="入职时间" prop="entryTime">
+          <a-date-picker v-model="form.entryTime"
+                         show-time
+                         type="time"
+                         placeholder="请选择入职时间"
+                         style="width: 100%;"/>
+        </a-form-model-item>
         <a-form-model-item label="车牌号" prop="licenseNumber">
           <a-input v-model="form.licenseNumber"/>
         </a-form-model-item>
-        <a-form-model-item label="身份证照片" prop="sfzImage">
-          <image-upload v-model="form.sfzImage" :max-count="2"></image-upload>
+        <a-form-model-item label="车型" prop="carType">
+          <a-input v-model="form.carType"/>
         </a-form-model-item>
-        <a-form-model-item label="驾照照片" prop="jzImage">
-          <image-upload v-model="form.jzImage" :max-count="2"></image-upload>
+        <a-form-model-item label="车型分类" prop="vehicleClass">
+          <a-input v-model="form.vehicleClass"/>
         </a-form-model-item>
-        <a-form-model-item label="行车证照片" prop="xczImage">
-          <image-upload v-model="form.xczImage" :max-count="2"></image-upload>
+        <a-form-model-item label="组别" prop="group">
+          <a-input v-model="form.group"/>
+        </a-form-model-item>
+        <a-form-model-item label="人员类型" prop="type">
+          <a-input v-model="form.type"/>
+        </a-form-model-item>
+        <a-form-model-item label="车俩登记时间" prop="carRegisterTime">
+          <a-date-picker v-model="form.carRegisterTime"
+                         show-time
+                         type="time"
+                         placeholder="请选择车俩登记时间"
+                         style="width: 100%;"/>
+        </a-form-model-item>
+        <a-form-model-item label="住址" prop="address">
+          <a-input v-model="form.address" :max="100"/>
+        </a-form-model-item>
+        <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
+          <image-upload v-model="form.identityCardFrontPath"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="身份证反面" prop="identityCardBackPath">
+          <image-upload v-model="form.identityCardBackPath"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="驾驶证正页" prop="drivingLicenceFrontPath">
+          <image-upload v-model="form.drivingLicenceFrontPath"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="驾驶证副页" prop="drivingLicenceBackPath">
+          <image-upload v-model="form.drivingLicenceBackPath"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="行车证正页" prop="vehicleLicenceFrontPath">
+          <image-upload v-model="form.vehicleLicenceFrontPath"></image-upload>
+        </a-form-model-item>
+        <a-form-model-item label="行车证副页" prop="vehicleLicenceBackPath">
+          <image-upload v-model="form.vehicleLicenceBackPath"></image-upload>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">
@@ -97,30 +128,50 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   isEdit = false;
 
   form: any = {
-    sfzImage: [],
-    jzImage: [],
-    xczImage: [],
     name: undefined,
     licenseNumber: undefined,
     sex: 0,
-    joinDate: undefined,
+    entryTime: undefined,
+    carRegisterTime: undefined,
     phoneNumber: undefined,
-    type: 0,
-    status: 0,
+    address: '',
+    identityCardFrontPath: [],
+    identityCardBackPath: [],
+    drivingLicenceFrontPath: [],
+    drivingLicenceBackPath: [],
+    vehicleLicenceFrontPath: [],
+    vehicleLicenceBackPath: [],
+    type: undefined,
+    group: undefined,
+    vehicleClass: undefined,
+    carType: undefined,
+
   };
 
   rules = {
-    sfzImage: [{
+    identityCardFrontPath: [{
       required: true,
-      message: '请上传身份证照片',
+      message: '请上传身份证正面照片',
     }],
-    jzImage: [{
+    identityCardBackPath: [{
       required: true,
-      message: '请上传驾照照片',
+      message: '请上传身份证反面照片',
     }],
-    xczImage: [{
+    drivingLicenceFrontPath: [{
       required: true,
-      message: '请上传行车证照片',
+      message: '请上传驾驶证正页照片',
+    }],
+    drivingLicenceBackPath: [{
+      required: true,
+      message: '请上传驾驶证副页照片',
+    }],
+    vehicleLicenceFrontPath: [{
+      required: true,
+      message: '请上传行车证正页照片',
+    }],
+    vehicleLicenceBackPath: [{
+      required: true,
+      message: '请上传行车证副页照片',
     }],
     name: [
       {
@@ -164,20 +215,61 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     });
   }
 
+  formatData(temp_data) {
+    const {
+      identityCardFrontPath,
+      identityCardBackPath,
+      drivingLicenceFrontPath,
+      drivingLicenceBackPath,
+      vehicleLicenceFrontPath,
+      vehicleLicenceBackPath,
+    } = temp_data;
+
+    const dic = {
+      identityCardFrontPath,
+      identityCardBackPath,
+      drivingLicenceFrontPath,
+      drivingLicenceBackPath,
+      vehicleLicenceFrontPath,
+      vehicleLicenceBackPath,
+    };
+
+    Object.keys(dic)
+        .forEach((key) => {
+          if (dic[key]?.length > 0) {
+            debugger;
+            const [{ response: { wjlj } }] = dic[key] || [];
+            temp_data = {
+              ...temp_data,
+              [key]: wjlj,
+            };
+          } else {
+            temp_data = {
+              ...temp_data,
+              [key]: '',
+            };
+          }
+        });
+
+    return temp_data;
+  }
+
   // 提交
   onSubmit() {
+    debugger;
     const { ruleForm }: any = this.$refs;
+    const submitFormData = this.formatData(this.form);
     ruleForm.validate((valid) => {
       if (valid) {
         if (this.isEdit) {
-          personnelService.updatePersonnel(this.form)
+          personnelService.updatePersonnel(submitFormData)
               .then((res) => {
                 this.$message.success('驾驶员信息更新成功！');
                 this.emitSubmitSuccess(res);
                 this.close();
               });
         } else {
-          personnelService.addPersonnel(this.form)
+          personnelService.addPersonnel(submitFormData)
               .then((res) => {
                 this.$message.success('驾驶员信息提交成功！');
                 this.emitSubmitSuccess(res);

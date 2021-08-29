@@ -87,101 +87,62 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '姓名',
       dataIndex: 'name',
       searchAble: true,
+      width: 100,
     },
     {
       title: '性别',
       dataIndex: 'sex',
       scopedSlots: { customRender: 'sex' },
+      width: 80,
     },
     {
       title: '电话号码',
       dataIndex: 'phoneNumber',
+      width: 120,
     },
     {
       title: '车牌号',
       dataIndex: 'licenseNumber',
       searchAble: true,
+      width: 120,
     },
-    // {
-    //   title: '航班时间',
-    //   dataIndex: 'flightTime',
-    //   width: 100,
-    //   dataType: 'time',
-    // },
-    // {
-    //   title: '用车时间',
-    //   dataIndex: 'useCarTime',
-    //   width: 100,
-    //   dataType: 'time',
-    // },
-    // {
-    //   title: '产品类型',
-    //   dataIndex: 'productType',
-    //   width: 100,
-    // },
-    // {
-    //   title: '航班车次号',
-    //   dataIndex: 'flightNumber',
-    //   width: 120,
-    // },
-    // {
-    //   title: '上车地点',
-    //   dataIndex: 'startAddress',
-    //   width: 200,
-    // },
-    // {
-    //   title: '下车地点',
-    //   dataIndex: 'destinationAddress',
-    //   width: 200,
-    // },
-    //
-    // {
-    //   title: '驾驶员姓名',
-    //   dataIndex: 'driverName',
-    //   width: 110,
-    //   searchAble: true,
-    // },
-    // {
-    //   title: '驾驶员电话',
-    //   dataIndex: 'driverPhone',
-    //   width: 120,
-    // },
-    // {
-    //   title: '车牌',
-    //   dataIndex: 'licenseNumber',
-    //   width: 110,
-    //   searchAble: true,
-    // },
-    // {
-    //   title: '预定部门',
-    //   dataIndex: 'reservationDepartment',
-    //   width: 100,
-    // },
-    // {
-    //   title: '客户名称',
-    //   dataIndex: 'customerName',
-    //   width: 120,
-    // },
-    // {
-    //   title: '车型',
-    //   dataIndex: 'carType',
-    //   width: 80,
-    // },
-    // {
-    //   title: '采购应付金',
-    //   dataIndex: 'amountPayable',
-    //   width: 110,
-    // },
-    // {
-    //   title: '预订人',
-    //   dataIndex: 'reservationPeople',
-    //   width: 120,
-    // },
-    // {
-    //   title: '乘客电话',
-    //   dataIndex: 'passengerPhone',
-    //   width: 120,
-    // },
+    {
+      title: '车型',
+      dataIndex: 'carType',
+      width: 120,
+    },
+    {
+      title: '车型分类',
+      dataIndex: 'vehicleClass',
+      width: 120,
+    },
+    {
+      title: '组别',
+      dataIndex: 'group',
+      width: 120,
+    },
+    {
+      title: '入职时间',
+      dataIndex: 'entryTime',
+      width: 100,
+      dataType: 'time',
+    },
+    {
+      title: '车俩登记时间',
+      dataIndex: 'carRegisterTime',
+      dataType: 'time',
+      width: 120,
+    },
+    {
+      title: '住址',
+      dataIndex: 'address',
+      width: 150,
+    },
+    {
+      title: '人员类型',
+      dataIndex: 'type',
+      width: 150,
+    },
     {
       // searchAble: true,
       title: '状态',
@@ -189,6 +150,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       // dataType: 'select',
       // slots: { title: 'statusTitle' },
       scopedSlots: { customRender: 'status' },
+      width: 100,
       // search: {
       //   selectOptions: [
       //     {
@@ -202,25 +164,11 @@ export default class PersonnelList extends Mixins(VueMixins) {
       //   ],
       // },
     },
-
-    // {
-    //   title: '发货',
-    //   searchAble: true,
-    //   dataIndex: 'send',
-    //   dataType: 'boolean',
-    //   scopedSlots: { customRender: 'send' },
-    //   search: {
-    //     switchOptions: {
-    //       checkedText: '开',
-    //       uncheckedText: '关',
-    //     },
-    //   },
-    // },
-
     {
       title: '操作',
       dataIndex: 'operation',
       width: 200,
+      fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
   ];

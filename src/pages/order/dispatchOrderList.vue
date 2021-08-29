@@ -206,9 +206,9 @@ export default class OrderList extends Mixins(VueMixins) {
       width: 80,
     },
     {
-      title: '采购应付金',
+      title: '应付金额（元）',
       dataIndex: 'amountPayable',
-      width: 110,
+      width: 130,
     },
     {
       title: '预订人',
@@ -263,7 +263,7 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 280,
+      width: 150,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
