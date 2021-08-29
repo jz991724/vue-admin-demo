@@ -72,6 +72,18 @@ export default class PersonnelList extends Mixins(VueMixins) {
 
   columns = [
     {
+      title: '序号',
+      dataIndex: 'index',
+      width: 60,
+      customRender: (text, record, index) => {
+        const {
+          pageSize,
+          current,
+        } = this.pagination;
+        return pageSize * (current - 1) + index + 1;
+      },
+    },
+    {
       title: '姓名',
       dataIndex: 'name',
       searchAble: true,

@@ -127,6 +127,18 @@ export default class OrderList extends Mixins(VueMixins) {
 
   columns = [
     {
+      title: '序号',
+      dataIndex: 'index',
+      width: 60,
+      customRender: (text, record, index) => {
+        const {
+          pageSize,
+          current,
+        } = this.pagination;
+        return pageSize * (current - 1) + index + 1;
+      },
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNumber',
       width: 100,
