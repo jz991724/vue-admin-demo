@@ -50,7 +50,9 @@
         </a-form-model-item>
 
         <a-form-model-item label="上车地点" prop="destinationAddress">
-          <a-input v-model="form.destinationAddress"/>
+          <a-input v-model="form.destinationAddress">
+            <a-icon slot="addonAfter" type="setting"/>
+          </a-input>
         </a-form-model-item>
 
         <a-form-model-item label="下车地点" prop="startAddress">
