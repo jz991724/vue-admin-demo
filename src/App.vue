@@ -18,6 +18,8 @@ export default {
     };
   },
   created() {
+    debugger;
+    this.$TMap = window.TMap;
     this.setHtmlTitle();
     this.setLanguage(this.lang);
     enquireScreen((isMobile) => this.setDevice(isMobile));

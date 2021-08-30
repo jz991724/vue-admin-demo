@@ -46,62 +46,62 @@
 </template>
 
 <script>
-import MiniArea from '../../../components/chart/MiniArea'
+import MiniArea from '../../../components/chart/MiniArea';
 
-const searchData = []
+const searchData = [];
 for (let i = 0; i < 50; i++) {
   searchData.push({
     index: i + 1,
-    keyword: '关键词-' + i,
+    keyword: `关键词-${i}`,
     count: Math.floor(Math.random() * 1000),
     range: Math.floor(Math.random() * 100),
-    status: Math.floor((Math.random() * 10) % 2)
-  })
+    status: Math.floor((Math.random() * 10) % 2),
+  });
 }
 
 const columns = [
   {
     dataIndex: 'index',
-    key: 'rank'
+    key: 'rank',
   },
   {
     dataIndex: 'keyword',
     key: 'keyword',
-    scopedSlots: {customRender: 'keyword'}
+    scopedSlots: { customRender: 'keyword' },
   },
   {
     dataIndex: 'count',
     key: 'users',
-    sorter: (a, b) => a.count - b.count
+    sorter: (a, b) => a.count - b.count,
   },
   {
     title: '周涨幅',
     dataIndex: 'range',
     key: 'range',
-    scopedSlots: {customRender: 'rang'}
-  }
-]
+    scopedSlots: { customRender: 'rang' },
+  },
+];
 
 export default {
   name: 'HotSearch',
-  components: {MiniArea},
+  components: { MiniArea },
   i18n: require('./i18n-search'),
-  data () {
+  data() {
     return {
       searchData,
-      columns
-    }
+      columns,
+    };
   },
   computed: {
     tableColumns() {
-      let columns = this.columns
-      return columns.map(item => {
-       item.title = this.$t(item.key)
-        return item
-      })
-    }
-  }
-}
+      const { columns } = this;
+      return columns.map((item) => {
+       item.title = this.$t(item.key);
+        return item;
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

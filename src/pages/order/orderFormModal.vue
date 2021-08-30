@@ -50,9 +50,11 @@
         </a-form-model-item>
 
         <a-form-model-item label="上车地点" prop="destinationAddress">
-          <a-input v-model="form.destinationAddress">
-            <a-icon slot="addonAfter" type="setting"/>
-          </a-input>
+<!--          <a-input v-model="form.destinationAddress">-->
+<!--            <a-icon slot="addonAfter" type="setting" @click="onChoiceAddress"/>-->
+<!--          </a-input>-->
+
+          <choice-address-block></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="下车地点" prop="startAddress">
@@ -102,10 +104,12 @@ import { orderService } from '@/services';
 import CUpload from '@/components/file/cUpload.vue';
 import FileUpload from '@/components/file/ImageUpload.vue';
 import ImageUpload from '@/components/file/ImageUpload.vue';
+import ChoiceAddressBlock from '@/pages/order/choiceAddressBlock.vue';
 
 @Component({
   name: 'AddPersonnelForm',
   components: {
+    ChoiceAddressBlock,
     ImageUpload,
     FileUpload,
     CUpload,
@@ -207,6 +211,10 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   afterClose() {
     this.resetForm();
+  }
+
+  onChoiceAddress() {
+
   }
 
   @Emit('submitSuccess')

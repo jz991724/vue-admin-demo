@@ -14,6 +14,8 @@ declare module 'vue/types/vue' {
         $router: any;
         $refs: any;
         $style: any;
+        window: any;
+        $jsonp: any;
     }
 }
 
