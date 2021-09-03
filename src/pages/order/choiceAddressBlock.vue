@@ -71,8 +71,9 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
       location: position.join(','),
       key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
       get_poi: '0',
+      output: 'jsonp',
     };
-    params.output = 'jsonp';
+
     this.$jsonp('https://apis.map.qq.com/ws/geocoder/v1/', params)
         .then((res) => {
           debugger;
@@ -97,8 +98,9 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
       region: '昆明',
       key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
       keyword,
+      output: 'jsonp',
     };
-    params.output = 'jsonp';
+
     this.$jsonp('https://apis.map.qq.com/ws/place/v1/suggestion/', params)
         .then((res) => {
           debugger;

@@ -129,11 +129,14 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   form: any = {
     name: undefined,
-    licenseNumber: undefined,
     sex: 0,
+    phoneNumber: undefined,
+    licenseNumber: undefined,
+    carType: undefined,
+    vehicleClass: undefined,
+    group: undefined,
     entryTime: undefined,
     carRegisterTime: undefined,
-    phoneNumber: undefined,
     address: '',
     identityCardFrontPath: [],
     identityCardBackPath: [],
@@ -142,10 +145,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     vehicleLicenceFrontPath: [],
     vehicleLicenceBackPath: [],
     type: undefined,
-    group: undefined,
-    vehicleClass: undefined,
-    carType: undefined,
-
   };
 
   rules = {
@@ -237,7 +236,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     Object.keys(dic)
         .forEach((key) => {
           if (dic[key]?.length > 0) {
-            debugger;
             const [{ response: { wjlj } }] = dic[key] || [];
             temp_data = {
               ...temp_data,
@@ -256,9 +254,9 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   // 提交
   onSubmit() {
-    debugger;
     const { ruleForm }: any = this.$refs;
     const submitFormData = this.formatData(this.form);
+    debugger;
     ruleForm.validate((valid) => {
       if (valid) {
         if (this.isEdit) {
