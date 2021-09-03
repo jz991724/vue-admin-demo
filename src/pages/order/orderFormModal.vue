@@ -50,11 +50,11 @@
         </a-form-model-item>
 
         <a-form-model-item label="上车地点" prop="destinationAddress">
-<!--          <a-input v-model="form.destinationAddress">-->
-<!--            <a-icon slot="addonAfter" type="setting" @click="onChoiceAddress"/>-->
-<!--          </a-input>-->
-
-          <choice-address-block></choice-address-block>
+          <!--          <a-input v-model="form.destinationAddress">-->
+          <!--            <a-icon slot="addonAfter" type="setting" @click="onChoiceAddress"/>-->
+          <!--          </a-input>-->
+          <pre>{{test}}</pre>
+          <choice-address-block v-model="test"></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="下车地点" prop="startAddress">
@@ -161,6 +161,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     }],
   };
 
+  test = { address: '欣都龙城' };
+
   // 打开modal
   openModal(info = undefined) {
     this.open();
@@ -213,9 +215,9 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     this.resetForm();
   }
 
-  onChoiceAddress() {
-
-  }
+  // onChoiceAddress() {
+  //
+  // }
 
   @Emit('submitSuccess')
   emitSubmitSuccess(info = undefined) {

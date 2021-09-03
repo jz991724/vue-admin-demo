@@ -5,18 +5,16 @@
 */
 <template>
   <div>
-    <pre>{{ dataSource }}</pre>
-    <a-auto-complete :dataSource="dataSource |dataSourceFilter"
-                     style="width: 200px"
-                     placeholder="请选择地址"
+    <a-auto-complete placeholder="请选择地址"
                      @search="getAddressInfoListByKeyword"
                      @select="onSelect"
+                     :value="addressInfo|filterAddress"
                      :filter-option="filterOption">
-      <!--      <template slot="dataSource">-->
-      <!--        <a-select-option v-for="info in dataSource" :key="info.id">-->
-      <!--          {{ info.address }}-->
-      <!--        </a-select-option>-->
-      <!--      </template>-->
+      <template slot="dataSource">
+        <a-select-option v-for="info in dataSource" :key="info.id">
+          {{ info.address }}
+        </a-select-option>
+      </template>
     </a-auto-complete>
 
     <main-map :location-position="addressInfo" @change="onPositionChange"></main-map>
@@ -37,17 +35,14 @@ import MainMap from '@/pages/map/index.vue';
     MainMap,
   },
   filters: {
-    dataSourceFilter: (dataSource = []) => {
-      debugger;
-      return dataSource.map(({ address }) => address);
-    },
+    filterAddress: (value) => value?.result?.address,
   },
 })
 export default class ChoiceAddressBlock extends Mixins(VueMixins) {
   @Model('change', {
-    type: Array,
-    default: () => ([]),
-  }) position: any | undefined;
+    type: Object,
+    default: () => ({}),
+  }) value: any | undefined;
 
   @Prop({
     type: String,
@@ -67,28 +62,30 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
 
   // 通过position获取地址信息
   getAddressInfoByPosition(position = []) {
-    const params = {
-      location: position.join(','),
-      key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
-      get_poi: '0',
-      output: 'jsonp',
-    };
+    if (position) {
+      const params = {
+        location: position.join(','),
+        key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
+        get_poi: '0',
+        output: 'jsonp',
+      };
 
-    this.$jsonp('https://apis.map.qq.com/ws/geocoder/v1/', params)
-        .then((res) => {
-          debugger;
-          const {
-            status,
-            result: {
-              location,
-              address,
-            },
-          } = res;
-          if (status === 0) {
-            this.addressInfo = res;
-            this.emitChange(res);
-          }
-        });
+      this.$jsonp('https://apis.map.qq.com/ws/geocoder/v1/', params)
+          .then((res) => {
+            debugger;
+            const {
+              status,
+              result: {
+                location,
+                address,
+              },
+            } = res;
+            if (status === 0) {
+              this.addressInfo = res;
+              this.emitChange(res);
+            }
+          });
+    }
   }
 
   // 通过关键字获取地址信息列表
@@ -123,7 +120,9 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
       lat,
       lng,
     } = position;
-    this.getAddressInfoByPosition([lat, lng]);
+    if (lat && lng) {
+      this.getAddressInfoByPosition([lat, lng]);
+    }
   }
 
   onSelect(value, option) {
@@ -133,14 +132,26 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
   }
 
   @Emit('change')
-  emitChange(info) {
+  emitChange(info = this.addressInfo) {
     return info;
   }
 
-  @Watch('position')
-  handlePositionChange(newVal, oldVal) {
+  @Watch('value', {
+    deep: true,
+    immediate: true,
+  })
+  handleValueChange(newVal, oldVal) {
     if (newVal !== oldVal) {
-      this.getAddressInfoByPosition(newVal);
+      this.addressInfo = newVal;
+      const {
+        result: {
+          location: {
+            lat,
+            lng,
+          },
+        },
+      } = newVal;
+      this.getAddressInfoByPosition([lat, lng]);
     }
   }
 
