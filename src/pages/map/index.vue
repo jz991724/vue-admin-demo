@@ -1,11 +1,11 @@
 //地图
 <template>
-  <div id="container"></div>
+  <div :id="domId"></div>
 </template>
 
 <script lang="ts">
 import {
-  Vue, Component, Model, Watch, Emit,
+  Vue, Component, Model, Watch, Emit, Prop,
 } from 'vue-property-decorator';
 
 @Component({ name: 'MainMap' })
@@ -14,6 +14,11 @@ export default class MainMap extends Vue {
     type: Object,
     default: () => ({}),
   }) locationPosition: any | undefined;
+
+  @Prop({
+    type: String,
+    default: 'container',
+  }) domId: string | undefined;
 
   mainMap: any;
 
@@ -24,7 +29,7 @@ export default class MainMap extends Vue {
   initMap() {
     const center = new this.window_temp.TMap.LatLng(25.044492, 102.721666);
     // 初始化地图
-    const map = new this.window_temp.TMap.Map('container', {
+    const map = new this.window_temp.TMap.Map(this.domId, {
       rotation: 20, // 设置地图旋转角度
       pitch: 30, // 设置俯仰角度（0~45）
       zoom: 12, // 设置地图缩放级别
@@ -42,6 +47,9 @@ export default class MainMap extends Vue {
   }
 
   addImgMarker(position) {
+    if (this.markerLayer) {
+      this.markerLayer.setGeometries([]);
+    }
     this.markerLayer = new this.window_temp.TMap.MultiMarker({
       map: this.mainMap,
       // 样式定义
@@ -67,6 +75,8 @@ export default class MainMap extends Vue {
         },
       ],
     });
+
+    this.mainMap.panTo(position);
   }
 
   mounted() {
@@ -84,12 +94,14 @@ export default class MainMap extends Vue {
         const {
           location,
         } = newVal;
-        const positionParams = {
-          height: 0,
-          ...location,
-        };
-        debugger;
-        this.addImgMarker(positionParams);
+        if (location) {
+          const positionParams = {
+            height: 0,
+            ...location,
+          };
+          debugger;
+          this.addImgMarker(positionParams);
+        }
       });
     }
   }

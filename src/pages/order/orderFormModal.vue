@@ -49,16 +49,12 @@
           <a-input v-model="form.flightNumber"/>
         </a-form-model-item>
 
-        <a-form-model-item label="上车地点" prop="destinationAddress">
-          <!--          <a-input v-model="form.destinationAddress">-->
-          <!--            <a-icon slot="addonAfter" type="setting" @click="onChoiceAddress"/>-->
-          <!--          </a-input>-->
-          <pre>{{test}}</pre>
-          <choice-address-block v-model="test"></choice-address-block>
+        <a-form-model-item label="上车地点" prop="start">
+          <choice-address-block v-model="form.start" map-id="startAddressMap"></choice-address-block>
         </a-form-model-item>
 
-        <a-form-model-item label="下车地点" prop="startAddress">
-          <a-input v-model="form.startAddress"/>
+        <a-form-model-item label="下车地点" prop="destinationAddress">
+          <choice-address-block v-model="form.destination" map-id="destination"></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="预定部门" prop="reservationDepartment">
@@ -120,7 +116,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   labelCol = { span: 4 };
 
-  wrapperCol = { span: 14 };
+  wrapperCol = { span: 20 };
 
   isEdit = false;
 
@@ -131,8 +127,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     flightTime: undefined,
     useCarTime: undefined,
     flightNumber: undefined,
-    startAddress: undefined,
-    destinationAddress: undefined,
+    start: undefined,
+    destination: undefined,
     reservationDepartment: undefined,
     customerName: undefined,
     amountPayable: undefined,
@@ -161,8 +157,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     }],
   };
 
-  test = { address: '欣都龙城' };
-
   // 打开modal
   openModal(info = undefined) {
     this.open();
@@ -183,6 +177,21 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     const { ruleForm }: any = this.$refs;
     ruleForm.validate((valid) => {
       if (valid) {
+        const {
+          start,
+          destination,
+        } = this.form;
+
+        this.form = {
+          ...this.form,
+          startAddress: start.address,
+          startLngLat: Object.values(start.location)
+              .join(','),
+          destinationLngLat: Object.values(destination.location)
+              .join(','),
+          destinationAddress: destination.address,
+        };
+
         if (this.isEdit) {
           orderService.updateOrder(this.form)
               .then((res) => {

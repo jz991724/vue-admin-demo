@@ -16,7 +16,7 @@ export default class ModalMixins extends Vue {
     // 默认配置参数
     defaultOptions = {
         destroyOnClose: true,
-        width: 880,
+        width: 800,
         mask: true,
         // dialogStyle: {
         //     // left: '20px',

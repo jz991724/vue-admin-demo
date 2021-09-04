@@ -8,7 +8,8 @@
     <a-auto-complete placeholder="请选择地址"
                      @search="getAddressInfoListByKeyword"
                      @select="onSelect"
-                     :value="addressInfo|filterAddress"
+                     :backfill="false"
+                     v-model="addressName"
                      :filter-option="filterOption">
       <template slot="dataSource">
         <a-select-option v-for="info in dataSource" :key="info.id">
@@ -17,7 +18,7 @@
       </template>
     </a-auto-complete>
 
-    <main-map :location-position="addressInfo" @change="onPositionChange"></main-map>
+    <main-map :dom-id="mapId" :location-position="addressInfo" @change="onPositionChange"></main-map>
   </div>
 
 </template>
@@ -34,9 +35,6 @@ import MainMap from '@/pages/map/index.vue';
   components: {
     MainMap,
   },
-  filters: {
-    filterAddress: (value) => value?.result?.address,
-  },
 })
 export default class ChoiceAddressBlock extends Mixins(VueMixins) {
   @Model('change', {
@@ -49,9 +47,16 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     default: '',
   }) keyword: string | undefined;
 
+  @Prop({
+    type: String,
+    default: 'container',
+  }) mapId: string | undefined;
+
   addressInfo = {};
 
   dataSource = [];
+
+  addressName = '';
 
   filterOption(input, option) {
     return (
@@ -61,7 +66,7 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
   }
 
   // 通过position获取地址信息
-  getAddressInfoByPosition(position = []) {
+  getAddressInfoByPosition(position = [], callback = undefined) {
     if (position) {
       const params = {
         location: position.join(','),
@@ -75,14 +80,13 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
             debugger;
             const {
               status,
-              result: {
-                location,
-                address,
-              },
+              result,
             } = res;
             if (status === 0) {
-              this.addressInfo = res;
-              this.emitChange(res);
+              this.addressInfo = result;
+              if (callback) {
+                callback(result);
+              }
             }
           });
     }
@@ -100,28 +104,27 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
 
     this.$jsonp('https://apis.map.qq.com/ws/place/v1/suggestion/', params)
         .then((res) => {
-          debugger;
           const {
             status,
             data,
           } = res;
           if (status === 0) {
-            debugger;
             this.dataSource = data || [];
-            // this.addressInfo = { address: keyword };
           }
         });
   }
 
   // 点击地图获取地址信息
   onPositionChange(position) {
-    debugger;
     const {
       lat,
       lng,
     } = position;
     if (lat && lng) {
-      this.getAddressInfoByPosition([lat, lng]);
+      this.getAddressInfoByPosition([lat, lng], (result) => {
+        this.addressName = result.address;
+        this.emitChange(result);
+      });
     }
   }
 
@@ -129,6 +132,10 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     const selectedOption = this.dataSource.find(({ id }) => id === value);
     this.addressInfo = selectedOption;
     this.emitChange(selectedOption);
+  }
+
+  mounted() {
+    this.addressName = this.keyword;
   }
 
   @Emit('change')
@@ -141,26 +148,20 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     immediate: true,
   })
   handleValueChange(newVal, oldVal) {
-    if (newVal !== oldVal) {
+    if (newVal !== oldVal && newVal?.location) {
       this.addressInfo = newVal;
       const {
-        result: {
-          location: {
-            lat,
-            lng,
-          },
+        location: {
+          lat,
+          lng,
         },
       } = newVal;
-      this.getAddressInfoByPosition([lat, lng]);
+      if (lat && lng) {
+        debugger;
+        this.getAddressInfoByPosition([lat, lng]);
+      }
     }
   }
-
-  // @Watch('keyword')
-  // handleKeywordChange(newVal, oldVal) {
-  //   if (newVal !== oldVal) {
-  //     this.getAddressInfoListByKeyword(newVal);
-  //   }
-  // }
 }
 </script>
 
