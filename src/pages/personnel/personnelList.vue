@@ -124,14 +124,14 @@ export default class PersonnelList extends Mixins(VueMixins) {
     {
       title: '入职时间',
       dataIndex: 'entryTime',
-      width: 100,
+      width: 180,
       dataType: 'time',
     },
     {
       title: '车俩登记时间',
       dataIndex: 'carRegisterTime',
       dataType: 'time',
-      width: 120,
+      width: 180,
     },
     {
       title: '住址',

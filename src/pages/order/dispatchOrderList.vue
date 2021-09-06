@@ -206,10 +206,24 @@ export default class OrderList extends Mixins(VueMixins) {
       width: 80,
     },
     {
-      title: '应付金额（元）',
+      title: '采购应付金额（元）',
       dataIndex: 'amountPayable',
       width: 130,
     },
+    // {
+    //   title: '结算价格（元）',
+    //   dataIndex: 'settlementPrice',
+    //   width: 130,
+    // },
+    // {
+    //   title: '毛利润（元）',
+    //   dataIndex: 'grossProfit',
+    //   width: 130,
+    //   customRender: (text, record, index) => {
+    //     const { amountPayable, settlementPrice } = record;
+    //     return (settlementPrice - amountPayable) || 0;
+    //   },
+    // },
     {
       title: '预订人',
       dataIndex: 'reservationPeople',

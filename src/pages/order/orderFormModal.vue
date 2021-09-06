@@ -65,8 +65,12 @@
           <a-input v-model="form.customerName"/>
         </a-form-model-item>
 
-        <a-form-model-item label="采购应付金" prop="amountPayable">
+        <a-form-model-item label="采购应付金额" prop="amountPayable">
           <a-input type="number" v-model="form.amountPayable"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="结算价格" prop="settlementPrice">
+          <a-input type="number" v-model="form.settlementPrice"/>
         </a-form-model-item>
 
         <a-form-model-item label="预订人" prop="reservationPeople">
@@ -132,6 +136,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     reservationDepartment: undefined,
     customerName: undefined,
     amountPayable: undefined,
+    settlementPrice: undefined,
     reservationPeople: undefined,
     passengerPhone: undefined,
   };
