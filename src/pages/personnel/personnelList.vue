@@ -46,6 +46,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Vue } from 'vue-property-decorator';
+import moment from 'moment';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { personnelService } from '@/services';
 import VueMixins from '@/pages/mixins/vueMixins';
@@ -125,13 +126,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '入职时间',
       dataIndex: 'entryTime',
       width: 180,
-      dataType: 'time',
+      // customRender: this.dateCustomRender,
     },
     {
       title: '车俩登记时间',
       dataIndex: 'carRegisterTime',
-      dataType: 'time',
       width: 180,
+      // customRender: this.dateCustomRender,
     },
     {
       title: '住址',
@@ -176,6 +177,17 @@ export default class PersonnelList extends Mixins(VueMixins) {
   dataSource = [];
 
   conditions: any = {};
+
+  dateCustomRender(date) {
+    debugger;
+    // const test = this.moment(date, 'YYYY-MM-DD HH:mm:ss');
+    // debugger;
+    // return test;
+
+    const test = date.toString('YYYY-MM-DD HH:mm:ss');
+    debugger;
+    return test;
+  }
 
   pagination = {
     current: 1,
@@ -242,6 +254,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
                  totalCount,
                }) => {
           this.dataSource = items || [];
+          debugger;
           this.pagination.total = totalCount || 0;
           console.log('personnelList数据：', this.dataSource);
         });

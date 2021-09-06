@@ -34,11 +34,13 @@
           <a-input v-model="form.phoneNumber"/>
         </a-form-model-item>
         <a-form-model-item label="入职时间" prop="entryTime">
-          <a-date-picker v-model="form.entryTime"
-                         show-time
-                         type="time"
+          <a-date-picker :value="form.entryTime"
+                         format="YYYY-MM-DD HH:mm:ss"
+                         @change="(date)=>{
+                          form.entryTime= moment(date).format('YYYY-MM-DD HH:mm:ss')
+                         }"
                          placeholder="请选择入职时间"
-                         style="width: 100%;"/>
+                         style="width :100%"/>
         </a-form-model-item>
         <a-form-model-item label="车牌号" prop="licenseNumber">
           <a-input v-model="form.licenseNumber"/>
@@ -56,11 +58,13 @@
           <a-input v-model="form.type"/>
         </a-form-model-item>
         <a-form-model-item label="车俩登记时间" prop="carRegisterTime">
-          <a-date-picker v-model="form.carRegisterTime"
-                         show-time
-                         type="time"
+          <a-date-picker :value="form.carRegisterTime"
+                         format="YYYY-MM-DD HH:mm:ss"
+                         @change="(date)=>{
+                          form.carRegisterTime= moment(date).format('YYYY-MM-DD HH:mm:ss')
+                         }"
                          placeholder="请选择车俩登记时间"
-                         style="width: 100%;"/>
+                         style="width :100%"/>
         </a-form-model-item>
         <a-form-model-item label="住址" prop="address">
           <a-input v-model="form.address" :max="100"/>
@@ -137,7 +141,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     group: undefined,
     entryTime: undefined,
     carRegisterTime: undefined,
-    address: '',
+    address: undefined,
     identityCardFrontPath: [],
     identityCardBackPath: [],
     drivingLicenceFrontPath: [],
@@ -206,6 +210,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       if (info) {
         this.isEdit = true;
         this.title = '驾驶员编辑';
+        debugger;
         this.form = { ...info };
       } else {
         this.isEdit = false;

@@ -422,7 +422,6 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   refreshDataSource() {
-    debugger;
     this.dispatchOrderList = [];
     this.pagination.current = 1;
     this.pagination.total = 0;
