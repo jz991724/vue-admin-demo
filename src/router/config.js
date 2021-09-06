@@ -99,6 +99,26 @@ const options = {
                         // },
                     ],
                 },
+                {
+                    path: 'userManagement',
+                    name: '用户管理',
+                    meta: {
+                        icon: 'team',
+                    },
+                    component: BlankView,
+                    children: [
+                        {
+                            path: 'userInfoList',
+                            name: '用户列表',
+                            component: () => import('@/pages/userManagement/userInfoList'),
+                        },
+                        // {
+                        //     path: 'personnelList',
+                        //     name: '人员列表',
+                        //     component: () => import('@/pages/personnel/personnelList'),
+                        // },
+                    ],
+                },
                 //     {
                 //         path: 'parent1',
                 //         name: '父级路由1',
