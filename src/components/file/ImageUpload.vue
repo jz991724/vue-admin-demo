@@ -41,9 +41,8 @@ function getBase64(file) {
 @Component({ name: 'ImageUpload' })
 export default class ImageUpload extends Vue {
   @Model('change', {
-    type: Array,
-    default: () => ([]),
-  }) files: any[] | undefined;
+    default: '',
+  }) files: any | undefined;
 
   // 上传的最大数量
   @Prop({

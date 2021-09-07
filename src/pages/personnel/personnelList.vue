@@ -75,7 +75,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
     {
       title: '序号',
       dataIndex: 'index',
-      width: 60,
+      width: 80,
       customRender: (text, record, index) => {
         const {
           pageSize,
@@ -88,7 +88,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '姓名',
       dataIndex: 'name',
       searchAble: true,
-      width: 100,
+      width: 115,
     },
     {
       title: '性别',
@@ -126,24 +126,25 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '入职时间',
       dataIndex: 'entryTime',
       width: 180,
-      // customRender: this.dateCustomRender,
+      customRender: this.dateCustomRender,
     },
     {
       title: '车俩登记时间',
       dataIndex: 'carRegisterTime',
       width: 180,
-      // customRender: this.dateCustomRender,
+      customRender: this.dateCustomRender,
     },
     {
       title: '住址',
       dataIndex: 'address',
-      width: 150,
+      ellipsis: true,
+      width: 200,
     },
-    {
-      title: '人员类型',
-      dataIndex: 'type',
-      width: 150,
-    },
+    // {
+    //   title: '人员类型',
+    //   dataIndex: 'type',
+    //   width: 150,
+    // },
     {
       // searchAble: true,
       title: '状态',
@@ -168,7 +169,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 200,
+      width: 120,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
@@ -177,17 +178,6 @@ export default class PersonnelList extends Mixins(VueMixins) {
   dataSource = [];
 
   conditions: any = {};
-
-  dateCustomRender(date) {
-    debugger;
-    // const test = this.moment(date, 'YYYY-MM-DD HH:mm:ss');
-    // debugger;
-    // return test;
-
-    const test = date.toString('YYYY-MM-DD HH:mm:ss');
-    debugger;
-    return test;
-  }
 
   pagination = {
     current: 1,

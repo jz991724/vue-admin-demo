@@ -11,12 +11,11 @@
            @ok="handleOk"
            @cancel="handleCancel">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
-      <a-form-model
-          ref="ruleForm"
-          :model="form"
-          :rules="rules"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol">
+      <a-form-model ref="ruleForm"
+                    :model="form"
+                    :rules="rules"
+                    :label-col="labelCol"
+                    :wrapper-col="wrapperCol">
         <a-form-model-item label="姓名" prop="name">
           <a-input v-model="form.name"/>
         </a-form-model-item>
@@ -34,11 +33,9 @@
           <a-input v-model="form.phoneNumber"/>
         </a-form-model-item>
         <a-form-model-item label="入职时间" prop="entryTime">
-          <a-date-picker :value="form.entryTime"
+          <a-date-picker v-model="form.entryTime"
                          format="YYYY-MM-DD HH:mm:ss"
-                         @change="(date)=>{
-                          form.entryTime= moment(date).format('YYYY-MM-DD HH:mm:ss')
-                         }"
+                         showTime
                          placeholder="请选择入职时间"
                          style="width :100%"/>
         </a-form-model-item>
@@ -54,15 +51,13 @@
         <a-form-model-item label="组别" prop="group">
           <a-input v-model="form.group"/>
         </a-form-model-item>
-        <a-form-model-item label="人员类型" prop="type">
-          <a-input v-model="form.type"/>
-        </a-form-model-item>
+        <!--        <a-form-model-item label="人员类型" prop="type">-->
+        <!--          <a-input v-model="form.type"/>-->
+        <!--        </a-form-model-item>-->
         <a-form-model-item label="车俩登记时间" prop="carRegisterTime">
-          <a-date-picker :value="form.carRegisterTime"
+          <a-date-picker v-model="form.carRegisterTime"
                          format="YYYY-MM-DD HH:mm:ss"
-                         @change="(date)=>{
-                          form.carRegisterTime= moment(date).format('YYYY-MM-DD HH:mm:ss')
-                         }"
+                         showTime
                          placeholder="请选择车俩登记时间"
                          style="width :100%"/>
         </a-form-model-item>
@@ -127,55 +122,30 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   labelCol = { span: 4 };
 
-  wrapperCol = { span: 14 };
+  wrapperCol = { span: 20 };
 
   isEdit = false;
 
   form: any = {
-    name: undefined,
+    name: '',
     sex: 0,
-    phoneNumber: undefined,
-    licenseNumber: undefined,
-    carType: undefined,
-    vehicleClass: undefined,
-    group: undefined,
-    entryTime: undefined,
-    carRegisterTime: undefined,
-    address: undefined,
+    phoneNumber: '',
+    licenseNumber: '',
+    carType: '',
+    vehicleClass: '',
+    group: '',
+    entryTime: '',
+    carRegisterTime: '',
+    address: '',
     identityCardFrontPath: [],
     identityCardBackPath: [],
     drivingLicenceFrontPath: [],
     drivingLicenceBackPath: [],
     vehicleLicenceFrontPath: [],
     vehicleLicenceBackPath: [],
-    type: undefined,
   };
 
   rules = {
-    identityCardFrontPath: [{
-      required: true,
-      message: '请上传身份证正面照片',
-    }],
-    identityCardBackPath: [{
-      required: true,
-      message: '请上传身份证反面照片',
-    }],
-    drivingLicenceFrontPath: [{
-      required: true,
-      message: '请上传驾驶证正页照片',
-    }],
-    drivingLicenceBackPath: [{
-      required: true,
-      message: '请上传驾驶证副页照片',
-    }],
-    vehicleLicenceFrontPath: [{
-      required: true,
-      message: '请上传行车证正页照片',
-    }],
-    vehicleLicenceBackPath: [{
-      required: true,
-      message: '请上传行车证副页照片',
-    }],
     name: [
       {
         required: true,
@@ -200,6 +170,30 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       pattern: /^1[3|4|5|7|8][0-9]\d{8}$/,
       message: '请输入正确的电话号码',
       trigger: 'change',
+    }],
+    identityCardFrontPath: [{
+      required: true,
+      message: '请上传身份证正面照片',
+    }],
+    identityCardBackPath: [{
+      required: true,
+      message: '请上传身份证反面照片',
+    }],
+    drivingLicenceFrontPath: [{
+      required: true,
+      message: '请上传驾驶证正页照片',
+    }],
+    drivingLicenceBackPath: [{
+      required: true,
+      message: '请上传驾驶证副页照片',
+    }],
+    vehicleLicenceFrontPath: [{
+      required: true,
+      message: '请上传行车证正页照片',
+    }],
+    vehicleLicenceBackPath: [{
+      required: true,
+      message: '请上传行车证副页照片',
     }],
   };
 
@@ -240,17 +234,14 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
     Object.keys(dic)
         .forEach((key) => {
-          if (dic[key]?.length > 0) {
-            const [{ response: { wjlj } }] = dic[key] || [];
-            temp_data = {
-              ...temp_data,
-              [key]: wjlj,
-            };
-          } else {
-            temp_data = {
-              ...temp_data,
-              [key]: '',
-            };
+          const temp_value = dic[key];
+          if (Array.isArray(temp_value)) {
+            if (temp_value?.length > 0) {
+              const [{ response: { wjlj } }] = dic[key] || [];
+              temp_data[key] = wjlj;
+            } else {
+              temp_data[key] = '';
+            }
           }
         });
 
@@ -258,12 +249,31 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   }
 
   // 提交
-  onSubmit() {
+  onSubmit(e) {
+    // let test = {
+    //   'address': 'yun',
+    //   'carRegisterTime': '2021-09-07T03:02:24.824Z',
+    //   'carType': '1',
+    //   'drivingLicenceBackPath': '\\upload\\tempfile\\bcfe94b7-ee1d-4427-8c09-ca1869376e1f.jpeg',
+    //   'drivingLicenceFrontPath': '\\upload\\tempfile\\bbf31998-7215-4615-be56-239e4ca4afe3.jpeg',
+    //   'entryTime': '2021-09-07T03:02:11.588Z',
+    //   'group': '2',
+    //   'identityCardBackPath': '\\upload\\tempfile\\4da669a7-a4eb-4ec7-862e-1e1b240f53d2.jpeg',
+    //   'identityCardFrontPath': '\\upload\\tempfile\\7b2f1130-1a97-4467-9be7-c187ba0a8b15.jpeg',
+    //   'licenseNumber': '云D34445',
+    //   'name': '1',
+    //   'phoneNumber': '18788409290',
+    //   'sex': 0,
+    //   'vehicleClass': '2',
+    //   'vehicleLicenceBackPath': '\\upload\\tempfile\\0a0689c0-1dd2-4267-b932-410036484b1a.jpeg',
+    //   'vehicleLicenceFrontPath': '\\upload\\tempfile\\aa32ffb9-cfa9-435d-9c62-84bbf0089b27.jpeg',
+    // };
+    e.preventDefault();
     const { ruleForm }: any = this.$refs;
-    const submitFormData = this.formatData(this.form);
-    debugger;
     ruleForm.validate((valid) => {
       if (valid) {
+        const submitFormData = this.formatData(this.form);
+        console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)
               .then((res) => {
@@ -283,6 +293,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
               });
         }
       }
+    }, (error) => {
+      console.error(error);
     });
   }
 
