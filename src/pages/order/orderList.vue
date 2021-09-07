@@ -5,7 +5,7 @@
 */
 <template>
   <div class="table">
-    <advance-table :columns="columns"
+    <advance-table :columns="getColumns"
                    :data-source="dataSource"
                    title="订单列表"
                    :loading="spinning"
@@ -16,6 +16,11 @@
                    @reset="onReset"
                    :scroll="scroll"
                    :pagination="pagination">
+      <!--      <template slot="channelTitle">-->
+      <!--        渠道-->
+      <!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
+      <!--      </template>-->
+
       <template slot="statusTitle">
         状态
         <a-icon style="margin: 0 4px" type="info-circle"/>
@@ -125,6 +130,35 @@ export default class OrderList extends Mixins(VueMixins) {
 
   spinning = false;
 
+  dataSource = [];
+
+  conditions = {};
+
+  pagination = {
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    showSizeChanger: true,
+    showLessItems: true,
+    showQuickJumper: true,
+    showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
+    onChange: (page, pageSize) => {
+      this.pagination.current = page;
+      this.pagination.pageSize = pageSize;
+      this.fetchData();
+    },
+    onShowSizeChange: (current, size) => {
+      this.pagination.current = 1;
+      this.pagination.pageSize = size;
+      this.fetchData();
+    },
+  };
+
+  conditionsOptions = {
+    years: [],
+    channel: [],
+  };
+
   columns = [
     {
       title: '序号',
@@ -147,12 +181,25 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '渠道',
       width: 100,
       dataIndex: 'channel',
+      searchAble: true,
+      dataType: 'select',
+      // slots: { title: 'channelTitle' },
+      // scopedSlots: { customRender: 'channel' },
+      search: {
+        selectOptions: this.conditionsOptions.channel || [],
+      },
     },
     {
+      searchAble: true,
       title: '乘客姓名',
       dataIndex: 'passengerName',
       width: 150,
       ellipsis: true,
+    },
+    {
+      title: '乘客电话',
+      dataIndex: 'passengerPhone',
+      width: 120,
     },
     {
       title: '用车日期',
@@ -204,6 +251,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '驾驶员电话',
       dataIndex: 'driverPhone',
       width: 120,
+      searchAble: true,
     },
     {
       title: '车牌',
@@ -230,7 +278,7 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '采购应付金额（元）',
       dataIndex: 'amountPayable',
-      width: 130,
+      width: 160,
     },
     {
       title: '结算价格（元）',
@@ -254,11 +302,6 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'reservationPeople',
       width: 120,
       ellipsis: true,
-    },
-    {
-      title: '乘客电话',
-      dataIndex: 'passengerPhone',
-      width: 120,
     },
     {
       searchAble: true,
@@ -298,6 +341,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '车队',
       dataIndex: 'motorcade',
       width: 80,
+      searchAble: true,
     },
     {
       title: '操作',
@@ -307,44 +351,31 @@ export default class OrderList extends Mixins(VueMixins) {
       scopedSlots: { customRender: 'operation' },
     },
 
-    // {
-    //   title: '发货',
-    //   searchAble: true,
-    //   dataIndex: 'send',
-    //   dataType: 'boolean',
-    //   scopedSlots: { customRender: 'send' },
-    //   search: {
-    //     switchOptions: {
-    //       checkedText: '开',
-    //       uncheckedText: '关',
-    //     },
-    //   },
-    // },
+// {
+//   title: '发货',
+//   searchAble: true,
+//   dataIndex: 'send',
+//   dataType: 'boolean',
+//   scopedSlots: { customRender: 'send' },
+//   search: {
+//     switchOptions: {
+//       checkedText: '开',
+//       uncheckedText: '关',
+//     },
+//   },
+// },
   ];
 
-  dataSource = [];
+  get getColumns() {
+    this.columns.find(({ dataIndex }) => dataIndex === 'channel').search = {
+      selectOptions: this.conditionsOptions.channel || [],
+    };
 
-  conditions = {};
-
-  pagination = {
-    current: 1,
-    pageSize: 10,
-    total: 0,
-    showSizeChanger: true,
-    showLessItems: true,
-    showQuickJumper: true,
-    showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
-    onChange: (page, pageSize) => {
-      this.pagination.current = page;
-      this.pagination.pageSize = pageSize;
-      this.fetchData();
-    },
-    onShowSizeChange: (current, size) => {
-      this.pagination.current = 1;
-      this.pagination.pageSize = size;
-      this.fetchData();
-    },
-  };
+    // this.columns.find(({ dataIndex }) => dataIndex === 'year').search = {
+    //   selectOptions: this.conditionsOptions.years || [],
+    // };
+    return this.columns;
+  }
 
   // 派单
   onConfirmDispatch(orders = []) {
@@ -427,6 +458,29 @@ export default class OrderList extends Mixins(VueMixins) {
         });
   }
 
+  // 获取筛选条件下拉需要的options
+  fetchConditionsOptions() {
+    Promise.all([orderService.fetchChannelList(), orderService.fetchYearList()])
+        .then(([channelOptions, yearOptions]) => {
+          debugger;
+          this.conditionsOptions.channel = channelOptions.filter((item) => !!item)
+              .map((value) => ({
+                title: value,
+                value,
+              }));
+
+          this.conditionsOptions.years = yearOptions.filter((item) => !!item)
+              .map((value) => ({
+                title: value,
+                value,
+              }));
+
+          this.$nextTick(() => {
+            this.fetchData();
+          });
+        });
+  }
+
   refreshDataSource() {
     this.pagination.current = 1;
     this.pagination.total = 0;
@@ -434,6 +488,7 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   onSearch(conditions, searchOptions) {
+    debugger;
     this.conditions = conditions;
     this.refreshDataSource();
   }
@@ -449,7 +504,7 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   created() {
-    this.fetchData();
+    this.fetchConditionsOptions();
   }
 }
 </script>

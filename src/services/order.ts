@@ -33,6 +33,12 @@ const Order = {
     updateOrderStatus(params: { ids: string[]; status: OrderStatusEnum }) { // 更新派单状态
         return requestHelper('/api/OrderInfo/UpdateStatus', METHOD.POST, params, this);
     },
+    fetchChannelList(params) { // 获取所有渠道
+        return requestHelper('/api/OrderInfo/GetChannelList', METHOD.GET, params, this);
+    },
+    fetchYearList(params) { // 获取所有年度
+        return requestHelper('/api/OrderInfo/GetYearList', METHOD.GET, params, this);
+    },
 };
 
 export default Order;
