@@ -133,6 +133,11 @@ export default class OrderList extends Mixins(VueMixins) {
       ellipsis: true,
     },
     {
+      title: '乘客电话',
+      dataIndex: 'passengerPhone',
+      width: 120,
+    },
+    {
       title: '用车日期',
       dataIndex: 'useCarDate',
       width: 100,
@@ -172,23 +177,6 @@ export default class OrderList extends Mixins(VueMixins) {
       width: 200,
       ellipsis: true,
     },
-    // {
-    //   title: '驾驶员姓名',
-    //   dataIndex: 'driverName',
-    //   width: 110,
-    //   searchAble: true,
-    // },
-    // {
-    //   title: '驾驶员电话',
-    //   dataIndex: 'driverPhone',
-    //   width: 120,
-    // },
-    // {
-    //   title: '车牌',
-    //   dataIndex: 'licenseNumber',
-    //   width: 110,
-    //   searchAble: true,
-    // },
     {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
@@ -208,61 +196,14 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '采购应付金额（元）',
       dataIndex: 'amountPayable',
-      width: 130,
+      width: 160,
     },
-    // {
-    //   title: '结算价格（元）',
-    //   dataIndex: 'settlementPrice',
-    //   width: 130,
-    // },
-    // {
-    //   title: '毛利润（元）',
-    //   dataIndex: 'grossProfit',
-    //   width: 130,
-    //   customRender: (text, record, index) => {
-    //     const { amountPayable, settlementPrice } = record;
-    //     return (settlementPrice - amountPayable) || 0;
-    //   },
-    // },
     {
       title: '预订人',
       dataIndex: 'reservationPeople',
       width: 120,
       ellipsis: true,
     },
-    {
-      title: '乘客电话',
-      dataIndex: 'passengerPhone',
-      width: 120,
-    },
-    // {
-    // searchAble: true,
-    // dataIndex: 'status',
-    // dataType: 'select',
-    // slots: { title: 'statusTitle' },
-    // scopedSlots: { customRender: 'status' },
-    // width: 100,
-    // search: {
-    //   selectOptions: [
-    //     {
-    //       title: '待派单',
-    //       value: OrderStatusEnum.待派单,
-    //     },
-    //     {
-    //       title: '待接单',
-    //       value: OrderStatusEnum.待接单,
-    //     },
-    //     {
-    //       title: '进行中',
-    //       value: OrderStatusEnum.进行中,
-    //     },
-    //     {
-    //       title: '已结束',
-    //       value: OrderStatusEnum.已结束,
-    //     },
-    //   ],
-    // },
-    // },
     {
       title: '备注',
       dataIndex: 'remark',
@@ -281,47 +222,6 @@ export default class OrderList extends Mixins(VueMixins) {
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
-
-    // {
-    //   searchAble: true,
-    //   dataIndex: 'status',
-    //   dataType: 'select',
-    //   slots: { title: 'statusTitle' },
-    //   scopedSlots: { customRender: 'status' },
-    //   search: {
-    //     selectOptions: [
-    //       {
-    //         title: '已下单',
-    //         value: 1,
-    //       },
-    //       {
-    //         title: '已付款',
-    //         value: 2,
-    //       },
-    //       {
-    //         title: '已审核',
-    //         value: 3,
-    //       },
-    //       {
-    //         title: '已发货',
-    //         value: 4,
-    //       },
-    //     ],
-    //   },
-    // },
-    // {
-    //   title: '发货',
-    //   searchAble: true,
-    //   dataIndex: 'send',
-    //   dataType: 'boolean',
-    //   scopedSlots: { customRender: 'send' },
-    //   search: {
-    //     switchOptions: {
-    //       checkedText: '开',
-    //       uncheckedText: '关',
-    //     },
-    //   },
-    // },
   ];
 
   dataSource = [];
