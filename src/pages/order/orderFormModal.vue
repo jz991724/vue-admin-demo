@@ -212,12 +212,23 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
           destinationAddress: destination.address,
         };
 
+        const submitFormData = {};
+        Object.keys(this.form)
+            .forEach((key) => {
+              if (!['start', 'destination'].includes(key)) {
+                submitFormData[key] = this.form[key];
+              }
+            });
+        debugger;
         if (this.isEdit) {
-          orderService.updateOrder(this.form)
+          orderService.updateOrder(submitFormData)
               .then((res) => {
                 this.$message.success('订单信息更新成功！');
                 this.emitSubmitSuccess(res);
                 this.close();
+              }, (error) => {
+                this.$message.error('订单信息更新失败！');
+                this.emitSubmitFail();
               });
         } else {
           orderService.addOrder(this.form)
@@ -231,6 +242,9 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
               });
         }
       }
+    }, (error) => {
+      console.error(error);
+      return false;
     });
   }
 
