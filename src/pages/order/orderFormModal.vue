@@ -31,17 +31,16 @@
                          style="width: 100%;"/>
         </a-form-model-item>
 
+        <a-form-model-item label="用车时间" prop="useCarTime">
+          <a-time-picker v-model="form.useCarTime"
+                         placeholder="请选择用车时间"
+                         style="width: 100%;"/>
+        </a-form-model-item>
+
         <a-form-model-item label="航班时间" prop="flightTime">
           <a-date-picker v-model="form.flightTime"
                          type="date"
                          placeholder="请选择航班时间"
-                         style="width: 100%;"/>
-        </a-form-model-item>
-
-        <a-form-model-item label="用车时间" prop="useCarTime">
-          <a-date-picker v-model="form.useCarTime"
-                         type="date"
-                         placeholder="请选择用车时间"
                          style="width: 100%;"/>
         </a-form-model-item>
 
@@ -53,8 +52,8 @@
           <choice-address-block v-model="form.start" map-id="startAddressMap"></choice-address-block>
         </a-form-model-item>
 
-        <a-form-model-item label="下车地点" prop="destinationAddress">
-          <choice-address-block v-model="form.destination" map-id="destination"></choice-address-block>
+        <a-form-model-item label="下车地点" prop="destination">
+          <choice-address-block v-model="form.destination" map-id="destinationAddressMap"></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="预定部门" prop="reservationDepartment">
@@ -142,15 +141,11 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   };
 
   rules = {
-    // licenseNumber: [{
-    //   required: true,
-    //   message: '请输入车牌号',
-    //   trigger: 'blur',
-    // }, {
-    //   pattern: /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/,
-    //   message: '请输入正确的车牌号',
-    //   trigger: 'change',
-    // }],
+    channel: [{
+      required: true,
+      message: '请输入渠道',
+      trigger: 'blur',
+    }],
     passengerPhone: [{
       required: true,
       message: '请输入电话号码',
@@ -159,6 +154,26 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       pattern: /^1[3|4|5|7|8][0-9]\d{8}$/,
       message: '请输入正确的电话号码',
       trigger: 'change',
+    }],
+    useCarDate: [{
+      required: true,
+      message: '请选择用车日期',
+      trigger: 'change',
+    }],
+    useCarTime: [{
+      required: true,
+      message: '请选择用车时间',
+      trigger: 'change',
+    }],
+    start: [{
+      required: true,
+      message: '请输入上车地点',
+      trigger: 'blur',
+    }],
+    destination: [{
+      required: true,
+      message: '请输入下车地点',
+      trigger: 'blur',
     }],
   };
 
