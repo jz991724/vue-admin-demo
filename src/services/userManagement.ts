@@ -6,7 +6,7 @@ export enum UserInfoTypeEnum {
 
 const UserManagement = {
     fetchUserInfoList(params = undefined) { // 获取用户列表
-        return requestHelper('/api/UserInfo/GetUserList', METHOD.GET, params, this);
+        return requestHelper('/api/UserInfo/GetList', METHOD.GET, params, this);
     },
     addUserInfo(params) { // 添加用户
         return requestHelper('/api/UserInfo/Add', METHOD.POST, params, this);

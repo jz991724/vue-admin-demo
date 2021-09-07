@@ -40,6 +40,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Vue } from 'vue-property-decorator';
+import moment from 'moment';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import UserInfoFormModal from '@/pages/userManagement/userInfoFormModal.vue';
@@ -76,23 +77,24 @@ export default class UserInfoList extends Mixins(VueMixins) {
     {
       title: '真实姓名',
       dataIndex: 'realName',
-      width: 80,
+      width: 100,
     },
     {
-      title: '修改时间',
-      dataIndex: 'updateTime',
-      width: 180,
+      title: '创建时间',
+      dataIndex: 'createTime',
+      width: 200,
+      customRender: this.dateCustomRender,
     },
     {
       title: '用户类型',
       dataIndex: 'userType',
-      width: 150,
+      width: 100,
     },
     {
       title: '状态',
       dataIndex: 'status',
       scopedSlots: { customRender: 'status' },
-      width: 100,
+      width: 80,
     },
     {
       title: '操作',
@@ -133,9 +135,9 @@ export default class UserInfoList extends Mixins(VueMixins) {
   fetchData() {
     this.dataSource = [];
     userInfoService.fetchUserInfoList()
-        .then((res) => {
+        .then((records) => {
           debugger;
-          // this.dataSource = items || [];
+          this.dataSource = records || [];
           debugger;
           console.log('userInfoList数据：', this.dataSource);
         });

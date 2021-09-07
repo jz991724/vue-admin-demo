@@ -94,23 +94,35 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
       },
     ],
     password: [{
+      required: true,
+      message: '请输入密码',
+      trigger: 'blur',
+    }, {
       len: 6,
       message: '请输入6位数的密码',
       trigger: 'change',
     }],
     checkPassword: [{
-      validator: (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码！'));
-        } else if (value !== this.form.password) {
-          callback(new Error('两次输入不一致！'));
-        } else {
-          callback();
-        }
-      },
+      required: true,
+      message: '请输入确认密码',
+      trigger: 'blur',
+    }, {
+      validator: this.matchPasswordValidator,
       trigger: 'change',
     }],
   };
+
+  // 密码是否一致的验证
+  matchPasswordValidator(rule, value, callback) {
+    if (value === '') {
+      callback(new Error('请再次输入密码！'));
+    } else if (value !== this.form.password) {
+      debugger;
+      callback(new Error('两次输入不一致！'));
+    } else {
+      callback();
+    }
+  }
 
   // 打开modal
   openModal(info = undefined) {

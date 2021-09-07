@@ -6,6 +6,12 @@ import moment from 'moment';
 export default class VueMixins extends Vue {
     moment = moment;
 
+    // 时间格式化
+    dateCustomRender(value) {
+        return this.moment(value)
+            .format('YYYY-MM-DD HH:mm:ss');
+    }
+
     openModal(refName, params?) {
         const modal: any = this.$refs[refName];
         if (modal) {
