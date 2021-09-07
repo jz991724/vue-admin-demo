@@ -65,22 +65,28 @@
           <a-input v-model="form.address" :max="100"/>
         </a-form-model-item>
         <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
-          <image-upload v-model="form.identityCardFrontPath"></image-upload>
+          <image-upload :value="form.identityCardFrontPath"
+                        @change="(value)=>{formatFile(value,'identityCardFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="身份证反面" prop="identityCardBackPath">
-          <image-upload v-model="form.identityCardBackPath"></image-upload>
+          <image-upload :value="form.identityCardBackPath"
+                        @change="(value)=>{formatFile(value,'identityCardBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证正页" prop="drivingLicenceFrontPath">
-          <image-upload v-model="form.drivingLicenceFrontPath"></image-upload>
+          <image-upload :value="form.drivingLicenceFrontPath"
+                        @change="(value)=>{formatFile(value,'drivingLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证副页" prop="drivingLicenceBackPath">
-          <image-upload v-model="form.drivingLicenceBackPath"></image-upload>
+          <image-upload :value="form.drivingLicenceBackPath"
+                        @change="(value)=>{formatFile(value,'drivingLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证正页" prop="vehicleLicenceFrontPath">
-          <image-upload v-model="form.vehicleLicenceFrontPath"></image-upload>
+          <image-upload :value="form.vehicleLicenceFrontPath"
+                        @change="(value)=>{formatFile(value,'vehicleLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证副页" prop="vehicleLicenceBackPath">
-          <image-upload v-model="form.vehicleLicenceBackPath"></image-upload>
+          <image-upload :value="form.vehicleLicenceBackPath"
+                        @change="(value)=>{formatFile(value,'vehicleLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">
@@ -171,6 +177,16 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       message: '请输入正确的电话号码',
       trigger: 'change',
     }],
+    entryTime: [{
+      required: true,
+      message: '请选择入职时间',
+      trigger: 'change',
+    }],
+    carRegisterTime: [{
+      required: true,
+      message: '请选择车俩登记时间',
+      trigger: 'change',
+    }],
     identityCardFrontPath: [{
       required: true,
       message: '请上传身份证正面照片',
@@ -211,6 +227,18 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
         this.title = '驾驶员添加';
       }
     });
+  }
+
+  formatFile(file = [], name) {
+    debugger;
+    const [temp] = file;
+    if (temp) {
+      const { response: { wjlj } } = temp;
+
+      this.form[name] = wjlj;
+    } else {
+      this.form[name] = undefined;
+    }
   }
 
   formatData(temp_data) {
@@ -272,7 +300,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     const { ruleForm }: any = this.$refs;
     ruleForm.validate((valid) => {
       if (valid) {
-        const submitFormData = this.formatData(this.form);
+        const submitFormData = this.form;
+        debugger;
         console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)
