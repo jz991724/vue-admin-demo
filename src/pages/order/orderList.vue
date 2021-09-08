@@ -16,11 +16,6 @@
                    @reset="onReset"
                    :scroll="scroll"
                    :pagination="pagination">
-      <!--      <template slot="channelTitle">-->
-      <!--        渠道-->
-      <!--        <a-icon style="margin: 0 4px" type="info-circle"/>-->
-      <!--      </template>-->
-
       <template slot="statusTitle">
         状态
         <a-icon style="margin: 0 4px" type="info-circle"/>
@@ -132,7 +127,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   dataSource = [];
 
-  conditions = {};
+  conditions = { status: OrderStatusEnum.待派单 };
 
   pagination = {
     current: 1,
@@ -183,10 +178,19 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'channel',
       searchAble: true,
       dataType: 'select',
-      // slots: { title: 'channelTitle' },
-      // scopedSlots: { customRender: 'channel' },
       search: {
         selectOptions: this.conditionsOptions.channel || [],
+      },
+    },
+    {
+      title: '年度',
+      width: 100,
+      dataIndex: 'years',
+      searchAble: true,
+      dataType: 'select',
+      visible: false,
+      search: {
+        selectOptions: this.conditionsOptions.years || [],
       },
     },
     {
@@ -371,9 +375,9 @@ export default class OrderList extends Mixins(VueMixins) {
       selectOptions: this.conditionsOptions.channel || [],
     };
 
-    // this.columns.find(({ dataIndex }) => dataIndex === 'year').search = {
-    //   selectOptions: this.conditionsOptions.years || [],
-    // };
+    this.columns.find(({ dataIndex }) => dataIndex === 'years').search = {
+      selectOptions: this.conditionsOptions.years || [],
+    };
     return this.columns;
   }
 

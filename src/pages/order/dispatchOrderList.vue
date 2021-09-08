@@ -15,7 +15,7 @@
                    :format-conditions="true"
                    @reset="onReset"
                    :scroll="scroll"
-                   :row-selection="{ selectedRowKeys: dispatchOrderList.map(({id})=>id), onChange: onSelectChange  }"
+                   :row-selection="{selectedRowKeys: dispatchOrderList.map(({id})=>id), onChange: onSelectChange}"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
         <file-upload class="margin-left-xs"
@@ -26,16 +26,26 @@
           </a-button>
         </file-upload>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="onDispatch"
-                  :disabled="dispatchOrderList.length<1">
-          派单
+        <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
+          新增
         </a-button>
 
-        <div slot="extra" style="display: flex;justify-content: end;">
-          <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
-            新增
+        <a-dropdown :disabled="dispatchOrderList.length<1">
+          <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu-item key="dispatchOrderListMenu" style="font-size: 16px;">
+              <a-icon type="car" style="font-size: 16px;"/>
+              派单
+            </a-menu-item>
+            <a-menu-item key="deleteOrderListMenu" style="font-size: 16px;color: red;">
+              <a-icon type="delete" style="font-size: 16px;"/>
+              删除
+            </a-menu-item>
+          </a-menu>
+          <a-button style="margin-left: 8px">
+            更多操作
+            <a-icon type="down"/>
           </a-button>
-        </div>
+        </a-dropdown>
       </div>
 
       <template slot="operation" slot-scope="{record}">
@@ -295,6 +305,30 @@ export default class OrderList extends Mixins(VueMixins) {
   // onSelectRow(record, selected, selectedRows) {
   //   this.dispatchOrderList[this.pagination.current] = selectedRows;
   // }
+
+  handleMenuClick({ key }) {
+    if (key === 'dispatchOrderListMenu') {
+      this.onDispatch();
+    } else if (key === 'deleteOrderListMenu') {
+      const deleteIds = this.dispatchOrderList.map(({ id }) => id);
+      if (deleteIds?.length > 0) {
+        debugger;
+        // orderService.deleteOrder([id])
+        //     .then((res) => {
+        //       this.fetchData();
+        //     });
+        this.$confirm({
+          content: '是否删除所有选中的订单信息？',
+          onOk() {
+            debugger;
+          },
+          onCancel() {
+            debugger;
+          },
+        });
+      }
+    }
+  }
 
   fetchData() {
     const {
