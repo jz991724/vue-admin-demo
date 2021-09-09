@@ -299,12 +299,25 @@ export default class OrderList extends Mixins(VueMixins) {
       ellipsis: true,
     },
     {
+      title: '备注',
+      dataIndex: 'remark',
+      width: 150,
+      ellipsis: true,
+    },
+    {
+      title: '车队',
+      dataIndex: 'motorcade',
+      width: 80,
+      searchAble: true,
+    },
+    {
       searchAble: true,
       dataIndex: 'status',
       dataType: 'select',
       slots: { title: 'statusTitle' },
       scopedSlots: { customRender: 'status' },
       width: 100,
+      fixed: 'right',
       search: {
         selectOptions: [
           {
@@ -325,18 +338,6 @@ export default class OrderList extends Mixins(VueMixins) {
           },
         ],
       },
-    },
-    {
-      title: '备注',
-      dataIndex: 'remark',
-      width: 150,
-      ellipsis: true,
-    },
-    {
-      title: '车队',
-      dataIndex: 'motorcade',
-      width: 80,
-      searchAble: true,
     },
     {
       title: '操作',

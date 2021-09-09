@@ -83,7 +83,7 @@ export default class UserInfoList extends Mixins(VueMixins) {
       title: '创建时间',
       dataIndex: 'createTime',
       width: 200,
-      customRender: this.dateCustomRender,
+      customRender: (text) => this.dateCustomRender(text),
     },
     {
       title: '用户类型',
