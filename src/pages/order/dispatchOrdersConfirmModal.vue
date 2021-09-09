@@ -36,13 +36,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import {
+  Component, Emit, Mixins, Vue,
+} from 'vue-property-decorator';
 import { personnelService, orderService } from '@/services';
+import VueMixins from '@/pages/mixins/vueMixins';
 
 @Component({
   name: 'DispatchOrdersConfirmModal',
 })
-export default class DispatchOrdersConfirmModal extends Vue {
+export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
   visible = false;
 
   scroll = {
@@ -79,20 +82,23 @@ export default class DispatchOrdersConfirmModal extends Vue {
     {
       title: '用车日期',
       dataIndex: 'useCarDate',
-      width: 100,
+      width: 160,
       dataType: 'date',
+      customRender: (text) => this.dateCustomRender(text, 'YYYY-MM-DD'),
     },
     {
       title: '航班时间',
       dataIndex: 'flightTime',
-      width: 100,
+      width: 160,
       dataType: 'time',
+      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
     },
     {
       title: '用车时间',
       dataIndex: 'useCarTime',
       width: 100,
       dataType: 'time',
+      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
     },
     {
       title: '航班车次号',

@@ -151,14 +151,17 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     if (newVal !== oldVal && newVal?.location) {
       this.addressInfo = newVal;
       const {
+        address,
         location: {
           lat,
           lng,
         },
       } = newVal;
       if (lat && lng) {
-        debugger;
-        this.getAddressInfoByPosition([lat, lng]);
+        this.$nextTick(() => {
+          this.addressName = address;
+          this.getAddressInfoByPosition([lat, lng]);
+        });
       }
     }
   }

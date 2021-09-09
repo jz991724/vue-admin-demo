@@ -38,8 +38,7 @@
         </a-form-model-item>
 
         <a-form-model-item label="航班时间" prop="flightTime">
-          <a-date-picker v-model="form.flightTime"
-                         type="date"
+          <a-time-picker v-model="form.flightTime"
                          placeholder="请选择航班时间"
                          style="width: 100%;"/>
         </a-form-model-item>
@@ -179,12 +178,50 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   // 打开modal
   openModal(info = undefined) {
+    // 数据格式化
+    const formatData = () => {
+      let {
+        destinationLngLat,
+        startLngLat,
+      } = info;
+
+      const {
+        destinationAddress,
+        startAddress,
+      } = info;
+
+      startLngLat = startLngLat.split(',');
+      destinationLngLat = destinationLngLat.split(',');
+
+      const start = {
+        location: {
+          lat: startLngLat[0],
+          lng: startLngLat[1],
+        },
+        address: startAddress,
+      };
+
+      const destination = {
+        location: {
+          lat: destinationLngLat[0],
+          lng: destinationLngLat[1],
+        },
+        address: destinationAddress,
+      };
+
+      return {
+        ...info,
+        start,
+        destination,
+      };
+    };
+
     this.open();
     this.$nextTick(() => {
       if (info) {
         this.isEdit = true;
         this.title = '订单信息编辑';
-        this.form = { ...info };
+        this.form = formatData();
       } else {
         this.isEdit = false;
         this.title = '订单信息添加';
@@ -257,10 +294,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   afterClose() {
     this.resetForm();
   }
-
-  // onChoiceAddress() {
-  //
-  // }
 
   @Emit('submitSuccess')
   emitSubmitSuccess(info = undefined) {
