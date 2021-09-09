@@ -47,18 +47,6 @@
         <a @click="onUpdateDispatch(record)"
            :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">更改派单</a>
 
-        <!--编辑-->
-        <!--        <template v-if="[OrderStatusEnum.待派单].includes(record.status)">-->
-        <!--          <a-divider type="vertical"/>-->
-        <!--          <a @click="onUpdateOrder(record)">编辑</a>-->
-        <!--        </template>-->
-
-        <!--删除-->
-        <!--        <a-divider type="vertical"/>-->
-        <!--        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">-->
-        <!--          <a :disabled="[OrderStatusEnum.进行中].includes(record.status)">删除</a>-->
-        <!--        </a-popconfirm>-->
-
         <template v-if="[OrderStatusEnum.待派单].includes(record.status)||![OrderStatusEnum.进行中].includes(record.status)">
           <a-divider type="vertical"/>
           <a-dropdown>
@@ -469,7 +457,6 @@ export default class OrderList extends Mixins(VueMixins) {
   fetchConditionsOptions() {
     Promise.all([orderService.fetchChannelList(), orderService.fetchYearList()])
         .then(([channelOptions, yearOptions]) => {
-          debugger;
           this.conditionsOptions.channel = channelOptions.filter((item) => !!item)
               .map((value) => ({
                 title: value,
@@ -495,7 +482,6 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   onSearch(conditions, searchOptions) {
-    debugger;
     this.conditions = conditions;
     this.refreshDataSource();
   }

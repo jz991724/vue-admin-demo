@@ -244,7 +244,6 @@ export default class PersonnelList extends Mixins(VueMixins) {
                  totalCount,
                }) => {
           this.dataSource = items || [];
-          debugger;
           this.pagination.total = totalCount || 0;
           console.log('personnelList数据：', this.dataSource);
         });

@@ -101,7 +101,6 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
 function downloadFileHelper(url, fileName, data = {}, config = { responseType: 'blob' }, vueContext = undefined, spinName = 'spinning') {
     requestHelper(url, METHOD.GET, undefined, vueContext, data, spinName, config)
         .then(res => {
-            debugger;
             const blob = new Blob([res.data]);
             const rUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a'); // 创建a标签

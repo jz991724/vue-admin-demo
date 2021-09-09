@@ -126,7 +126,6 @@ export default class UserInfoList extends Mixins(VueMixins) {
       };
       userInfoService.updateUserInfo(userInfo)
           .then((res) => {
-            debugger;
             this.fetchData();
           });
     }
@@ -136,9 +135,7 @@ export default class UserInfoList extends Mixins(VueMixins) {
     this.dataSource = [];
     userInfoService.fetchUserInfoList()
         .then((records) => {
-          debugger;
           this.dataSource = records || [];
-          debugger;
           console.log('userInfoList数据：', this.dataSource);
         });
   }

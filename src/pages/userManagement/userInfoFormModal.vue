@@ -117,7 +117,6 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
     if (value === '') {
       callback(new Error('请再次输入密码！'));
     } else if (value !== this.form.password) {
-      debugger;
       callback(new Error('两次输入不一致！'));
     } else {
       callback();
@@ -144,7 +143,6 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
   onSubmit() {
     const { ruleForm }: any = this.$refs;
     const submitFormData = this.form;
-    debugger;
     ruleForm.validate((valid) => {
       if (valid) {
         if (this.isEdit) {

@@ -190,24 +190,32 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
         startAddress,
       } = info;
 
-      startLngLat = startLngLat.split(',');
-      destinationLngLat = destinationLngLat.split(',');
-
       const start = {
-        location: {
-          lat: startLngLat[0],
-          lng: startLngLat[1],
-        },
+        location: undefined,
         address: startAddress,
       };
 
       const destination = {
-        location: {
-          lat: destinationLngLat[0],
-          lng: destinationLngLat[1],
-        },
+        location: undefined,
         address: destinationAddress,
       };
+
+      if (startLngLat) {
+        startLngLat = startLngLat.split(',');
+        start.location = {
+          lat: startLngLat[0],
+          lng: startLngLat[1],
+        };
+      }
+
+      if (destinationLngLat) {
+        destinationLngLat = destinationLngLat.split(',');
+
+        destination.location = {
+          lat: destinationLngLat[0],
+          lng: destinationLngLat[1],
+        };
+      }
 
       return {
         ...info,
@@ -238,7 +246,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
           start,
           destination,
         } = this.form;
-
         this.form = {
           ...this.form,
           startAddress: start.address,
@@ -256,7 +263,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
                 submitFormData[key] = this.form[key];
               }
             });
-        debugger;
+
         if (this.isEdit) {
           orderService.updateOrder(submitFormData)
               .then((res) => {

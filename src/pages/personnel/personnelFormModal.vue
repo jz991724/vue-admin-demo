@@ -230,7 +230,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   }
 
   formatFile(file = [], name) {
-    debugger;
     const [temp] = file;
     if (temp) {
       const { response: { wjlj } } = temp;
@@ -301,7 +300,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     ruleForm.validate((valid) => {
       if (valid) {
         const submitFormData = this.form;
-        debugger;
         console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)

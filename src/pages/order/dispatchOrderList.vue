@@ -150,20 +150,23 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '用车日期',
       dataIndex: 'useCarDate',
-      width: 100,
+      width: 160,
       dataType: 'date',
+      customRender: (text) => this.dateCustomRender(text, 'YYYY-MM-DD'),
     },
     {
       title: '航班时间',
       dataIndex: 'flightTime',
-      width: 100,
+      width: 160,
       dataType: 'time',
+      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
     },
     {
       title: '用车时间',
       dataIndex: 'useCarTime',
       width: 100,
       dataType: 'time',
+      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
     },
     {
       title: '产品类型',

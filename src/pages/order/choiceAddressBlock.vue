@@ -77,7 +77,6 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
 
       this.$jsonp('https://apis.map.qq.com/ws/geocoder/v1/', params)
           .then((res) => {
-            debugger;
             const {
               status,
               result,
@@ -93,7 +92,7 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
   }
 
   // 通过关键字获取地址信息列表
-  getAddressInfoListByKeyword(keyword) {
+  getAddressInfoListByKeyword(keyword, callback = undefined) {
     const params = {
       // region_fix: '0',
       region: '昆明',
@@ -110,6 +109,9 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
           } = res;
           if (status === 0) {
             this.dataSource = data || [];
+            if (callback) {
+              callback(data);
+            }
           }
         });
   }
@@ -148,19 +150,30 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     immediate: true,
   })
   handleValueChange(newVal, oldVal) {
-    if (newVal !== oldVal && newVal?.location) {
+    if (newVal !== oldVal && Object.keys(newVal)
+        .includes('location')) {
       this.addressInfo = newVal;
+
       const {
         address,
-        location: {
+        location,
+      } = newVal;
+      if (location) {
+        const {
           lat,
           lng,
-        },
-      } = newVal;
-      if (lat && lng) {
-        this.$nextTick(() => {
+        } = location;
+        if (lat && lng) {
+          this.$nextTick(() => {
+            this.addressName = address;
+            this.getAddressInfoByPosition([lat, lng]);
+          });
+        }
+      } else {
+        this.getAddressInfoListByKeyword(address, ([addressInfo]) => {
           this.addressName = address;
-          this.getAddressInfoByPosition([lat, lng]);
+          this.addressInfo = addressInfo;
+          this.emitChange(addressInfo);
         });
       }
     }
