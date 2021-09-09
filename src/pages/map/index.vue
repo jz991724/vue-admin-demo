@@ -99,7 +99,6 @@ export default class MainMap extends Vue {
             height: 0,
             ...location,
           };
-          debugger;
           this.addImgMarker(positionParams);
         }
       });

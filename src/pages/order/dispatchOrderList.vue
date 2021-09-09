@@ -58,7 +58,7 @@
 
         <!--删除-->
         <a-divider type="vertical"/>
-        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
+        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch([record.id])">
           <a>删除</a>
         </a-popconfirm>
       </template>
@@ -309,21 +309,15 @@ export default class OrderList extends Mixins(VueMixins) {
   handleMenuClick({ key }) {
     if (key === 'dispatchOrderListMenu') {
       this.onDispatch();
-    } else if (key === 'deleteOrderListMenu') {
+    } else if (key === 'deleteOrderListMenu') { // 评论删除
       const deleteIds = this.dispatchOrderList.map(({ id }) => id);
       if (deleteIds?.length > 0) {
-        debugger;
-        // orderService.deleteOrder([id])
-        //     .then((res) => {
-        //       this.fetchData();
-        //     });
+        const self = this;
         this.$confirm({
           content: '是否删除所有选中的订单信息？',
           onOk() {
-            debugger;
-          },
-          onCancel() {
-            debugger;
+            self.dispatchOrderList = [];
+            self.onDeleteDispatch(deleteIds);
           },
         });
       }
@@ -349,7 +343,6 @@ export default class OrderList extends Mixins(VueMixins) {
                  items,
                  totalCount,
                }) => {
-          debugger;
           this.dataSource = items || [];
           this.pagination.total = totalCount || 0;
         });
@@ -376,7 +369,6 @@ export default class OrderList extends Mixins(VueMixins) {
         // 数据导入
         orderService.addOrders(importFileData)
             .then((importRecordCount) => {
-              debugger;
               importRecordCount = Number(importRecordCount) || 0;
               if (importRecordCount === importFileData.length) {
                 self.$message.success(`成功导入 ${importRecordCount} 条数据！`);
@@ -424,9 +416,9 @@ export default class OrderList extends Mixins(VueMixins) {
   }
 
   // 派单信息删除
-  onDeleteDispatch({ id }) {
-    if (id) {
-      orderService.deleteOrder([id])
+  onDeleteDispatch(ids = []) {
+    if (ids?.length > 0) {
+      orderService.deleteOrder(ids)
           .then((res) => {
             this.fetchData();
           });

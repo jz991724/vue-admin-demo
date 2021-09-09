@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>"/>
     <% } %>
 
-    <script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY"></script>
+    <script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=<%= process.env.VUE_APP_TMAP_KEY %>"></script>
     <!--      <script src="https://map.qq.com/api/gljs?v=1.exp&key=KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY"></script>-->
     <!--      <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>-->
 </head>

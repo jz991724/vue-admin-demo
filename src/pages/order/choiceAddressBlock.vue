@@ -70,7 +70,7 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     if (position) {
       const params = {
         location: position.join(','),
-        key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
+        key: process.env.VUE_APP_TMAP_KEY,
         get_poi: '0',
         output: 'jsonp',
       };
@@ -97,7 +97,7 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     const params = {
       // region_fix: '0',
       region: '昆明',
-      key: 'KC7BZ-ZPH3D-FDW4E-P3YJB-OYAQQ-M6BBY',
+      key: process.env.VUE_APP_TMAP_KEY,
       keyword,
       output: 'jsonp',
     };
