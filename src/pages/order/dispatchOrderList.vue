@@ -106,8 +106,6 @@ export default class OrderList extends Mixins(VueMixins) {
     y: document.body.clientHeight - 350,
   };
 
-  // selectedRowKeys = [];
-
   // 所有选中将要被派单的order（各个页面）
   dispatchOrderList = [];
 
@@ -135,6 +133,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '渠道',
       width: 100,
       dataIndex: 'channel',
+      ellipsis: true,
     },
     {
       title: '乘客姓名',
@@ -150,28 +149,29 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '用车日期',
       dataIndex: 'useCarDate',
-      width: 160,
+      width: 110,
       dataType: 'date',
       customRender: (text) => this.dateCustomRender(text, 'YYYY-MM-DD'),
     },
     {
       title: '航班时间',
       dataIndex: 'flightTime',
-      width: 160,
+      width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
     },
     {
       title: '用车时间',
       dataIndex: 'useCarTime',
       width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
     },
     {
       title: '产品类型',
       dataIndex: 'productType',
       width: 100,
+      ellipsis: true,
     },
     {
       title: '航班车次号',
@@ -193,7 +193,8 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
-      width: 100,
+      width: 130,
+      ellipsis: true,
     },
     {
       title: '客户名称',
@@ -205,11 +206,17 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '车型',
       dataIndex: 'carType',
       width: 80,
+      ellipsis: true,
     },
     {
       title: '采购应付金额（元）',
       dataIndex: 'amountPayable',
       width: 160,
+    },
+    {
+      title: '结算价格（元）',
+      dataIndex: 'settlementPrice',
+      width: 130,
     },
     {
       title: '预订人',
@@ -227,6 +234,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '车队',
       dataIndex: 'motorcade',
       width: 80,
+      ellipsis: true,
     },
     {
       title: '操作',
@@ -248,6 +256,7 @@ export default class OrderList extends Mixins(VueMixins) {
     showSizeChanger: true,
     showLessItems: true,
     showQuickJumper: true,
+    pageSizeOptions: ['10', '20', '30', '40', '50', '100'],
     showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，总计 ${total} 条`,
     onChange: (page, pageSize) => {
       this.pagination.current = page;
@@ -317,7 +326,7 @@ export default class OrderList extends Mixins(VueMixins) {
       if (deleteIds?.length > 0) {
         const self = this;
         this.$confirm({
-          content: '是否删除所有选中的订单信息？',
+          content: `是否删除选中的 ${deleteIds.length} 条订单信息？`,
           onOk() {
             self.dispatchOrderList = [];
             self.onDeleteDispatch(deleteIds);

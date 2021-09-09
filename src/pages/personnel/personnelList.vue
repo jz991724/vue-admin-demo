@@ -126,13 +126,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '入职时间',
       dataIndex: 'entryTime',
       width: 180,
-      customRender: this.dateCustomRender,
+      customRender: (text) => this.dateCustomRender(text),
     },
     {
       title: '车俩登记时间',
       dataIndex: 'carRegisterTime',
       width: 180,
-      customRender: this.dateCustomRender,
+      customRender: (text) => this.dateCustomRender(text),
     },
     {
       title: '住址',

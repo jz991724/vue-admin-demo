@@ -64,6 +64,12 @@ export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
 
   columns = [
     {
+      title: '序号',
+      dataIndex: 'index',
+      width: 60,
+      customRender: (text, record, index) => index + 1,
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNumber',
       width: 100,
@@ -72,6 +78,7 @@ export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
       title: '渠道',
       width: 100,
       dataIndex: 'channel',
+      ellipsis: true,
     },
     {
       title: '乘客姓名',
@@ -80,25 +87,36 @@ export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
       ellipsis: true,
     },
     {
+      title: '乘客电话',
+      dataIndex: 'passengerPhone',
+      width: 120,
+    },
+    {
       title: '用车日期',
       dataIndex: 'useCarDate',
-      width: 160,
+      width: 110,
       dataType: 'date',
       customRender: (text) => this.dateCustomRender(text, 'YYYY-MM-DD'),
     },
     {
       title: '航班时间',
       dataIndex: 'flightTime',
-      width: 160,
+      width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
     },
     {
       title: '用车时间',
       dataIndex: 'useCarTime',
       width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
+    },
+    {
+      title: '产品类型',
+      dataIndex: 'productType',
+      width: 100,
+      ellipsis: true,
     },
     {
       title: '航班车次号',
@@ -120,7 +138,7 @@ export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
     {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
-      width: 150,
+      width: 130,
       ellipsis: true,
     },
     {
@@ -130,19 +148,38 @@ export default class DispatchOrdersConfirmModal extends Mixins(VueMixins) {
       ellipsis: true,
     },
     {
-      title: '采购应付金',
+      title: '车型',
+      dataIndex: 'carType',
+      width: 80,
+      ellipsis: true,
+    },
+    {
+      title: '采购应付金额（元）',
       dataIndex: 'amountPayable',
-      width: 110,
+      width: 160,
+    },
+    {
+      title: '结算价格（元）',
+      dataIndex: 'settlementPrice',
+      width: 130,
     },
     {
       title: '预订人',
       dataIndex: 'reservationPeople',
       width: 120,
+      ellipsis: true,
     },
     {
-      title: '乘客电话',
-      dataIndex: 'passengerPhone',
-      width: 120,
+      title: '备注',
+      dataIndex: 'remark',
+      width: 150,
+      ellipsis: true,
+    },
+    {
+      title: '车队',
+      dataIndex: 'motorcade',
+      width: 80,
+      ellipsis: true,
     },
     {
       title: '操作',

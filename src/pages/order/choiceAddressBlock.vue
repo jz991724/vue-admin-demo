@@ -5,7 +5,7 @@
 */
 <template>
   <div>
-    <a-auto-complete placeholder="请选择地址"
+    <a-auto-complete :placeholder="placeholder"
                      @search="getAddressInfoListByKeyword"
                      @select="onSelect"
                      :backfill="false"
@@ -51,6 +51,11 @@ export default class ChoiceAddressBlock extends Mixins(VueMixins) {
     type: String,
     default: 'container',
   }) mapId: string | undefined;
+
+  @Prop({
+    type: String,
+    default: '请选择地址',
+  }) placeholder: string | undefined;
 
   addressInfo = {};
 

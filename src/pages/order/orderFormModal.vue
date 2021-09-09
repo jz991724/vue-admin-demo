@@ -16,67 +16,98 @@
                     :rules="rules"
                     :label-col="labelCol"
                     :wrapper-col="wrapperCol">
+        <a-form-model-item label="订单号" prop="orderNumber">
+          <a-input v-model="form.orderNumber" placeholder="请输入订单号"/>
+        </a-form-model-item>
+
         <a-form-model-item label="渠道" prop="channel">
-          <a-input v-model="form.channel"/>
+          <a-input v-model="form.channel" placeholder="请输入渠道"/>
         </a-form-model-item>
 
         <a-form-model-item label="乘客姓名" prop="passengerName">
-          <a-input v-model="form.passengerName"/>
+          <a-input v-model="form.passengerName" placeholder="请输入乘客姓名"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="乘客电话" prop="passengerPhone">
+          <a-input v-model="form.passengerPhone" placeholder="请输入乘客电话"/>
         </a-form-model-item>
 
         <a-form-model-item label="用车日期" prop="useCarDate">
           <a-date-picker v-model="form.useCarDate"
                          type="date"
+                         format="YYYY-MM-DD"
                          placeholder="请选择用车日期"
-                         style="width: 100%;"/>
-        </a-form-model-item>
-
-        <a-form-model-item label="用车时间" prop="useCarTime">
-          <a-time-picker v-model="form.useCarTime"
-                         placeholder="请选择用车时间"
                          style="width: 100%;"/>
         </a-form-model-item>
 
         <a-form-model-item label="航班时间" prop="flightTime">
           <a-time-picker v-model="form.flightTime"
+                         :defaultValue="moment(form.flightTime, 'HH:mm')"
                          placeholder="请选择航班时间"
+                         format="HH:mm"
+                         valueFormat="HH:mm"
                          style="width: 100%;"/>
         </a-form-model-item>
 
+        <a-form-model-item label="用车时间" prop="useCarTime">
+          <a-time-picker v-model="form.useCarTime"
+                         :defaultValue="moment(form.useCarTime, 'HH:mm')"
+                         format="HH:mm"
+                         valueFormat="HH:mm"
+                         placeholder="请选择用车时间"
+                         style="width: 100%;"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="产品类型" prop="productType">
+          <a-input v-model="form.productType" placeholder="请输入产品类型"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="车型" prop="carType">
+          <a-input v-model="form.carType" placeholder="请输入车型"/>
+        </a-form-model-item>
+
         <a-form-model-item label="航班车次号" prop="flightNumber">
-          <a-input v-model="form.flightNumber"/>
+          <a-input v-model="form.flightNumber" placeholder="请输入航班车次号"/>
         </a-form-model-item>
 
         <a-form-model-item label="上车地点" prop="start">
-          <choice-address-block v-model="form.start" map-id="startAddressMap"></choice-address-block>
+          <choice-address-block v-model="form.start"
+                                map-id="startAddressMap"
+                                placeholder="请选择上车地点（可在地图上选取）"></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="下车地点" prop="destination">
-          <choice-address-block v-model="form.destination" map-id="destinationAddressMap"></choice-address-block>
+          <choice-address-block v-model="form.destination"
+                                map-id="destinationAddressMap"
+                                placeholder="请选择下车地点（可在地图上选取）"></choice-address-block>
         </a-form-model-item>
 
         <a-form-model-item label="预定部门" prop="reservationDepartment">
-          <a-input v-model="form.reservationDepartment"/>
+          <a-input v-model="form.reservationDepartment" placeholder="请输入预定部门"/>
         </a-form-model-item>
 
         <a-form-model-item label="客户名称" prop="customerName">
-          <a-input v-model="form.customerName"/>
+          <a-input v-model="form.customerName" placeholder="请输入客户名称"/>
         </a-form-model-item>
 
-        <a-form-model-item label="采购应付金额" prop="amountPayable">
-          <a-input type="number" v-model="form.amountPayable"/>
+        <a-form-model-item label="采购应付金额（元）" prop="amountPayable">
+          <a-input-number v-model="form.amountPayable" :min="0" style="width: 100%;" placeholder="请输入采购应付金额（元）"/>
         </a-form-model-item>
 
-        <a-form-model-item label="结算价格" prop="settlementPrice">
-          <a-input type="number" v-model="form.settlementPrice"/>
+        <a-form-model-item label="结算价格（元）" prop="settlementPrice">
+          <a-input-number v-model="form.settlementPrice" :min="0" style="width: 100%;" placeholder="请输入结算价格（元）"/>
         </a-form-model-item>
 
         <a-form-model-item label="预订人" prop="reservationPeople">
-          <a-input v-model="form.reservationPeople"/>
+          <a-input v-model="form.reservationPeople" placeholder="请输入预订人"/>
         </a-form-model-item>
 
-        <a-form-model-item label="乘客电话" prop="passengerPhone">
-          <a-input v-model="form.passengerPhone"/>
+        <a-form-model-item label="车队" prop="motorcade">
+          <a-input v-model="form.motorcade" placeholder="请输入车队"/>
+        </a-form-model-item>
+
+        <a-form-model-item label="备注" prop="remark">
+          <a-textarea :maxLength="100" allowClear v-model="form.remark" placeholder="请输入备注（100字内）" :rows="4"/>
         </a-form-model-item>
 
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
@@ -96,6 +127,7 @@
 import {
   Component, Mixins, Emit, Watch,
 } from 'vue-property-decorator';
+import moment from 'moment';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
 import { orderService } from '@/services';
@@ -116,19 +148,23 @@ import ChoiceAddressBlock from '@/pages/order/choiceAddressBlock.vue';
 export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   title = '订单信息添加';
 
-  labelCol = { span: 4 };
+  labelCol = { span: 6 };
 
-  wrapperCol = { span: 20 };
+  wrapperCol = { span: 18 };
 
   isEdit = false;
 
   form: any = {
+    orderNumber: undefined,
     channel: undefined,
     passengerName: undefined,
+    passengerPhone: undefined,
     useCarDate: undefined,
     flightTime: undefined,
     useCarTime: undefined,
+    productType: undefined,
     flightNumber: undefined,
+    carType: undefined,
     start: undefined,
     destination: undefined,
     reservationDepartment: undefined,
@@ -136,7 +172,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     amountPayable: undefined,
     settlementPrice: undefined,
     reservationPeople: undefined,
-    passengerPhone: undefined,
+    motorcade: undefined,
+    remark: undefined,
   };
 
   rules = {
@@ -227,6 +264,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     this.open();
     this.$nextTick(() => {
       if (info) {
+        debugger;
         this.isEdit = true;
         this.title = '订单信息编辑';
         this.form = formatData();

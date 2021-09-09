@@ -115,7 +115,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   dataSource = [];
 
-  conditions = { status: OrderStatusEnum.待派单 };
+  conditions = {};
 
   pagination = {
     current: 1,
@@ -166,6 +166,7 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'channel',
       searchAble: true,
       dataType: 'select',
+      ellipsis: true,
       search: {
         selectOptions: this.conditionsOptions.channel || [],
       },
@@ -196,28 +197,29 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '用车日期',
       dataIndex: 'useCarDate',
-      width: 160,
+      width: 110,
       dataType: 'date',
       customRender: (text) => this.dateCustomRender(text, 'YYYY-MM-DD'),
     },
     {
       title: '航班时间',
       dataIndex: 'flightTime',
-      width: 160,
+      width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
     },
     {
       title: '用车时间',
       dataIndex: 'useCarTime',
       width: 100,
       dataType: 'time',
-      customRender: (text) => this.dateCustomRender(text, 'HH:mm'),
+      customRender: (text) => this.timeCustomRender(text),
     },
     {
       title: '产品类型',
       dataIndex: 'productType',
       width: 100,
+      ellipsis: true,
     },
     {
       title: '航班车次号',
@@ -241,6 +243,7 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'driverName',
       width: 110,
       searchAble: true,
+      ellipsis: true,
     },
     {
       title: '驾驶员电话',
@@ -258,6 +261,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '预定部门',
       dataIndex: 'reservationDepartment',
       width: 100,
+      ellipsis: true,
     },
     {
       title: '客户名称',
@@ -269,6 +273,7 @@ export default class OrderList extends Mixins(VueMixins) {
       title: '车型',
       dataIndex: 'carType',
       width: 80,
+      ellipsis: true,
     },
     {
       title: '采购应付金额（元）',
@@ -309,6 +314,7 @@ export default class OrderList extends Mixins(VueMixins) {
       dataIndex: 'motorcade',
       width: 80,
       searchAble: true,
+      ellipsis: true,
     },
     {
       searchAble: true,

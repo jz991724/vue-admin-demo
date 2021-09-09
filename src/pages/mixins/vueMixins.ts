@@ -6,9 +6,15 @@ import moment from 'moment';
 export default class VueMixins extends Vue {
     moment = moment;
 
-    // 时间格式化
+    // 日期格式化
     dateCustomRender(value, format = 'YYYY-MM-DD HH:mm:ss') {
         return this.moment(value)
+            .format(format);
+    }
+
+    // 时间格式化
+    timeCustomRender(value, format = 'HH:mm') {
+        return this.moment(value, format)
             .format(format);
     }
 

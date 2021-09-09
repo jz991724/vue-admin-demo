@@ -17,16 +17,16 @@
                     :label-col="labelCol"
                     :wrapper-col="wrapperCol">
         <a-form-model-item label="姓名" prop="userName">
-          <a-input v-model="form.userName"/>
+          <a-input v-model="form.userName" placeholder="请输入姓名"/>
         </a-form-model-item>
         <a-form-model-item label="真实姓名" prop="realName">
-          <a-input v-model="form.realName"/>
+          <a-input v-model="form.realName" placeholder="请输入真实姓名"/>
         </a-form-model-item>
         <a-form-model-item label="新密码" prop="password">
-          <a-input v-model="form.password" type="password" autocomplete="off"/>
+          <a-input v-model="form.password" type="password" autocomplete="off" placeholder="请输入新密码"/>
         </a-form-model-item>
         <a-form-model-item label="密码确认" prop="checkPassword">
-          <a-input v-model="form.checkPassword" type="password" autocomplete="off"/>
+          <a-input v-model="form.checkPassword" type="password" autocomplete="off" placeholder="请输入密码确认"/>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">

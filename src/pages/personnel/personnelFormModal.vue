@@ -17,7 +17,7 @@
                     :label-col="labelCol"
                     :wrapper-col="wrapperCol">
         <a-form-model-item label="姓名" prop="name">
-          <a-input v-model="form.name"/>
+          <a-input v-model="form.name" placeholder="请输入姓名"/>
         </a-form-model-item>
         <a-form-model-item label="性别" prop="sex">
           <a-radio-group v-model="form.sex">
@@ -30,7 +30,7 @@
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="电话号码" prop="phoneNumber">
-          <a-input v-model="form.phoneNumber"/>
+          <a-input v-model="form.phoneNumber" placeholder="请输入电话号码"/>
         </a-form-model-item>
         <a-form-model-item label="入职时间" prop="entryTime">
           <a-date-picker v-model="form.entryTime"
@@ -40,16 +40,16 @@
                          style="width :100%"/>
         </a-form-model-item>
         <a-form-model-item label="车牌号" prop="licenseNumber">
-          <a-input v-model="form.licenseNumber"/>
+          <a-input v-model="form.licenseNumber" placeholder="请输入车牌号"/>
         </a-form-model-item>
         <a-form-model-item label="车型" prop="carType">
-          <a-input v-model="form.carType"/>
+          <a-input v-model="form.carType" placeholder="请输入车型"/>
         </a-form-model-item>
         <a-form-model-item label="车型分类" prop="vehicleClass">
-          <a-input v-model="form.vehicleClass"/>
+          <a-input v-model="form.vehicleClass" placeholder="请输入车型分类"/>
         </a-form-model-item>
         <a-form-model-item label="组别" prop="group">
-          <a-input v-model="form.group"/>
+          <a-input v-model="form.group" placeholder="请输入组别"/>
         </a-form-model-item>
         <!--        <a-form-model-item label="人员类型" prop="type">-->
         <!--          <a-input v-model="form.type"/>-->
@@ -62,7 +62,7 @@
                          style="width :100%"/>
         </a-form-model-item>
         <a-form-model-item label="住址" prop="address">
-          <a-input v-model="form.address" :max="100"/>
+          <a-input v-model="form.address" :max="100" placeholder="请输入住址"/>
         </a-form-model-item>
         <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
           <image-upload :value="form.identityCardFrontPath"
@@ -277,24 +277,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   // 提交
   onSubmit(e) {
-    // let test = {
-    //   'address': 'yun',
-    //   'carRegisterTime': '2021-09-07T03:02:24.824Z',
-    //   'carType': '1',
-    //   'drivingLicenceBackPath': '\\upload\\tempfile\\bcfe94b7-ee1d-4427-8c09-ca1869376e1f.jpeg',
-    //   'drivingLicenceFrontPath': '\\upload\\tempfile\\bbf31998-7215-4615-be56-239e4ca4afe3.jpeg',
-    //   'entryTime': '2021-09-07T03:02:11.588Z',
-    //   'group': '2',
-    //   'identityCardBackPath': '\\upload\\tempfile\\4da669a7-a4eb-4ec7-862e-1e1b240f53d2.jpeg',
-    //   'identityCardFrontPath': '\\upload\\tempfile\\7b2f1130-1a97-4467-9be7-c187ba0a8b15.jpeg',
-    //   'licenseNumber': '云D34445',
-    //   'name': '1',
-    //   'phoneNumber': '18788409290',
-    //   'sex': 0,
-    //   'vehicleClass': '2',
-    //   'vehicleLicenceBackPath': '\\upload\\tempfile\\0a0689c0-1dd2-4267-b932-410036484b1a.jpeg',
-    //   'vehicleLicenceFrontPath': '\\upload\\tempfile\\aa32ffb9-cfa9-435d-9c62-84bbf0089b27.jpeg',
-    // };
     e.preventDefault();
     const { ruleForm }: any = this.$refs;
     ruleForm.validate((valid) => {
