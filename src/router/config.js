@@ -47,7 +47,7 @@ const options = {
                         {
                             path: 'analysis',
                             name: '分析页',
-                            component: () => import('@/pages/dashboard/analysis'),
+                            component: () => import('@/pages/dashboard/analysis/index'),
                         }
                     ]
                 },

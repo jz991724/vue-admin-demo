@@ -13,9 +13,13 @@ import Plugins from '@/plugins';
 import { initI18n } from '@/utils/i18n';
 import bootstrap from '@/bootstrap';
 import 'moment/locale/zh-cn';
+// eslint-disable-next-line import/order
+import VeCharts from 've-charts';
 
 // eslint-disable-next-line import/order
 import { VueJsonp } from 'vue-jsonp';
+
+Vue.use(VeCharts);
 
 Vue.use(VueJsonp);
 

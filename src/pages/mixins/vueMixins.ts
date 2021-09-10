@@ -6,6 +6,8 @@ import moment from 'moment';
 export default class VueMixins extends Vue {
     moment = moment;
 
+    spinning = false;
+
     // 日期格式化
     dateCustomRender(value, format = 'YYYY-MM-DD HH:mm:ss') {
         return this.moment(value)

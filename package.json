@@ -21,11 +21,13 @@
     "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
     "date-fns": "^2.14.0",
+    "echarts": "^4.9.0",
     "enquire.js": "^2.1.6",
     "highlight.js": "^10.2.1",
     "js-cookie": "^2.2.1",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
+    "ve-charts": "^0.9.11",
     "viser-vue": "^2.4.8",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
@@ -34,7 +36,8 @@
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.3.4",
     "vuedraggable": "^2.23.2",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "zrender": "^5.2.0"
   },
   "devDependencies": {
     "@ant-design/colors": "^4.0.1",
