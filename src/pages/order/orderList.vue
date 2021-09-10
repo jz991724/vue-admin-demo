@@ -45,7 +45,7 @@
         <!--更改派单-->
         <a-divider type="vertical"/>
         <a @click="onUpdateDispatch(record)"
-           :disabled="![OrderStatusEnum.待接单,OrderStatusEnum.待派单].includes(record.status)">更改派单</a>
+           :disabled="![OrderStatusEnum.待接单].includes(record.status)">更改派单</a>
 
         <template v-if="[OrderStatusEnum.待派单].includes(record.status)||![OrderStatusEnum.进行中].includes(record.status)">
           <a-divider type="vertical"/>
