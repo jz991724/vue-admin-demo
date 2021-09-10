@@ -40,11 +40,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Vue } from 'vue-property-decorator';
-import moment from 'moment';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import UserInfoFormModal from '@/pages/userManagement/userInfoFormModal.vue';
-import userInfoService, { UserInfoStatusEnum } from '@/services/userManagement';
+import userInfoService, { UserInfoStatusEnum, UserInfoTypeEnum } from '@/services/userManagement';
 
 @Component({
   name: 'UserInfoList',
@@ -83,21 +82,22 @@ export default class UserInfoList extends Mixins(VueMixins) {
       width: 100,
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      width: 200,
-      customRender: (text) => this.dateCustomRender(text),
-    },
-    {
       title: '用户类型',
       dataIndex: 'userType',
       width: 100,
+      customRender: (text) => UserInfoTypeEnum[text],
     },
     {
       title: '状态',
       dataIndex: 'status',
       scopedSlots: { customRender: 'status' },
       width: 80,
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      width: 200,
+      customRender: (text) => this.dateCustomRender(text),
     },
     {
       title: '操作',

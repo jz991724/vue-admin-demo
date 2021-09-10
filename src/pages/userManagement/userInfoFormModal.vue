@@ -22,6 +22,31 @@
         <a-form-model-item label="真实姓名" prop="realName">
           <a-input v-model="form.realName" placeholder="请输入真实姓名"/>
         </a-form-model-item>
+        <a-form-model-item label="状态" prop="status">
+          <a-radio-group v-model="form.status">
+            <a-radio-button :value="UserInfoStatusEnum.在职">
+              在职
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.离职">
+              离职
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.请假">
+              请假
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.休息">
+              休息
+            </a-radio-button>
+          </a-radio-group>
+        </a-form-model-item>
+        <a-form-model-item label="人员类型" prop="userType">
+          <a-select v-model="form.userType">
+            <a-select-option :value="UserInfoTypeEnum.管理员">管理员</a-select-option>
+            <a-select-option :value="UserInfoTypeEnum.调度员">调度员</a-select-option>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item label="新密码" prop="password">
           <a-input v-model="form.password" type="password" autocomplete="off" placeholder="请输入新密码"/>
         </a-form-model-item>
@@ -47,7 +72,7 @@ import {
 } from 'vue-property-decorator';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
-import userInfoService from '@/services/userManagement';
+import userInfoService, { UserInfoStatusEnum, UserInfoTypeEnum } from '@/services/userManagement';
 import CUpload from '@/components/file/cUpload.vue';
 import FileUpload from '@/components/file/ImageUpload.vue';
 import ImageUpload from '@/components/file/ImageUpload.vue';
@@ -61,6 +86,10 @@ import ImageUpload from '@/components/file/ImageUpload.vue';
   },
 })
 export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
+  UserInfoTypeEnum = UserInfoTypeEnum;
+
+  UserInfoStatusEnum = UserInfoStatusEnum;
+
   title = '用户添加';
 
   labelCol = { span: 4 };
@@ -74,8 +103,8 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
     realName: undefined,
     password: undefined,
     checkPassword: undefined,
-    // status: undefined,
-    // type: undefined,
+    status: UserInfoStatusEnum.在职,
+    userType: UserInfoTypeEnum.调度员,
   };
 
   rules = {

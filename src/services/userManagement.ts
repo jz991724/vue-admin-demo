@@ -1,10 +1,17 @@
 import { requestHelper, METHOD } from '@/utils/request';
 
+// 状态
 export enum UserInfoStatusEnum {
     '在职',
     '离职',
     '请假',
     '休息'
+}
+
+// 人员类型
+export enum UserInfoTypeEnum {
+    '管理员',
+    '调度员',
 }
 
 const UserManagement = {

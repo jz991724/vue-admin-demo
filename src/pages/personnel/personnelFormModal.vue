@@ -48,8 +48,8 @@
         <a-form-model-item label="车型分类" prop="vehicleClass">
           <a-input v-model="form.vehicleClass" placeholder="请输入车型分类"/>
         </a-form-model-item>
-        <a-form-model-item label="组别" prop="group">
-          <a-input v-model="form.group" placeholder="请输入组别"/>
+        <a-form-model-item label="车队" prop="group">
+          <a-input v-model="form.group" placeholder="请输入车队"/>
         </a-form-model-item>
         <!--        <a-form-model-item label="人员类型" prop="type">-->
         <!--          <a-input v-model="form.type"/>-->
@@ -63,6 +63,25 @@
         </a-form-model-item>
         <a-form-model-item label="住址" prop="address">
           <a-input v-model="form.address" :max="100" placeholder="请输入住址"/>
+        </a-form-model-item>
+        <a-form-model-item label="状态" prop="status">
+          <a-radio-group v-model="form.status">
+            <a-radio-button :value="UserInfoStatusEnum.在职">
+              在职
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.离职">
+              离职
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.请假">
+              请假
+            </a-radio-button>
+
+            <a-radio-button :value="UserInfoStatusEnum.休息">
+              休息
+            </a-radio-button>
+          </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
           <image-upload :value="form.identityCardFrontPath"
@@ -112,6 +131,7 @@ import { personnelService } from '@/services';
 import CUpload from '@/components/file/cUpload.vue';
 import FileUpload from '@/components/file/ImageUpload.vue';
 import ImageUpload from '@/components/file/ImageUpload.vue';
+import { UserInfoStatusEnum } from '@/services/userManagement';
 
 @Component({
   name: 'AddPersonnelForm',
@@ -122,6 +142,8 @@ import ImageUpload from '@/components/file/ImageUpload.vue';
   },
 })
 export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
+  UserInfoStatusEnum = UserInfoStatusEnum;
+
   title = '驾驶员添加';
 
   SexEnum = SexEnum;
@@ -143,6 +165,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     entryTime: '',
     carRegisterTime: '',
     address: '',
+    status: UserInfoStatusEnum.在职,
     identityCardFrontPath: [],
     identityCardBackPath: [],
     drivingLicenceFrontPath: [],

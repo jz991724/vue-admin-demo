@@ -118,7 +118,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       width: 120,
     },
     {
-      title: '组别',
+      title: '车队',
       dataIndex: 'group',
       width: 120,
     },
