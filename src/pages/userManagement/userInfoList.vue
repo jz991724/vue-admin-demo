@@ -44,7 +44,7 @@ import moment from 'moment';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import VueMixins from '@/pages/mixins/vueMixins';
 import UserInfoFormModal from '@/pages/userManagement/userInfoFormModal.vue';
-import userInfoService, { UserInfoTypeEnum } from '@/services/userManagement';
+import userInfoService, { UserInfoStatusEnum } from '@/services/userManagement';
 
 @Component({
   name: 'UserInfoList',
@@ -54,10 +54,13 @@ import userInfoService, { UserInfoTypeEnum } from '@/services/userManagement';
   },
 })
 export default class UserInfoList extends Mixins(VueMixins) {
-  UserInfoStatusEnum = UserInfoTypeEnum;
+  UserInfoStatusEnum = UserInfoStatusEnum;
 
   tagColors = {
-    [UserInfoTypeEnum.在职]: 'green',
+    [UserInfoStatusEnum.在职]: 'green',
+    [UserInfoStatusEnum.离职]: '',
+    [UserInfoStatusEnum.请假]: 'orange',
+    [UserInfoStatusEnum.休息]: 'purple',
   };
 
   spinning = false;

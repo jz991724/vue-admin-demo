@@ -279,9 +279,11 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   onSubmit(e) {
     e.preventDefault();
     const { ruleForm }: any = this.$refs;
+    debugger;
     ruleForm.validate((valid) => {
       if (valid) {
         const submitFormData = this.form;
+        submitFormData.id = new Date().toString();
         console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)
