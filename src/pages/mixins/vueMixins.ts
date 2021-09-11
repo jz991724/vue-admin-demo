@@ -8,6 +8,11 @@ export default class VueMixins extends Vue {
 
     spinning = false;
 
+    scroll = {
+        x: 100,
+        y: document.body.clientHeight - 350,
+    };
+
     // 日期格式化
     dateCustomRender(value, format = 'YYYY-MM-DD HH:mm:ss') {
         return this.moment(value)

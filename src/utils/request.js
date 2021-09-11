@@ -241,6 +241,7 @@ export {
     AUTH_TYPE,
     request,
     requestHelper,
+    downloadFileHelper,
     setAuthorization,
     removeAuthorization,
     checkAuthorization,

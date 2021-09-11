@@ -1,4 +1,4 @@
-import { requestHelper, METHOD } from '@/utils/request';
+import { requestHelper, downloadFileHelper, METHOD } from '@/utils/request';
 
 // order状态enum
 export enum OrderStatusEnum {
@@ -38,6 +38,9 @@ const Order = {
     },
     fetchYearList(params) { // 获取所有年度
         return requestHelper('/api/OrderInfo/GetYearList', METHOD.GET, params, this);
+    },
+    exportOrderList(fileName, params = undefined) { // 导出订单信息
+        return downloadFileHelper('/api/OrderInfo/Export', fileName, params, undefined, this);
     },
 };
 

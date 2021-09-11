@@ -26,6 +26,10 @@
           </a-button>
         </file-upload>
 
+        <a-button type="primary" style="margin-left: 10px;" @click="onExportDataConfirm">
+          导出
+        </a-button>
+
         <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
           新增
         </a-button>
@@ -68,9 +72,8 @@
     <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
                                    @success="onDispatchOrderListSuccess"></dispatch-orders-confirm-modal>
 
-    <!--文件导入数据成功确认modal-->
-    <!--    <import-data-confirm-modal ref="importDataConfirmModal"-->
-    <!--                               @confirm="onImportDataConfirm"></import-data-confirm-modal>-->
+    <!--文件导出数据成功确认modal-->
+    <export-data-confirm-modal ref="exportDataConfirmModal"></export-data-confirm-modal>
 
     <!--订单的编辑及添加modal-->
     <order-form-modal ref="orderFormModal" @submitSuccess="refreshDataSource()"></order-form-modal>
@@ -89,10 +92,12 @@ import ImportDataConfirmModal from '@/pages/order/importDataConfirmModal.vue';
 import { OrderStatusEnum } from '@/services/order';
 import FileUpload from '@/components/file/fileUpload.vue';
 import OrderFormModal from '@/pages/order/orderFormModal.vue';
+import ExportDataConfirmModal from '@/pages/order/exportDataConfirmModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    ExportDataConfirmModal,
     OrderFormModal,
     FileUpload,
     ImportDataConfirmModal,
@@ -101,11 +106,6 @@ import OrderFormModal from '@/pages/order/orderFormModal.vue';
   },
 })
 export default class OrderList extends Mixins(VueMixins) {
-  scroll = {
-    x: 100,
-    y: document.body.clientHeight - 350,
-  };
-
   // 所有选中将要被派单的order（各个页面）
   dispatchOrderList = [];
 
@@ -273,12 +273,10 @@ export default class OrderList extends Mixins(VueMixins) {
   // 导入的文件数据
   importFileData = [];
 
-  // exportOrderByExcel(fileName = '导出数据.xlsx', params = undefined, url = '/calc/getResultFile') {
-  //   return new Promise((resolve, reject) => {
-  //     ajaxHelperInstance.downloadFile(url, fileName, params)
-  //         .then((res) => resolve(true), (error) => reject(false));
-  //   });
-  // }
+  // 导出订单信息
+  onExportDataConfirm() {
+    this.openModal('exportDataConfirmModal');
+  }
 
   // 选中项发生变化时的回调
   onSelectChange(selectedRowKeys, selectedRows) {

@@ -14,12 +14,26 @@
                    @refresh="onRefresh"
                    :format-conditions="true"
                    @reset="onReset"
-                   :scroll="{x:600}"
+                   :scroll="scroll"
+                   :row-selection="{selectedRowKeys: selectedPersonnelList.map(({id})=>id), onChange: onSelectChange}"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
         <a-button type="primary" style="margin-left: 10px;" @click="onAddPersonnel">
           新增
         </a-button>
+
+        <a-dropdown :disabled="selectedPersonnelList.length<1">
+          <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu-item key="deleteOrderListMenu" style="font-size: 16px;color: red;">
+              <a-icon type="delete" style="font-size: 16px;"/>
+              删除
+            </a-menu-item>
+          </a-menu>
+          <a-button style="margin-left: 8px">
+            更多操作
+            <a-icon type="down"/>
+          </a-button>
+        </a-dropdown>
       </div>
 
       <template slot="sex" slot-scope="{text}">
@@ -33,7 +47,7 @@
       <template slot="operation" slot-scope="{record}">
         <a @click="onUpdatePersonnel(record)">编辑</a>
         <a-divider type="vertical"/>
-        <a-popconfirm title="确定删除" @confirm="onDeletePersonnel(record)">
+        <a-popconfirm title="确定删除" @confirm="onDeletePersonnel([record.id])">
           <a>删除</a>
         </a-popconfirm>
       </template>
@@ -76,6 +90,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '序号',
       dataIndex: 'index',
       width: 80,
+      fixed: 'left',
       customRender: (text, record, index) => {
         const {
           pageSize,
@@ -88,6 +103,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       title: '姓名',
       dataIndex: 'name',
       searchAble: true,
+      fixed: 'left',
       width: 115,
     },
     {
@@ -153,6 +169,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
       // slots: { title: 'statusTitle' },
       scopedSlots: { customRender: 'status' },
       width: 100,
+      fixed: 'right',
       // search: {
       //   selectOptions: [
       //     {
@@ -199,6 +216,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
     },
   };
 
+  selectedPersonnelList = [];
+
+  // 选中项发生变化时的回调
+  onSelectChange(selectedRowKeys, selectedRows) {
+    this.selectedPersonnelList = selectedRows;
+  }
+
   // 人员信息添加
   onAddPersonnel(personnel) {
     this.openModal('personnelFormModal');
@@ -210,12 +234,27 @@ export default class PersonnelList extends Mixins(VueMixins) {
   }
 
   // 人员信息删除
-  onDeletePersonnel({ id }) {
-    if (id) {
-      personnelService.deletePersonnel([id])
+  onDeletePersonnel(ids = []) {
+    if (ids?.length > 0) {
+      personnelService.deletePersonnel(ids)
           .then((res) => {
             this.fetchData();
           });
+    }
+  }
+
+  handleMenuClick({ key }) {
+    if (key === 'deleteOrderListMenu') { // 批量删除
+      const deleteIds = this.selectedPersonnelList.map(({ id }) => id);
+      if (deleteIds?.length > 0) {
+        const self = this;
+        this.$confirm({
+          content: `是否删除选中的 ${deleteIds.length} 条人员信息？`,
+          onOk() {
+            self.onDeletePersonnel(deleteIds);
+          },
+        });
+      }
     }
   }
 
