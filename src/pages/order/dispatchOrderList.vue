@@ -26,10 +26,6 @@
           </a-button>
         </file-upload>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="onExportDataConfirm">
-          导出
-        </a-button>
-
         <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
           新增
         </a-button>
@@ -273,48 +269,10 @@ export default class OrderList extends Mixins(VueMixins) {
   // 导入的文件数据
   importFileData = [];
 
-  // 导出订单信息
-  onExportDataConfirm() {
-    this.openModal('exportDataConfirmModal');
-  }
-
   // 选中项发生变化时的回调
   onSelectChange(selectedRowKeys, selectedRows) {
     this.dispatchOrderList = selectedRows;
   }
-
-  // onImportDataConfirm(importType) {
-  //   let temp_dataSource = [];
-  //   switch (importType) {
-  //     case 'push':
-  //       temp_dataSource = [...new Set([...this.dataSource, ...this.importFileData])];
-  //       break;
-  //     case 'unshift':
-  //       temp_dataSource = [...new Set([...this.importFileData, ...this.dataSource])];
-  //       break;
-  //     default:
-  //       temp_dataSource = [...this.importFileData];
-  //       break;
-  //   }
-  //   debugger;
-  //   // 数据导入
-  //   orderService.importOrders(temp_dataSource)
-  //       .then((importRecordCount) => {
-  //         debugger;
-  //         importRecordCount = Number(importRecordCount) || 0;
-  //         if (importRecordCount === temp_dataSource.length) {
-  //           this.$message.success(`成功导入 ${importRecordCount} 条数据！`);
-  //         } else {
-  //           this.$message.success(`成功导入 ${importRecordCount} 条数据，导入失败${(temp_dataSource.length - importRecordCount)} 条！`);
-  //         }
-  //         this.refreshDataSource();
-  //       });
-  // }
-
-  // 用户手动选择/取消选择某列的回调
-  // onSelectRow(record, selected, selectedRows) {
-  //   this.dispatchOrderList[this.pagination.current] = selectedRows;
-  // }
 
   handleMenuClick({ key }) {
     if (key === 'dispatchOrderListMenu') {

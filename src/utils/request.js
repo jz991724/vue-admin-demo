@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import qs from 'qs';
+import { message } from 'ant-design-vue';
 
 // 跨域认证信息 header 名
 const xsrfHeaderName = 'Authorization';
@@ -99,15 +100,34 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
 
 //文件下载
 function downloadFileHelper(url, fileName, data = {}, config = { responseType: 'blob' }, vueContext = undefined, spinName = 'spinning') {
-    requestHelper(url, METHOD.GET, undefined, vueContext, data, spinName, config)
-        .then(res => {
-            const blob = new Blob([res.data]);
-            const rUrl = window.URL.createObjectURL(blob);
-            const link = document.createElement('a'); // 创建a标签
-            link.href = rUrl;
-            link.download = fileName; // 重命名文件
-            link.click();
-            URL.revokeObjectURL(rUrl); // 释放内存
+    if (vueContext && spinName && vueContext[spinName] !== undefined) {
+        vueContext[spinName] = true;
+    }
+    axios.post(url, data, config)
+        .then(({
+                   data,
+                   status
+               }) => {
+            if (status === 200) {
+                const blob = new Blob([data]);
+                const rUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a'); // 创建a标签
+                link.href = rUrl;
+                link.download = fileName; // 重命名文件
+                link.click();
+                URL.revokeObjectURL(rUrl); // 释放内存
+                message.success(`文件导出成功！`);
+            } else {
+                message.error('导出异常！');
+            }
+        }, error => {
+            message.error('导出错误！');
+            console.error('导出错误：', error);
+        })
+        .finally(() => {
+            if (vueContext && spinName && vueContext[spinName] !== undefined) {
+                vueContext[spinName] = false;
+            }
         });
 }
 

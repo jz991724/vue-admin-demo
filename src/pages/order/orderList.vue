@@ -25,6 +25,10 @@
         <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
           新增
         </a-button>
+
+        <a-button type="primary" style="margin-left: 10px;" @click="exportOrderByExcel()">
+          导出
+        </a-button>
       </div>
 
       <template slot="status" slot-scope="{text}">
@@ -433,6 +437,11 @@ export default class OrderList extends Mixins(VueMixins) {
   // 编辑订单信息
   onUpdateOrder(order) {
     this.openModal('orderFormModal', order);
+  }
+
+  // 导出
+  exportOrderByExcel(fileName = '导出数据.xlsx', params = this.conditions) {
+    orderService.exportOrderList(fileName, params);
   }
 
   fetchData() {
