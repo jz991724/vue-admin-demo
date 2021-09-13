@@ -34,7 +34,7 @@
         </a-form-model-item>
         <a-form-model-item label="入职时间" prop="entryTime">
           <a-date-picker v-model="form.entryTime"
-                         format="YYYY-MM-DD HH:mm:ss"
+                         format="YYYY-MM-DD HH:mm"
                          showTime
                          placeholder="请选择入职时间"
                          style="width :100%"/>
@@ -51,13 +51,10 @@
         <a-form-model-item label="车队" prop="group">
           <a-input v-model="form.group" placeholder="请输入车队"/>
         </a-form-model-item>
-        <!--        <a-form-model-item label="人员类型" prop="type">-->
-        <!--          <a-input v-model="form.type"/>-->
-        <!--        </a-form-model-item>-->
         <a-form-model-item label="车俩登记时间" prop="carRegisterTime">
           <a-date-picker v-model="form.carRegisterTime"
-                         format="YYYY-MM-DD HH:mm:ss"
                          showTime
+                         format="YYYY-MM-DD HH:mm"
                          placeholder="请选择车俩登记时间"
                          style="width :100%"/>
         </a-form-model-item>
@@ -155,23 +152,23 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   isEdit = false;
 
   form: any = {
-    name: '',
+    name: undefined,
     sex: 0,
-    phoneNumber: '',
-    licenseNumber: '',
-    carType: '',
-    vehicleClass: '',
-    group: '',
-    entryTime: '',
-    carRegisterTime: '',
-    address: '',
+    phoneNumber: undefined,
+    licenseNumber: undefined,
+    carType: undefined,
+    vehicleClass: undefined,
+    group: undefined,
+    entryTime: undefined,
+    carRegisterTime: undefined,
+    address: undefined,
     status: UserInfoStatusEnum.在职,
-    identityCardFrontPath: [],
-    identityCardBackPath: [],
-    drivingLicenceFrontPath: [],
-    drivingLicenceBackPath: [],
-    vehicleLicenceFrontPath: [],
-    vehicleLicenceBackPath: [],
+    identityCardFrontPath: undefined,
+    identityCardBackPath: undefined,
+    drivingLicenceFrontPath: undefined,
+    drivingLicenceBackPath: undefined,
+    vehicleLicenceFrontPath: undefined,
+    vehicleLicenceBackPath: undefined,
   };
 
   rules = {
@@ -306,7 +303,9 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     ruleForm.validate((valid) => {
       if (valid) {
         const submitFormData = this.form;
-        submitFormData.id = new Date().toString();
+        // submitFormData.entryTime = this.dateCustomRender(submitFormData.entryTime);
+        // submitFormData.carRegisterTime = this.dateCustomRender(submitFormData.carRegisterTime);
+        debugger;
         console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)

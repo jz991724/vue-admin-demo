@@ -66,6 +66,7 @@ import { personnelService } from '@/services';
 import VueMixins from '@/pages/mixins/vueMixins';
 import { PersonnelStatusEnum, PersonnelTypeEnum, SexEnum } from '@/services/personnel';
 import PersonnelFormModal from '@/pages/personnel/personnelFormModal.vue';
+import { UserInfoStatusEnum } from '@/services/userManagement';
 
 @Component({
   name: 'PersonnelList',
@@ -79,8 +80,13 @@ export default class PersonnelList extends Mixins(VueMixins) {
 
   PersonnelStatusEnum = PersonnelStatusEnum;
 
+  UserInfoStatusEnum = UserInfoStatusEnum;
+
   tagColors = {
-    [PersonnelStatusEnum.在职]: 'green',
+    [UserInfoStatusEnum.在职]: 'green',
+    [UserInfoStatusEnum.离职]: '',
+    [UserInfoStatusEnum.请假]: 'orange',
+    [UserInfoStatusEnum.休息]: 'purple',
   };
 
   spinning = false;
