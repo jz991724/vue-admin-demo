@@ -80,7 +80,6 @@ export default class ExportDataConfirmModal extends Vue {
   // 确定
   @Emit('confirm')
   handleOk() {
-    debugger;
     this.exportOrderByExcel();
     this.closeModal();
   }

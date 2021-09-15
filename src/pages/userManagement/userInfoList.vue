@@ -72,7 +72,7 @@ export default class UserInfoList extends Mixins(VueMixins) {
       customRender: (text, record, index) => index + 1,
     },
     {
-      title: '姓名',
+      title: '账号',
       dataIndex: 'userName',
       width: 100,
     },
@@ -97,7 +97,7 @@ export default class UserInfoList extends Mixins(VueMixins) {
       title: '更新时间',
       dataIndex: 'updateTime',
       width: 200,
-      customRender: (text) => this.dateCustomRender(text),
+      customRender: (text, { createTime }) => this.dateCustomRender(text || createTime),
     },
     {
       title: '操作',

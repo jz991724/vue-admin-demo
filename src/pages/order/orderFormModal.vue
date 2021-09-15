@@ -264,7 +264,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     this.open();
     this.$nextTick(() => {
       if (info) {
-        debugger;
         this.isEdit = true;
         this.title = '订单信息编辑';
         this.form = formatData();

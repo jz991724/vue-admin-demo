@@ -159,8 +159,10 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
       if (info) {
         this.isEdit = true;
         this.title = '用户信息编辑';
-        debugger;
-        this.form = { ...info };
+        this.form = {
+          ...info,
+          password: undefined,
+        };
       } else {
         this.isEdit = false;
         this.title = '用户信息添加';

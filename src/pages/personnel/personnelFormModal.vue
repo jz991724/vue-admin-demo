@@ -240,7 +240,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       if (info) {
         this.isEdit = true;
         this.title = '驾驶员编辑';
-        debugger;
         this.form = { ...info };
       } else {
         this.isEdit = false;
@@ -299,7 +298,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   onSubmit(e) {
     e.preventDefault();
     const { ruleForm }: any = this.$refs;
-    debugger;
     ruleForm.validate((valid) => {
       if (valid) {
         const submitFormData = this.form;
