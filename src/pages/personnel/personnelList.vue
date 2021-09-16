@@ -18,7 +18,7 @@
                    :row-selection="{selectedRowKeys: selectedPersonnelList.map(({id})=>id), onChange: onSelectChange}"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
-        <a-button type="primary" style="margin-left: 10px;" @click="onAddPersonnel">
+        <a-button type="primary" style="margin-left: 10px;" @click="onAddPersonnel()">
           新增
         </a-button>
 
@@ -230,7 +230,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
   }
 
   // 人员信息添加
-  onAddPersonnel(personnel) {
+  onAddPersonnel() {
     this.openModal('personnelFormModal');
   }
 

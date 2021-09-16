@@ -81,27 +81,27 @@
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
-          <image-upload :value="form.identityCardFrontPath"
+          <image-upload :value="form.identityCardFrontPath |filePathFilter"
                         @change="(value)=>{formatFile(value,'identityCardFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="身份证反面" prop="identityCardBackPath">
-          <image-upload :value="form.identityCardBackPath"
+          <image-upload :value="form.identityCardBackPath|filePathFilter"
                         @change="(value)=>{formatFile(value,'identityCardBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证正页" prop="drivingLicenceFrontPath">
-          <image-upload :value="form.drivingLicenceFrontPath"
+          <image-upload :value="form.drivingLicenceFrontPath|filePathFilter"
                         @change="(value)=>{formatFile(value,'drivingLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证副页" prop="drivingLicenceBackPath">
-          <image-upload :value="form.drivingLicenceBackPath"
+          <image-upload :value="form.drivingLicenceBackPath|filePathFilter"
                         @change="(value)=>{formatFile(value,'drivingLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证正页" prop="vehicleLicenceFrontPath">
-          <image-upload :value="form.vehicleLicenceFrontPath"
+          <image-upload :value="form.vehicleLicenceFrontPath|filePathFilter"
                         @change="(value)=>{formatFile(value,'vehicleLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证副页" prop="vehicleLicenceBackPath">
-          <image-upload :value="form.vehicleLicenceBackPath"
+          <image-upload :value="form.vehicleLicenceBackPath|filePathFilter"
                         @change="(value)=>{formatFile(value,'vehicleLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
@@ -130,12 +130,30 @@ import FileUpload from '@/components/file/ImageUpload.vue';
 import ImageUpload from '@/components/file/ImageUpload.vue';
 import { UserInfoStatusEnum } from '@/services/userManagement';
 
+function getGuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0;
+    // eslint-disable-next-line no-mixed-operators
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 @Component({
   name: 'AddPersonnelForm',
   components: {
     ImageUpload,
     FileUpload,
     CUpload,
+  },
+  filters: {
+    filePathFilter(path) {
+      return [{
+        uid: getGuid(),
+        status: 'done',
+        url: path,
+      }];
+    },
   },
 })
 export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
@@ -236,16 +254,14 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   // 打开modal
   openModal(info = undefined) {
     this.open();
-    this.$nextTick(() => {
-      if (info) {
-        this.isEdit = true;
-        this.title = '驾驶员编辑';
-        this.form = { ...info };
-      } else {
-        this.isEdit = false;
-        this.title = '驾驶员添加';
-      }
-    });
+    if (info) {
+      this.isEdit = true;
+      this.title = '驾驶员编辑';
+      this.form = { ...info };
+    } else {
+      this.isEdit = false;
+      this.title = '驾驶员添加';
+    }
   }
 
   formatFile(file = [], name) {
@@ -301,9 +317,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     ruleForm.validate((valid) => {
       if (valid) {
         const submitFormData = this.form;
-        // submitFormData.entryTime = this.dateCustomRender(submitFormData.entryTime);
-        // submitFormData.carRegisterTime = this.dateCustomRender(submitFormData.carRegisterTime);
-        debugger;
         console.log('submitFormData：', submitFormData);
         if (this.isEdit) {
           personnelService.updatePersonnel(submitFormData)

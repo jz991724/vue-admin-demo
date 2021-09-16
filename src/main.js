@@ -23,6 +23,13 @@ Vue.use(VeCharts);
 
 Vue.use(VueJsonp);
 
+Vue.directive('componentPermission', {
+// 当被绑定的元素插入到 DOM 中时……
+    inserted(el, binding) {
+        debugger;
+    },
+});
+
 const router = initRouter(store.state.setting.asyncRoutes);
 const i18n = initI18n('CN', 'US');
 
