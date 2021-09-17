@@ -5,7 +5,6 @@
 */
 <template>
   <div class="clearfix" style="line-height: initial;">
-    <pre>{{fileList}}</pre>
     <a-upload list-type="picture-card"
               :file-list="fileList"
               :customRequest="customRequest"
@@ -41,7 +40,7 @@ function getBase64(file) {
 
 @Component({ name: 'ImageUpload' })
 export default class ImageUpload extends Vue {
-  @Model('change', {
+  @Prop({
     type: Array,
     default: () => ([]),
   }) value: any[] | undefined;
@@ -56,7 +55,7 @@ export default class ImageUpload extends Vue {
 
   previewImage = '';
 
-  fileList = [];
+  fileList: any[] = [];
 
   customRequest(options) {
     const { file } = options;
@@ -103,7 +102,6 @@ export default class ImageUpload extends Vue {
   // 上传到后台的文件change
   @Emit('change')
   emitUploadChange(files = []) {
-    debugger;
     return files;
   }
 
@@ -113,8 +111,7 @@ export default class ImageUpload extends Vue {
   })
   handleFilesChange(newVal, oldVal) {
     if (newVal !== oldVal) {
-      debugger;
-      this.fileList = newVal || [];
+      this.fileList = newVal;
     }
   }
 }

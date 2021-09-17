@@ -41,7 +41,7 @@
       </template>
 
       <template slot="status" slot-scope="{text}">
-        <a-tag :color="tagColors[text]">{{ PersonnelStatusEnum[text].toString() }}</a-tag>
+        <a-tag :color="tagColors[text]">{{ UserInfoStatusEnum[text].toString() }}</a-tag>
       </template>
 
       <template slot="operation" slot-scope="{record}">
@@ -78,7 +78,7 @@ import { UserInfoStatusEnum } from '@/services/userManagement';
 export default class PersonnelList extends Mixins(VueMixins) {
   SexEnum = SexEnum;
 
-  PersonnelStatusEnum = PersonnelStatusEnum;
+  // PersonnelStatusEnum = PersonnelStatusEnum;
 
   UserInfoStatusEnum = UserInfoStatusEnum;
 

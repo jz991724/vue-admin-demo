@@ -81,27 +81,27 @@
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item label="身份证正面" prop="identityCardFrontPath">
-          <image-upload :value="form.identityCardFrontPath |filePathFilter"
+          <image-upload :value="form.identityCardFront | filePathFilter('身份证正面')"
                         @change="(value)=>{formatFile(value,'identityCardFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="身份证反面" prop="identityCardBackPath">
-          <image-upload :value="form.identityCardBackPath|filePathFilter"
+          <image-upload :value="form.identityCardBack | filePathFilter('身份证反面')"
                         @change="(value)=>{formatFile(value,'identityCardBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证正页" prop="drivingLicenceFrontPath">
-          <image-upload :value="form.drivingLicenceFrontPath|filePathFilter"
+          <image-upload :value="form.drivingLicenceFront | filePathFilter('驾驶证正页')"
                         @change="(value)=>{formatFile(value,'drivingLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="驾驶证副页" prop="drivingLicenceBackPath">
-          <image-upload :value="form.drivingLicenceBackPath|filePathFilter"
+          <image-upload :value="form.drivingLicenceBack | filePathFilter('驾驶证副页')"
                         @change="(value)=>{formatFile(value,'drivingLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证正页" prop="vehicleLicenceFrontPath">
-          <image-upload :value="form.vehicleLicenceFrontPath|filePathFilter"
+          <image-upload :value="form.vehicleLicenceFront | filePathFilter('行车证正页')"
                         @change="(value)=>{formatFile(value,'vehicleLicenceFrontPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item label="行车证副页" prop="vehicleLicenceBackPath">
-          <image-upload :value="form.vehicleLicenceBackPath|filePathFilter"
+          <image-upload :value="form.vehicleLicenceBack | filePathFilter('行车证副页')"
                         @change="(value)=>{formatFile(value,'vehicleLicenceBackPath')}"></image-upload>
         </a-form-model-item>
         <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
@@ -147,11 +147,12 @@ function getGuid() {
     CUpload,
   },
   filters: {
-    filePathFilter(path) {
+    filePathFilter(id, name) {
       return [{
         uid: getGuid(),
+        name,
         status: 'done',
-        url: path,
+        url: `http://47.107.108.136:8088/api/File/GetFile?id=${id}`,
       }];
     },
   },
@@ -187,6 +188,12 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
     drivingLicenceBackPath: undefined,
     vehicleLicenceFrontPath: undefined,
     vehicleLicenceBackPath: undefined,
+    identityCardFront: undefined,
+    identityCardBack: undefined,
+    drivingLicenceFront: undefined,
+    drivingLicenceBack: undefined,
+    vehicleLicenceFront: undefined,
+    vehicleLicenceBack: undefined,
   };
 
   rules = {
@@ -253,7 +260,6 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   // 打开modal
   openModal(info = undefined) {
-    this.open();
     if (info) {
       this.isEdit = true;
       this.title = '驾驶员编辑';
@@ -262,6 +268,8 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
       this.isEdit = false;
       this.title = '驾驶员添加';
     }
+
+    this.open();
   }
 
   formatFile(file = [], name) {
