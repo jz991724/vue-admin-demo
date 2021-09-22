@@ -30,7 +30,10 @@ const options = {
                     path: 'dashboard',
                     name: '分析',
                     meta: {
-                        icon: 'dashboard'
+                        icon: 'dashboard',
+                        authority: {
+                            role: 'admin'
+                        }
                     },
                     component: BlankView,
                     children: [

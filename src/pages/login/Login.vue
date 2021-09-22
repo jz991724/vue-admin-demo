@@ -111,13 +111,13 @@ export default {
       this.logging = false;
       if (status === 200 && success) {
         this.setUser(userInfo);
-        this.setPermissions([{
-          id: 'queryForm',
-          operation: ['add', 'edit'],
-        }]);
+        // this.setPermissions([{
+        //   id: 'queryForm',
+        //   operation: ['add', 'edit'],
+        // }]);
         this.setRoles([{
           id: 'admin',
-          operation: ['add', 'edit', 'delete'],
+          operation: ['add', 'edit', 'delete', 'test'],
         }]);
         setAuthorization({
           token,
