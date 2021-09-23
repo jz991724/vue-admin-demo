@@ -15,7 +15,7 @@
                    @reset="fetchData"
                    :scroll="{x:600}">
       <div slot="extra" style="display: flex;justify-content: end;">
-        <a-button type="primary" style="margin-left: 10px;" @click="onAddUserInfo">
+        <a-button v-auth="`add`" type="primary" style="margin-left: 10px;" @click="onAddUserInfo">
           新增
         </a-button>
       </div>

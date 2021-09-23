@@ -21,12 +21,12 @@
         <file-upload class="margin-left-xs"
                      @success="uploadSuccess"
                      @upLoading="(isLoading)=>spinning=isLoading">
-          <a-button :loading="spinning" :disabled="spinning">
+          <a-button v-auth="`import`" :loading="spinning" :disabled="spinning">
             导入
           </a-button>
         </file-upload>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
+        <a-button v-auth="`add`" type="primary" style="margin-left: 10px;" @click="onAddOrder">
           新增
         </a-button>
 

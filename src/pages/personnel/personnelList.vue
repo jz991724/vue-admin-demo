@@ -18,13 +18,13 @@
                    :row-selection="{selectedRowKeys: selectedPersonnelList.map(({id})=>id), onChange: onSelectChange}"
                    :pagination="pagination">
       <div slot="extra" style="display: flex;justify-content: end;">
-        <a-button type="primary" style="margin-left: 10px;" @click="onAddPersonnel()">
+        <a-button v-auth="`add`" type="primary" style="margin-left: 10px;" @click="onAddPersonnel()">
           新增
         </a-button>
 
-        <a-dropdown :disabled="selectedPersonnelList.length<1">
+        <a-dropdown v-auth="`delete`" :disabled="selectedPersonnelList.length<1">
           <a-menu slot="overlay" @click="handleMenuClick">
-            <a-menu-item key="deleteOrderListMenu" style="font-size: 16px;color: red;">
+            <a-menu-item v-auth="`delete`" key="deleteOrderListMenu" style="font-size: 16px;color: red;">
               <a-icon type="delete" style="font-size: 16px;"/>
               删除
             </a-menu-item>

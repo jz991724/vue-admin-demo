@@ -22,11 +22,11 @@
       </template>
 
       <div slot="extra" style="display: flex;justify-content: end;">
-        <a-button type="primary" style="margin-left: 10px;" @click="onAddOrder">
+        <a-button v-auth="`add`" type="primary" style="margin-left: 10px;" @click="onAddOrder">
           新增
         </a-button>
 
-        <a-button type="primary" style="margin-left: 10px;" @click="exportOrderByExcel()">
+        <a-button v-auth="`export`" type="primary" style="margin-left: 10px;" @click="exportOrderByExcel()">
           导出
         </a-button>
       </div>

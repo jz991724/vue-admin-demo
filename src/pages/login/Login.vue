@@ -124,12 +124,12 @@ export default {
               if (userType === UserInfoTypeEnum.管理员) {
                 this.setRoles([{
                   id: 'admin',
-                  operation: ['add', 'edit', 'delete', 'dispatch'],
+                  operation: ['add', 'edit', 'delete', 'import', 'export', 'dispatch'],
                 }]);
               } else {
                 this.setRoles([{
                   id: 'dispatcher',
-                  operation: ['add', 'edit', 'dispatch'],
+                  operation: ['dispatch'],
                 }]);
               }
             });
