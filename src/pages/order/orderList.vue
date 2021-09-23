@@ -38,17 +38,19 @@
       <template slot="operation" slot-scope="{record}">
         <!--派单-->
         <a @click="onConfirmDispatch([record])"
+           v-auth="`dispatch`"
            :disabled="![OrderStatusEnum.待派单].includes(record.status)">派单</a>
 
         <!--取消派单-->
         <a-divider type="vertical"/>
         <a-popconfirm title="确定取消" @confirm="onCancelDispatch(record)">
-          <a :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>
+          <a v-auth="`dispatch`" :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>
         </a-popconfirm>
 
         <!--更改派单-->
         <a-divider type="vertical"/>
         <a @click="onUpdateDispatch(record)"
+           v-auth="`dispatch`"
            :disabled="![OrderStatusEnum.待接单].includes(record.status)">更改派单</a>
 
         <template v-if="[OrderStatusEnum.待派单].includes(record.status)||![OrderStatusEnum.进行中].includes(record.status)">
@@ -60,12 +62,12 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item v-if="[OrderStatusEnum.待派单].includes(record.status)">
-                <a @click="onUpdateOrder(record)">编辑</a>
+                <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
               </a-menu-item>
 
               <a-menu-item v-if="![OrderStatusEnum.进行中].includes(record.status)">
                 <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
-                  <a>删除</a>
+                  <a v-auth="`delete`">删除</a>
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>

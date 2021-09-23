@@ -4,6 +4,7 @@ src/vendors
 src/utils
 src/router
 src/layouts
+src/plugins
 public
 dist
 node_modules

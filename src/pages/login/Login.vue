@@ -66,6 +66,7 @@ import { login, getRoutesConfig } from '@/services/user';
 import { setAuthorization } from '@/utils/request';
 import { loadRoutes } from '@/utils/routerUtil';
 import '@/mock/extend';
+import UserManagement, { UserInfoTypeEnum } from '../../services/userManagement';
 
 export default {
   name: 'Login',
@@ -115,10 +116,24 @@ export default {
         //   id: 'queryForm',
         //   operation: ['add', 'edit'],
         // }]);
-        this.setRoles([{
-          id: 'admin',
-          operation: ['add', 'edit', 'delete', 'test'],
-        }]);
+        const { userName } = userInfo;
+
+        UserManagement.getUserInfoByUserName({ userName })
+            .then((info) => {
+              const { userType } = info;
+              if (userType === UserInfoTypeEnum.管理员) {
+                this.setRoles([{
+                  id: 'admin',
+                  operation: ['add', 'edit', 'delete', 'dispatch'],
+                }]);
+              } else {
+                this.setRoles([{
+                  id: 'dispatcher',
+                  operation: ['add', 'edit', 'dispatch'],
+                }]);
+              }
+            });
+
         setAuthorization({
           token,
           expireAt: new Date(new Date().getTime() + 30 * 60 * 1000 * 10), // token有效期设置

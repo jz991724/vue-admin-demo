@@ -30,7 +30,7 @@ const UserManagement = {
     updateUserInfoStatus(params) { // 修改状态
         return requestHelper('/api/UserInfo/UpdateStatus', METHOD.POST, params, this);
     },
-    getUserInfoById(params) { // 根据用户ID获取用户信息
+    getUserInfoByUserName(params) { // 根据用户名获取用户信息
         return requestHelper('/api/UserInfo/GetUserInfo', METHOD.GET, params, this);
     },
 };

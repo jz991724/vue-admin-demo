@@ -1,10 +1,10 @@
 <template>
-  <exception-page home-route="/demo" :style="`min-height: ${minHeight}`" type="404" />
+  <exception-page home-route="/login" :style="`min-height: ${minHeight}`" type="404" />
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ExceptionPage from '@/components/exception/ExceptionPage';
+import ExceptionPage from '@/components/exception/ExceptionPage.vue';
 
 export default {
   name: 'Exp404',

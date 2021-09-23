@@ -50,16 +50,16 @@
 
       <template slot="operation" slot-scope="{record}">
         <!--派单-->
-        <a @click="onConfirmDispatch([record])">派单</a>
+        <a v-auth="`dispatch`" @click="onConfirmDispatch([record])">派单</a>
 
         <!--编辑-->
         <a-divider type="vertical"/>
-        <a @click="onUpdateOrder(record)">编辑</a>
+        <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
 
         <!--删除-->
         <a-divider type="vertical"/>
         <a-popconfirm title="确定删除" @confirm="onDeleteDispatch([record.id])">
-          <a>删除</a>
+          <a v-auth="`delete`">删除</a>
         </a-popconfirm>
       </template>
     </advance-table>

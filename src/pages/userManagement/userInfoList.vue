@@ -25,10 +25,10 @@
       </template>
 
       <template slot="operation" slot-scope="{record}">
-        <a @click="onUpdateUserInfo(record)">编辑</a>
+        <a v-auth="`edit`" @click="onUpdateUserInfo(record)">编辑</a>
         <a-divider type="vertical"/>
         <a-popconfirm title="确定删除" @confirm="onDeleteUserInfo(record)">
-          <a>删除</a>
+          <a v-auth="`delete`">删除</a>
         </a-popconfirm>
       </template>
     </advance-table>

@@ -13,6 +13,7 @@ const getRoutePermission = (permissions, route) => permissions.find((item) => it
  */
 const getRouteRole = (roles, route) => {
   const requiredRoles = route.meta.authority.role;
+  debugger
   return requiredRoles ? roles.filter((item) => requiredRoles.findIndex((required) => required === item.id) !== -1) : [];
 };
 /**
@@ -74,11 +75,13 @@ const checkFromRoles = function (check, roles) {
 };
 
 const checkInject = function (el, binding, vnode) {
+  debugger;
   const type = binding.arg;
   const check = binding.value;
   const instance = vnode.context;
   const { $auth } = instance;
   if (!$auth || !$auth(check, type)) {
+    debugger
     addDisabled(el);
   } else {
     removeDisabled(el);
@@ -151,6 +154,7 @@ const AuthorityPlugin = {
          * @returns {boolean} 是否校验通过
          */
         $auth(check, type) {
+          debugger
           const permissions = this.$store.getters['account/permissions'];
           const roles = this.$store.getters['account/roles'];
           const permission = getRoutePermission(permissions, this.$route);
