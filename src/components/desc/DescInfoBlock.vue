@@ -12,7 +12,7 @@
       <a-descriptions-item :key="key" :span="span||1">
         <template slot="label">
           <slot :name="`${key}_label`">
-            <span class="text-black-85 xf-text-inline">{{ label }}</span>
+            <span class="text-black-85 xf-text-inline" style="white-space: nowrap;">{{ label }}</span>
           </slot>
         </template>
 

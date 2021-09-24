@@ -129,7 +129,7 @@ export default {
               } else {
                 this.setRoles([{
                   id: 'dispatcher',
-                  operation: ['dispatch'],
+                  operation: [],
                 }]);
               }
             });

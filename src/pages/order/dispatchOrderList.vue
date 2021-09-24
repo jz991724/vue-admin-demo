@@ -56,11 +56,25 @@
         <a-divider type="vertical"/>
         <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
 
-        <!--删除-->
+        <!--更多-->
         <a-divider type="vertical"/>
-        <a-popconfirm title="确定删除" @confirm="onDeleteDispatch([record.id])">
-          <a v-auth="`delete`">删除</a>
-        </a-popconfirm>
+        <a-dropdown>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            更多
+            <a-icon type="down"/>
+          </a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a @click="onCheckedOrder(record)">详情</a>
+            </a-menu-item>
+
+            <a-menu-item>
+              <a-popconfirm title="确定删除" @confirm="onDeleteDispatch([record.id])">
+                <a v-auth="`delete`">删除</a>
+              </a-popconfirm>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </template>
     </advance-table>
 
@@ -73,6 +87,9 @@
 
     <!--订单的编辑及添加modal-->
     <order-form-modal ref="orderFormModal" @submitSuccess="refreshDataSource()"></order-form-modal>
+
+    <!--订单详情Modal-->
+    <order-detail-modal ref="orderDetailModal"></order-detail-modal>
   </div>
 </template>
 
@@ -89,10 +106,12 @@ import { OrderStatusEnum } from '@/services/order';
 import FileUpload from '@/components/file/fileUpload.vue';
 import OrderFormModal from '@/pages/order/orderFormModal.vue';
 import ExportDataConfirmModal from '@/pages/order/exportDataConfirmModal.vue';
+import OrderDetailModal from '@/pages/order/orderDetailModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    OrderDetailModal,
     ExportDataConfirmModal,
     OrderFormModal,
     FileUpload,
@@ -235,7 +254,7 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 150,
+      width: 170,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
@@ -391,6 +410,11 @@ export default class OrderList extends Mixins(VueMixins) {
             this.fetchData();
           });
     }
+  }
+
+  // 查看订单信息
+  onCheckedOrder(order) {
+    this.openModal('orderDetailModal', order);
   }
 
   // 派单

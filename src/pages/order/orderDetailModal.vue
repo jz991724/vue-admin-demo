@@ -64,14 +64,19 @@ export default class OrderDetailModal extends Mixins(VueMixins, ModalMixins) {
         label: '用车日期',
       },
       {
-        key: 'flightTime',
-        value: this.detail.flightTime,
-        label: '航班时间',
-      },
-      {
         key: 'useCarTime',
         value: this.detail.useCarTime,
         label: '用车时间',
+      },
+      {
+        key: 'flightNumber',
+        value: this.detail.flightNumber,
+        label: '航班车次号',
+      },
+      {
+        key: 'flightTime',
+        value: this.detail.flightTime,
+        label: '航班时间',
       },
       {
         key: 'productType',
@@ -79,14 +84,9 @@ export default class OrderDetailModal extends Mixins(VueMixins, ModalMixins) {
         label: '产品类型',
       },
       {
-        key: 'flightNumber',
-        value: this.detail.flightNumber,
-        label: '车型',
-      },
-      {
         key: 'carType',
         value: this.detail.carType,
-        label: '航班车次号',
+        label: '车型',
       },
       {
         key: 'startAddress',
