@@ -42,7 +42,7 @@ export default class DescInfoBlock extends Vue {
   }) dataSource: any;
 
   defaultConfig = {
-    column: 3,
+    column: 2,
     colon: !Object.keys(this.$attrs).includes('bordered'),
     size: 'small',
   };

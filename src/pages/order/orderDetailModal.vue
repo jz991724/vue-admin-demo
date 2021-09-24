@@ -7,10 +7,9 @@
   <a-modal :title="title"
            :visible="visible"
            v-bind="defaultOptions"
-           :afterClose="afterClose"
            @ok="handleOk"
            @cancel="handleCancel">
-    <desc-info-block :desc-info="descInfo"></desc-info-block>
+    <desc-info-block :desc-info="getDescInfo" :bordered="true"></desc-info-block>
   </a-modal>
 </template>
 
@@ -35,158 +34,116 @@ import DescInfoBlock from '@/components/desc/DescInfoBlock.vue';
 export default class OrderDetailModal extends Mixins(VueMixins, ModalMixins) {
   title = '订单详情信息';
 
-  descInfo: any = [{
-    key: 'orderNumber',
-    value: undefined,
-    label: '',
-  },
-    {
-      key: 'channel',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'passengerName',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'passengerPhone',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'useCarDate',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'flightTime',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'useCarTime',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'productType',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'flightNumber',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'carType',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'start',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'destination',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'reservationDepartment',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'customerName',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'amountPayable',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'settlementPrice',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'reservationPeople',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'motorcade',
-      value: undefined,
-      label: '',
-    },
-    {
-      key: 'remark',
-      value: undefined,
-      label: '',
-    }];
+  detail: any = {};
+
+  get getDescInfo() {
+    return [
+      {
+        key: 'orderNumber',
+        value: this.detail.orderNumber,
+        label: '订单号',
+      },
+      {
+        key: 'channel',
+        value: this.detail.channel,
+        label: '渠道',
+      },
+      {
+        key: 'passengerName',
+        value: this.detail.passengerName,
+        label: '乘客姓名',
+      },
+      {
+        key: 'passengerPhone',
+        value: this.detail.passengerPhone,
+        label: '乘客电话',
+      },
+      {
+        key: 'useCarDate',
+        value: this.detail.useCarDate,
+        label: '用车日期',
+      },
+      {
+        key: 'flightTime',
+        value: this.detail.flightTime,
+        label: '航班时间',
+      },
+      {
+        key: 'useCarTime',
+        value: this.detail.useCarTime,
+        label: '用车时间',
+      },
+      {
+        key: 'productType',
+        value: this.detail.productType,
+        label: '产品类型',
+      },
+      {
+        key: 'flightNumber',
+        value: this.detail.flightNumber,
+        label: '车型',
+      },
+      {
+        key: 'carType',
+        value: this.detail.carType,
+        label: '航班车次号',
+      },
+      {
+        key: 'startAddress',
+        value: this.detail.startAddress,
+        label: '上车地点',
+        span: 2,
+      },
+      {
+        key: 'destinationAddress',
+        value: this.detail.destinationAddress,
+        label: '下车地点',
+        span: 2,
+      },
+      {
+        key: 'reservationDepartment',
+        value: this.detail.reservationDepartment,
+        label: '预定部门',
+      },
+      {
+        key: 'customerName',
+        value: this.detail.customerName,
+        label: '客户名称',
+      },
+      {
+        key: 'amountPayable',
+        value: this.detail.amountPayable,
+        label: '采购应付金额（元）',
+      },
+      {
+        key: 'settlementPrice',
+        value: this.detail.settlementPrice,
+        label: '结算价格（元）',
+      },
+      {
+        key: 'reservationPeople',
+        value: this.detail.reservationPeople,
+        label: '预订人',
+      },
+      {
+        key: 'motorcade',
+        value: this.detail.motorcade,
+        label: '车队',
+      },
+      {
+        key: 'remark',
+        value: this.detail.remark,
+        label: '备注',
+      }];
+  }
 
   // 打开modal
-  openModal(info = undefined) {
-    // 数据格式化
-    const formatData = () => {
-      let {
-        destinationLngLat,
-        startLngLat,
-      } = info;
+  openModal(detail = undefined) {
+    if (detail) {
+      this.open();
 
-      const {
-        destinationAddress,
-        startAddress,
-      } = info;
-
-      const start = {
-        location: undefined,
-        address: startAddress,
-      };
-
-      const destination = {
-        location: undefined,
-        address: destinationAddress,
-      };
-
-      if (startLngLat) {
-        startLngLat = startLngLat.split(',');
-        start.location = {
-          lat: startLngLat[0],
-          lng: startLngLat[1],
-        };
-      }
-
-      if (destinationLngLat) {
-        destinationLngLat = destinationLngLat.split(',');
-
-        destination.location = {
-          lat: destinationLngLat[0],
-          lng: destinationLngLat[1],
-        };
-      }
-
-      return {
-        ...info,
-        start,
-        destination,
-      };
-    };
-
-    this.open();
-    // this.$nextTick(() => {
-    //   if (info) {
-    //     this.isEdit = true;
-    //     this.title = '订单信息编辑';
-    //     this.form = formatData();
-    //   }
-    // });
+      this.detail = detail;
+    }
   }
 }
 </script>
