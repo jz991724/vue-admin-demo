@@ -30,6 +30,7 @@ const options = {
                     name: '分析',
                     component: BlankView,
                     meta: {
+                        icon: 'dashboard',
                         authority: {
                             role: ['admin', 'dispatcher']
                         }
