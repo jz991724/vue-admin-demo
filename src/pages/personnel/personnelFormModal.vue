@@ -130,15 +130,6 @@ import FileUpload from '@/components/file/ImageUpload.vue';
 import ImageUpload from '@/components/file/ImageUpload.vue';
 import { UserInfoStatusEnum } from '@/services/userManagement';
 
-function getGuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0;
-    // eslint-disable-next-line no-mixed-operators
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
 @Component({
   name: 'AddPersonnelForm',
   components: {
@@ -149,7 +140,7 @@ function getGuid() {
   filters: {
     filePathFilter(id, name) {
       return [{
-        uid: getGuid(),
+        uid: id,
         name,
         status: 'done',
         url: `http://47.107.108.136:8088/api/File/GetFile?id=${id}`,

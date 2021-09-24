@@ -7,6 +7,7 @@
   <div class="clearfix" style="line-height: initial;">
     <a-upload list-type="picture-card"
               :file-list="fileList"
+              v-bind="$attrs"
               :customRequest="customRequest"
               @preview="handlePreview"
               @change="handleChange">
@@ -111,6 +112,7 @@ export default class ImageUpload extends Vue {
   })
   handleFilesChange(newVal, oldVal) {
     if (newVal !== oldVal) {
+      debugger;
       this.fileList = newVal;
     }
   }

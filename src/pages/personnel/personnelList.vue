@@ -41,10 +41,12 @@
       </template>
 
       <template slot="status" slot-scope="{text}">
-        <a-tag :color="tagColors[text]">{{ UserInfoStatusEnum[text].toString() }}</a-tag>
+        <a-tag :color="tagColors[text]">{{ PersonnelStatusEnum[text].toString() }}</a-tag>
       </template>
 
       <template slot="operation" slot-scope="{record}">
+        <a @click="onCheckedPersonnel(record)">详情</a>
+        <a-divider type="vertical"/>
         <a v-auth="`edit`" @click="onUpdatePersonnel(record)">编辑</a>
         <a-divider type="vertical"/>
         <a-popconfirm title="确定删除" @confirm="onDeletePersonnel([record.id])">
@@ -55,22 +57,25 @@
 
     <!--驾驶员添加modal-->
     <personnel-form-modal ref="personnelFormModal" @submitSuccess="onSubmitSuccess"></personnel-form-modal>
+
+    <!--人员信息详情Modal-->
+    <personnel-detail-modal ref="personnelDetailModal"></personnel-detail-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Vue } from 'vue-property-decorator';
-import moment from 'moment';
 import AdvanceTable from '@/components/table/advance/AdvanceTable.vue';
 import { personnelService } from '@/services';
 import VueMixins from '@/pages/mixins/vueMixins';
-import { PersonnelStatusEnum, PersonnelTypeEnum, SexEnum } from '@/services/personnel';
+import { PersonnelStatusEnum, SexEnum } from '@/services/personnel';
 import PersonnelFormModal from '@/pages/personnel/personnelFormModal.vue';
-import { UserInfoStatusEnum } from '@/services/userManagement';
+import PersonnelDetailModal from '@/pages/personnel/personnelDetailModal.vue';
 
 @Component({
   name: 'PersonnelList',
   components: {
+    PersonnelDetailModal,
     PersonnelFormModal,
     AdvanceTable,
   },
@@ -78,15 +83,13 @@ import { UserInfoStatusEnum } from '@/services/userManagement';
 export default class PersonnelList extends Mixins(VueMixins) {
   SexEnum = SexEnum;
 
-  // PersonnelStatusEnum = PersonnelStatusEnum;
-
-  UserInfoStatusEnum = UserInfoStatusEnum;
+  PersonnelStatusEnum = PersonnelStatusEnum;
 
   tagColors = {
-    [UserInfoStatusEnum.在职]: 'green',
-    [UserInfoStatusEnum.离职]: '',
-    [UserInfoStatusEnum.请假]: 'orange',
-    [UserInfoStatusEnum.休息]: 'purple',
+    [PersonnelStatusEnum.在职]: 'green',
+    [PersonnelStatusEnum.离职]: '',
+    [PersonnelStatusEnum.请假]: 'orange',
+    [PersonnelStatusEnum.休息]: 'purple',
   };
 
   spinning = false;
@@ -192,7 +195,7 @@ export default class PersonnelList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 120,
+      width: 150,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
@@ -247,6 +250,11 @@ export default class PersonnelList extends Mixins(VueMixins) {
             this.fetchData();
           });
     }
+  }
+
+  // 查看人员信息
+  onCheckedPersonnel(info) {
+    this.openModal('personnelDetailModal', info);
   }
 
   handleMenuClick({ key }) {

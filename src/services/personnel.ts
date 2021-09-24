@@ -2,7 +2,9 @@ import { requestHelper, METHOD } from '@/utils/request';
 
 export enum PersonnelStatusEnum {
     在职,
-    离职
+    离职,
+    请假,
+    休息
 }
 
 export enum PersonnelTypeEnum {
