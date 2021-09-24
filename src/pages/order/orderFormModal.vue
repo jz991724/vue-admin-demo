@@ -137,7 +137,7 @@ import ImageUpload from '@/components/file/ImageUpload.vue';
 import ChoiceAddressBlock from '@/pages/order/choiceAddressBlock.vue';
 
 @Component({
-  name: 'AddPersonnelForm',
+  name: 'OrderFormModal',
   components: {
     ChoiceAddressBlock,
     ImageUpload,
@@ -145,7 +145,7 @@ import ChoiceAddressBlock from '@/pages/order/choiceAddressBlock.vue';
     CUpload,
   },
 })
-export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
+export default class OrderFormModal extends Mixins(VueMixins, ModalMixins) {
   title = '订单信息添加';
 
   labelCol = { span: 6 };

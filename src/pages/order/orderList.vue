@@ -61,6 +61,10 @@
               <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
+              <a-menu-item>
+                <a @click="onCheckedOrder(record)">详情</a>
+              </a-menu-item>
+
               <a-menu-item v-if="[OrderStatusEnum.待派单].includes(record.status)">
                 <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
               </a-menu-item>
@@ -80,8 +84,11 @@
     <dispatch-orders-confirm-modal ref="dispatchOrdersConfirmModal"
                                    @success="onDispatchSuccess"></dispatch-orders-confirm-modal>
 
-    <!--订单的编辑及添加modal-->
+    <!--订单的编辑及添加Modal-->
     <order-form-modal ref="orderFormModal" @submitSuccess="fetchData()"></order-form-modal>
+
+    <!--订单详情Modal-->
+    <order-detail-modal ref="orderDetailModal"></order-detail-modal>
   </div>
 </template>
 
@@ -93,10 +100,12 @@ import DispatchOrdersConfirmModal from '@/pages/order/dispatchOrdersConfirmModal
 import VueMixins from '@/pages/mixins/vueMixins';
 import { OrderStatusEnum } from '@/services/order';
 import OrderFormModal from '@/pages/order/orderFormModal.vue';
+import OrderDetailModal from '@/pages/order/orderDetailModal.vue';
 
 @Component({
   name: 'OrderList',
   components: {
+    OrderDetailModal,
     OrderFormModal,
     DispatchOrdersConfirmModal,
     AdvanceTable,
@@ -439,6 +448,11 @@ export default class OrderList extends Mixins(VueMixins) {
   // 编辑订单信息
   onUpdateOrder(order) {
     this.openModal('orderFormModal', order);
+  }
+
+  // 查看订单信息
+  onCheckedOrder(order) {
+    this.openModal('orderDetailModal', order);
   }
 
   // 导出
