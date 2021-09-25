@@ -77,7 +77,6 @@ function requestHelper(url, method, params, vueContext = undefined, urlParams = 
     }
     return new Promise((resolve, reject) => {
         requestObj.then(res => {
-            debugger
             let {
                 status,
                 data: { result }

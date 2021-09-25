@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import {
-  Component, Mixins, Emit, Watch,
+  Component, Mixins, Emit, Watch, Prop,
 } from 'vue-property-decorator';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
@@ -86,6 +86,11 @@ import ImageUpload from '@/components/file/ImageUpload.vue';
   },
 })
 export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
+  @Prop({
+    type: String,
+    default: '用户添加',
+  }) modalTitle: string | undefined;
+
   UserInfoTypeEnum = UserInfoTypeEnum;
 
   UserInfoStatusEnum = UserInfoStatusEnum;
@@ -158,14 +163,14 @@ export default class AddUserInfoForm extends Mixins(VueMixins, ModalMixins) {
     this.$nextTick(() => {
       if (info) {
         this.isEdit = true;
-        this.title = '用户信息编辑';
+        this.title = this.modalTitle || '用户信息编辑';
         this.form = {
           ...info,
           password: undefined,
         };
       } else {
         this.isEdit = false;
-        this.title = '用户信息添加';
+        this.title = this.modalTitle || '用户信息添加';
       }
     });
   }

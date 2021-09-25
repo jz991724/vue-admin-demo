@@ -110,7 +110,7 @@ const options = {
                     meta: {
                         icon: 'team',
                         authority: {
-                            role: ['admin', 'dispatcher']
+                            role: ['admin']
                         }
                     },
                     component: BlankView,
@@ -120,7 +120,7 @@ const options = {
                             name: '用户列表',
                             meta: {
                                 authority: {
-                                    role: ['admin', 'dispatcher']
+                                    role: ['admin']
                                 }
                             },
                             component: () => import('@/pages/userManagement/userInfoList'),

@@ -112,7 +112,6 @@ export default class ImageUpload extends Vue {
   })
   handleFilesChange(newVal, oldVal) {
     if (newVal !== oldVal) {
-      debugger;
       this.fileList = newVal;
     }
   }

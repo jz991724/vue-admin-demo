@@ -111,7 +111,6 @@ export default {
       } = res;
       this.logging = false;
       if (status === 200 && success) {
-        this.setUser(userInfo);
         // this.setPermissions([{
         //   id: 'queryForm',
         //   operation: ['add', 'edit'],
@@ -120,6 +119,8 @@ export default {
 
         UserManagement.getUserInfoByUserName({ userName })
             .then((info) => {
+              this.setUser(info);
+
               const { userType } = info;
               if (userType === UserInfoTypeEnum.管理员) {
                 this.setRoles([{
