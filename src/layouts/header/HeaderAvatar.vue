@@ -33,7 +33,6 @@
 import { mapGetters } from 'vuex';
 import { logout } from '@/services/user';
 import UserInfoFormModal from '../../pages/userManagement/userInfoFormModal';
-import { UserInfoTypeEnum } from '../../services/userManagement';
 
 export default {
   name: 'HeaderAvatar',

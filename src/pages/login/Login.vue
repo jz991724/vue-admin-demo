@@ -177,7 +177,7 @@ export default {
 
         loadRoutes(routesConfig);
         this.$router.push('/order/dispatchOrderList');
-        this.$message.success(`${Mock.mock('@TIMEFIX')?.CN}，欢迎回来`, 3);
+        this.$message.success(`${userName}，${Mock.mock('@TIMEFIX')?.CN}，欢迎回来！`, 3);
 
         // // 获取路由配置
         // getRoutesConfig()
