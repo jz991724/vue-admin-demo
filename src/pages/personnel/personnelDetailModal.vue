@@ -9,29 +9,36 @@
            v-bind="defaultOptions"
            @ok="handleOk"
            @cancel="handleCancel">
-    <desc-info-block :desc-info="getDescInfo" :bordered="true">
-      <template slot="status" slot-scope="{value}">
-        <a-tag :color="tagColors[value]">{{ PersonnelStatusEnum[value].toString() }}</a-tag>
+    <a-descriptions bordered :column="2" size="small">
+      <template v-for="({label,key,value,span}) in getDescInfo">
+        <a-descriptions-item :span="span||1" :key="key">
+          <span style="white-space: nowrap;" slot="label">{{ label }}</span>
+
+          <template v-if="key==='status'">
+            <a-tag :color="tagColors[value]">{{ PersonnelStatusEnum[value].toString() }}</a-tag>
+          </template>
+          <template v-else-if="key==='identityCardFront'">
+            <image-upload :disabled="true" :value="value | filePathFilter('身份证正面')"></image-upload>
+          </template>
+          <template v-else-if="key==='identityCardBack'">
+            <image-upload :disabled="true" :value="value | filePathFilter('身份证反面')"></image-upload>
+          </template>
+          <template v-else-if="key==='drivingLicenceFront'">
+            <image-upload :disabled="true" :value="value | filePathFilter('驾驶证正页')"></image-upload>
+          </template>
+          <template v-else-if="key==='drivingLicenceBack'">
+            <image-upload :disabled="true" :value="value | filePathFilter('驾驶证副页')"></image-upload>
+          </template>
+          <template v-else-if="key==='vehicleLicenceFront'">
+            <image-upload :disabled="true" :value="value | filePathFilter('行车证正页')"></image-upload>
+          </template>
+          <template v-else-if="key==='vehicleLicenceBack'">
+            <image-upload :disabled="true" :value="value | filePathFilter('行车证副页')"></image-upload>
+          </template>
+          <template v-else>{{ value || '' }}</template>
+        </a-descriptions-item>
       </template>
-      <template slot="identityCardFront" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('身份证正面')"></image-upload>
-      </template>
-      <template slot="identityCardBack" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('身份证反面')"></image-upload>
-      </template>
-      <template slot="drivingLicenceFront" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('驾驶证正页')"></image-upload>
-      </template>
-      <template slot="drivingLicenceBack" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('驾驶证副页')"></image-upload>
-      </template>
-      <template slot="vehicleLicenceFront" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('行车证正页')"></image-upload>
-      </template>
-      <template slot="vehicleLicenceBack" slot-scope="{value}">
-        <image-upload :disabled="true" :value="value | filePathFilter('行车证副页')"></image-upload>
-      </template>
-    </desc-info-block>
+    </a-descriptions>
   </a-modal>
 </template>
 

@@ -2,9 +2,9 @@
   <div>
     <a-dropdown>
       <div class="header-avatar" style="cursor: pointer">
-<!--        <a-avatar class="avatar" size="small" shape="circle"-->
-<!--                  :src="`../../assets/avatar/avatar_man.png`"/>-->
-        <a-avatar class="avatar" style="backgroundColor:#87d068" icon="user" />
+        <!--        <a-avatar class="avatar" size="small" shape="circle"-->
+        <!--                  :src="`../../assets/avatar/avatar_man.png`"/>-->
+        <a-avatar class="avatar" style="backgroundColor:#87d068" icon="user"/>
         <span class="name">{{ user.userName }}</span>
       </div>
       <a-menu :class="['avatar-menu']" slot="overlay">
@@ -17,7 +17,7 @@
           <span>个人设置</span>
         </a-menu-item>
         <a-menu-divider/>
-        <a-menu-item @click="logout" style="color: red;">
+        <a-menu-item @click="logout" style="color: #F06450;">
           <a-icon style="margin-right: 8px;" type="poweroff"/>
           <span>退出登录</span>
         </a-menu-item>
@@ -44,8 +44,14 @@ export default {
   },
   methods: {
     logout() {
-      logout();
-      this.$router.push('/login');
+      this.$confirm({
+        title: '提示：',
+        content: h => <div style="color:#F06450;">确定退出当前账号？</div>,
+        onOk: () => {
+          logout();
+          this.$router.push('/login');
+        },
+      });
     },
     openSettingModal() {
       let settingModal = this.$refs.settingModal;

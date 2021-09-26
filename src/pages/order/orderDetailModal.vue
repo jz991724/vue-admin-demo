@@ -9,7 +9,14 @@
            v-bind="defaultOptions"
            @ok="handleOk"
            @cancel="handleCancel">
-    <desc-info-block :desc-info="getDescInfo" :bordered="true"></desc-info-block>
+    <a-descriptions bordered :column="2" size="small">
+      <template v-for="({label,key,value,span}) in getDescInfo">
+        <a-descriptions-item :span="span||1" :key="key">
+          <span style="white-space: nowrap;" slot="label">{{ label }}</span>
+          {{ value || '' }}
+        </a-descriptions-item>
+      </template>
+    </a-descriptions>
   </a-modal>
 </template>
 
@@ -17,14 +24,8 @@
 import {
   Component, Mixins, Emit, Watch,
 } from 'vue-property-decorator';
-import moment from 'moment';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
-import { orderService } from '@/services';
-import CUpload from '@/components/file/cUpload.vue';
-import FileUpload from '@/components/file/ImageUpload.vue';
-import ImageUpload from '@/components/file/ImageUpload.vue';
-import ChoiceAddressBlock from '@/pages/order/choiceAddressBlock.vue';
 import DescInfoBlock from '@/components/desc/DescInfoBlock.vue';
 
 @Component({
