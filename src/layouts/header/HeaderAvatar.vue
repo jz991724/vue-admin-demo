@@ -4,8 +4,17 @@
       <div class="header-avatar" style="cursor: pointer">
         <!--        <a-avatar class="avatar" size="small" shape="circle"-->
         <!--                  :src="`../../assets/avatar/avatar_man.png`"/>-->
-        <a-avatar class="avatar" style="backgroundColor:#87d068" icon="user"/>
+        <a-avatar class="avatar"
+                  style="backgroundColor:#87d068;vertical-align: middle;">
+          {{ user.userType|userTypeFilter }}
+        </a-avatar>
         <span class="name">{{ user.userName }}</span>
+
+        <!--        <a-badge :count="user.userType|userTypeFilter" :offset="[20,-2]" :numberStyle="{fontsize:'12px'}">-->
+        <!--          <h3 class="name">-->
+        <!--            {{ user.userName }}-->
+        <!--          </h3>-->
+        <!--        </a-badge>-->
       </div>
       <a-menu :class="['avatar-menu']" slot="overlay">
         <!--      <a-menu-item>-->
@@ -25,7 +34,7 @@
     </a-dropdown>
 
     <!--个人设置-->
-    <user-info-form-modal modal-title="个人设置" ref="settingModal"></user-info-form-modal>
+    <user-info-form-modal modal-title="个人设置" ref="settingModal" @submitSuccess="onUpdateAccount()"></user-info-form-modal>
   </div>
 </template>
 
@@ -33,11 +42,17 @@
 import { mapGetters } from 'vuex';
 import { logout } from '@/services/user';
 import UserInfoFormModal from '../../pages/userManagement/userInfoFormModal';
+import { UserInfoTypeEnum } from '../../services/userManagement';
 
 export default {
   name: 'HeaderAvatar',
   components: { UserInfoFormModal },
-  // data: { UserInfoTypeEnum: UserInfoTypeEnum },
+  filters: {
+    userTypeFilter: (type) => {
+      return UserInfoTypeEnum[type];
+    }
+  },
+  // data: { userInfoTypeEnum: UserInfoTypeEnum },
   computed: {
     ...mapGetters('account', ['user']),
   },
@@ -57,6 +72,16 @@ export default {
       if (settingModal) {
         settingModal.openModal(this.user);
       }
+    },
+    onUpdateAccount() {//账号更新成功
+      this.$confirm({
+        title: '提示：',
+        content: h => <div>用户信息修改成功，是否重新登录？</div>,
+        onOk: () => {
+          logout();
+          this.$router.push('/login');
+        },
+      });
     }
   },
 };

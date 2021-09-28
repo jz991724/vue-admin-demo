@@ -52,7 +52,7 @@ const options = {
                     path: 'order',
                     name: '订单',
                     meta: {
-                        icon: 'form',
+                        icon: 'schedule',
                         authority: {
                             role: ['admin', 'dispatcher']
                         }
@@ -108,7 +108,7 @@ const options = {
                     path: 'userManagement',
                     name: '用户管理',
                     meta: {
-                        icon: 'team',
+                        icon: 'apartment',
                         authority: {
                             role: ['admin']
                         }
