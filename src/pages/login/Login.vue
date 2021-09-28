@@ -5,7 +5,7 @@
         <img alt="logo" class="logo" src="@/assets/img/logo.png"/>
         <span class="title">{{ systemName }}</span>
       </div>
-      <div class="desc">专车管理平台</div>
+      <div class="desc">尊享出行&nbsp;&nbsp;&nbsp;美好启程</div>
     </div>
     <div class="login">
       <a-form @submit="onSubmit" :form="form">
