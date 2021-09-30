@@ -254,7 +254,7 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 170,
+      width: 190,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },
