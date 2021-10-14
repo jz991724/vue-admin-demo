@@ -36,7 +36,7 @@
               <a-icon type="car" style="font-size: 16px;"/>
               派单
             </a-menu-item>
-            <a-menu-item key="deleteOrderListMenu" style="font-size: 16px;color: red;">
+            <a-menu-item key="deleteOrderListMenu" style="font-size: 16px;" v-auth="`delete`">
               <a-icon type="delete" style="font-size: 16px;"/>
               删除
             </a-menu-item>

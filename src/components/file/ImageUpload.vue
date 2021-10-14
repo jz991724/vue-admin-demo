@@ -14,9 +14,9 @@
               @change="handleChange">
       <div v-if="fileList.length < maxCount">
         <template v-if="readonly">
-<!--          <a-icon type="file-image"/>-->
+          <!--          <a-icon type="file-image"/>-->
           <div class="ant-upload-text">
-            <slot>暂无图片</slot>
+            暂无图片
           </div>
         </template>
 

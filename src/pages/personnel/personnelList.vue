@@ -22,9 +22,9 @@
           新增
         </a-button>
 
-        <a-dropdown v-auth="`delete`" :disabled="selectedPersonnelList.length<1">
+        <a-dropdown :disabled="selectedPersonnelList.length<1">
           <a-menu slot="overlay" @click="handleMenuClick">
-            <a-menu-item v-auth="`delete`" key="deleteOrderListMenu" style="font-size: 16px;color: red;">
+            <a-menu-item v-auth="`delete`" key="deleteOrderListMenu" style="font-size: 16px;">
               <a-icon type="delete" style="font-size: 16px;"/>
               删除
             </a-menu-item>
