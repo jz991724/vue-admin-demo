@@ -15,25 +15,25 @@
           <span style="white-space: nowrap;" slot="label">{{ label }}</span>
 
           <template v-if="key==='status'">
-            <a-tag :color="tagColors[value]">{{ PersonnelStatusEnum[value].toString() }}</a-tag>
+            <a-tag :color="tagColors[value]">{{ PersonnelStatusEnum[value] }}</a-tag>
           </template>
           <template v-else-if="key==='identityCardFront'">
-            <image-upload :disabled="true" :value="value | filePathFilter('身份证正面')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('身份证正面')"></image-upload>
           </template>
           <template v-else-if="key==='identityCardBack'">
-            <image-upload :disabled="true" :value="value | filePathFilter('身份证反面')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('身份证反面')"></image-upload>
           </template>
           <template v-else-if="key==='drivingLicenceFront'">
-            <image-upload :disabled="true" :value="value | filePathFilter('驾驶证正页')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('驾驶证正页')"></image-upload>
           </template>
           <template v-else-if="key==='drivingLicenceBack'">
-            <image-upload :disabled="true" :value="value | filePathFilter('驾驶证副页')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('驾驶证副页')"></image-upload>
           </template>
           <template v-else-if="key==='vehicleLicenceFront'">
-            <image-upload :disabled="true" :value="value | filePathFilter('行车证正页')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('行车证正页')"></image-upload>
           </template>
           <template v-else-if="key==='vehicleLicenceBack'">
-            <image-upload :disabled="true" :value="value | filePathFilter('行车证副页')"></image-upload>
+            <image-upload :readonly="true" :value="value | filePathFilter('行车证副页')"></image-upload>
           </template>
           <template v-else>{{ value || '' }}</template>
         </a-descriptions-item>
@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import moment from 'moment';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
 import DescInfoBlock from '@/components/desc/DescInfoBlock.vue';
@@ -107,7 +108,8 @@ export default class PersonnelDetailModal extends Mixins(VueMixins, ModalMixins)
       {
         label: '入职时间',
         key: 'entryTime',
-        value: this.detail.entryTime,
+        value: moment(this.detail.entryTime)
+            .format('YYYY-MM-DD hh:mm:ss'),
       },
       {
         label: '车牌号',
@@ -132,7 +134,8 @@ export default class PersonnelDetailModal extends Mixins(VueMixins, ModalMixins)
       {
         label: '车俩登记时间',
         key: 'carRegisterTime',
-        value: this.detail.carRegisterTime,
+        value: moment(this.detail.carRegisterTime)
+            .format('YYYY-MM-DD hh:mm:ss'),
       },
       {
         label: '住址',

@@ -8,14 +8,24 @@
     <a-upload list-type="picture-card"
               :file-list="fileList"
               v-bind="$attrs"
+              :disabled="readonly"
               :customRequest="customRequest"
               @preview="handlePreview"
               @change="handleChange">
       <div v-if="fileList.length < maxCount">
-        <a-icon type="plus"/>
-        <div class="ant-upload-text">
-          <slot></slot>
-        </div>
+        <template v-if="readonly">
+<!--          <a-icon type="file-image"/>-->
+          <div class="ant-upload-text">
+            <slot>暂无图片</slot>
+          </div>
+        </template>
+
+        <template v-else>
+          <a-icon type="plus"/>
+          <div class="ant-upload-text">
+            <slot></slot>
+          </div>
+        </template>
       </div>
     </a-upload>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
@@ -51,6 +61,12 @@ export default class ImageUpload extends Vue {
     type: Number,
     default: 1,
   }) maxCount: number | undefined;
+
+  // 只读状态
+  @Prop({
+    type: Boolean,
+    default: false,
+  }) readonly: boolean | undefined;
 
   previewVisible = false;
 
@@ -112,7 +128,7 @@ export default class ImageUpload extends Vue {
   })
   handleFilesChange(newVal, oldVal) {
     if (newVal !== oldVal) {
-      this.fileList = newVal;
+      this.fileList = newVal.filter(({ uid }) => !!uid) || [];
     }
   }
 }

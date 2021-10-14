@@ -331,6 +331,7 @@ export default class OrderList extends Mixins(VueMixins) {
                  totalCount,
                }) => {
           this.dataSource = items || [];
+          console.log('派发订单列表：', this.dataSource);
           this.pagination.total = totalCount || 0;
         });
   }
