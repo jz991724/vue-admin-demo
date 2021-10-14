@@ -44,39 +44,37 @@
         <!--取消派单-->
         <a-divider type="vertical"/>
         <a-popconfirm title="确定取消" @confirm="onCancelDispatch(record)">
-          <a v-auth="`dispatch`" :disabled="OrderStatusEnum.待接单!==record.status">取消派单</a>
+          <a v-auth="`dispatch`" :disabled="OrderStatusEnum.进行中!==record.status">取消派单</a>
         </a-popconfirm>
 
         <!--更改派单-->
         <a-divider type="vertical"/>
         <a @click="onUpdateDispatch(record)"
            v-auth="`dispatch`"
-           :disabled="![OrderStatusEnum.待接单].includes(record.status)">更改派单</a>
+           :disabled="![OrderStatusEnum.进行中].includes(record.status)">更改派单</a>
 
-        <template v-if="[OrderStatusEnum.待派单].includes(record.status)||![OrderStatusEnum.进行中].includes(record.status)">
-          <a-divider type="vertical"/>
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              更多
-              <a-icon type="down"/>
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="onCheckedOrder(record)">详情</a>
-              </a-menu-item>
+        <a-divider type="vertical"/>
+        <a-dropdown>
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            订单
+            <a-icon type="down"/>
+          </a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a @click="onCheckedOrder(record)">详情</a>
+            </a-menu-item>
 
-              <a-menu-item v-if="[OrderStatusEnum.待派单].includes(record.status)">
-                <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
-              </a-menu-item>
+            <a-menu-item v-if="[OrderStatusEnum.待派单].includes(record.status)">
+              <a v-auth="`edit`" @click="onUpdateOrder(record)">编辑</a>
+            </a-menu-item>
 
-              <a-menu-item v-if="![OrderStatusEnum.进行中].includes(record.status)">
-                <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
-                  <a v-auth="`delete`">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </template>
+            <a-menu-item v-if="![OrderStatusEnum.进行中].includes(record.status)">
+              <a-popconfirm title="确定删除" @confirm="onDeleteDispatch(record)">
+                <a v-auth="`delete`">删除</a>
+              </a-popconfirm>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </template>
     </advance-table>
 
@@ -116,7 +114,7 @@ export default class OrderList extends Mixins(VueMixins) {
 
   tagColors = {
     [OrderStatusEnum.待派单]: 'purple',
-    [OrderStatusEnum.待接单]: 'cyan',
+    // [OrderStatusEnum.待接单]: 'cyan',
     [OrderStatusEnum.进行中]: 'orange',
     [OrderStatusEnum.已结束]: '',
   };
@@ -345,10 +343,10 @@ export default class OrderList extends Mixins(VueMixins) {
             title: '待派单',
             value: OrderStatusEnum.待派单,
           },
-          {
-            title: '待接单',
-            value: OrderStatusEnum.待接单,
-          },
+          // {
+          //   title: '待接单',
+          //   value: OrderStatusEnum.待接单,
+          // },
           {
             title: '进行中',
             value: OrderStatusEnum.进行中,
@@ -363,7 +361,7 @@ export default class OrderList extends Mixins(VueMixins) {
     {
       title: '操作',
       dataIndex: 'operation',
-      width: 280,
+      width: 290,
       fixed: 'right',
       scopedSlots: { customRender: 'operation' },
     },

@@ -3,7 +3,7 @@ import { requestHelper, downloadFileHelper, METHOD } from '@/utils/request';
 // order状态enum
 export enum OrderStatusEnum {
     待派单,
-    待接单,
+    // 待接单,
     进行中,
     已结束
 }
