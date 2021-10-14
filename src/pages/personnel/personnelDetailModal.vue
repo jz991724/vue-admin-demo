@@ -43,9 +43,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Mixins, Emit, Watch,
-} from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import VueMixins from '@/pages/mixins/vueMixins';
 import ModalMixins from '@/pages/mixins/modalMixins';
 import DescInfoBlock from '@/components/desc/DescInfoBlock.vue';
@@ -60,11 +58,12 @@ import { PersonnelStatusEnum, SexEnum } from '@/services/personnel';
   },
   filters: {
     filePathFilter(id, name) {
+      const api = process.env.VUE_APP_API_BASE_URL;
       return [{
         uid: id,
         name,
         status: 'done',
-        url: `http://47.107.108.136:8088/api/File/GetFile?id=${id}`,
+        url: `${api}/api/File/GetFile?id=${id}`,
       }];
     },
   },

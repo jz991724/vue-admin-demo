@@ -118,9 +118,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component, Mixins, Emit, Watch,
-} from 'vue-property-decorator';
+import { Component, Mixins, Emit } from 'vue-property-decorator';
 import VueMixins from '@/pages/mixins/vueMixins';
 import { SexEnum } from '@/services/personnel';
 import ModalMixins from '@/pages/mixins/modalMixins';
@@ -139,11 +137,12 @@ import { UserInfoStatusEnum } from '@/services/userManagement';
   },
   filters: {
     filePathFilter(id, name) {
+      const api = process.env.VUE_APP_API_BASE_URL;
       return [{
         uid: id,
         name,
         status: 'done',
-        url: `http://47.107.108.136:8088/api/File/GetFile?id=${id}`,
+        url: `${api}/api/File/GetFile?id=${id}`,
       }];
     },
   },
@@ -332,7 +331,7 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
                 this.close();
               }, (error) => {
                 this.$message.error('驾驶员信息提交失败！');
-                this.emitSubmitFail();
+                this.emitSubmitFail(error);
               });
         }
       }
