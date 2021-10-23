@@ -122,6 +122,7 @@ export default {
               this.setUser(info);
 
               const { userType } = info;
+              // 设置操作按钮的权限
               if (userType === UserInfoTypeEnum.管理员) {
                 this.setRoles([{
                   id: 'admin',
@@ -130,7 +131,7 @@ export default {
               } else {
                 this.setRoles([{
                   id: 'dispatcher',
-                  operation: [],
+                  operation: ['add', 'edit', 'delete', 'import', 'export', 'dispatch'],
                 }]);
               }
             });
