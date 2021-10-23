@@ -117,6 +117,12 @@ export default {
         // }]);
         const { userName } = userInfo;
 
+        // 设置默认权限
+        this.setRoles([{
+          id: 'dispatcher',
+          operation: [],
+        }]);
+
         UserManagement.getUserInfoByUserName({ userName })
             .then((info) => {
               this.setUser(info);
