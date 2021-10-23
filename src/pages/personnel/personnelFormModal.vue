@@ -250,16 +250,18 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
 
   // 打开modal
   openModal(info = undefined) {
-    if (info) {
-      this.isEdit = true;
-      this.title = '驾驶员编辑';
-      this.form = { ...info };
-    } else {
-      this.isEdit = false;
-      this.title = '驾驶员添加';
-    }
-
     this.open();
+    this.$nextTick(() => {
+      if (info) {
+        this.isEdit = true;
+        this.title = '驾驶员编辑';
+
+        this.form = { ...info };
+      } else {
+        this.isEdit = false;
+        this.title = '驾驶员添加';
+      }
+    });
   }
 
   formatFile(file = [], name) {
@@ -344,6 +346,22 @@ export default class AddPersonnelForm extends Mixins(VueMixins, ModalMixins) {
   resetForm() {
     const { ruleForm }: any = this.$refs;
     ruleForm.resetFields();
+
+    this.form = {
+      ...this.form,
+      identityCardFrontPath: undefined,
+      identityCardBackPath: undefined,
+      drivingLicenceFrontPath: undefined,
+      drivingLicenceBackPath: undefined,
+      vehicleLicenceFrontPath: undefined,
+      vehicleLicenceBackPath: undefined,
+      identityCardFront: undefined,
+      identityCardBack: undefined,
+      drivingLicenceFront: undefined,
+      drivingLicenceBack: undefined,
+      vehicleLicenceFront: undefined,
+      vehicleLicenceBack: undefined,
+    };
   }
 
   afterClose() {

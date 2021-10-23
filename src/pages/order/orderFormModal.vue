@@ -42,7 +42,6 @@
 
         <a-form-model-item label="航班时间" prop="flightTime">
           <a-time-picker v-model="form.flightTime"
-                         :defaultValue="moment(form.flightTime, 'HH:mm')"
                          placeholder="请选择航班时间"
                          format="HH:mm"
                          valueFormat="HH:mm"
@@ -51,7 +50,6 @@
 
         <a-form-model-item label="用车时间" prop="useCarTime">
           <a-time-picker v-model="form.useCarTime"
-                         :defaultValue="moment(form.useCarTime, 'HH:mm')"
                          format="HH:mm"
                          valueFormat="HH:mm"
                          placeholder="请选择用车时间"

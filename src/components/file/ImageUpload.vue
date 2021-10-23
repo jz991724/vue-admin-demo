@@ -51,7 +51,7 @@ function getBase64(file) {
 
 @Component({ name: 'ImageUpload' })
 export default class ImageUpload extends Vue {
-  @Prop({
+  @Model('change', {
     type: Array,
     default: () => ([]),
   }) value: any[] | undefined;
